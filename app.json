@@ -3,6 +3,7 @@
     "name": "Kolegia",
     "slug": "Kolegia",
     "version": "1.0.0",
+    "jsEngine": "hermes",
     "assetBundlePatterns": [
       "**/*"
     ]
