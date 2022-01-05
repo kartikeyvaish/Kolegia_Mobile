@@ -57,3 +57,6 @@ dist/
 
 # Firebase Docs
 google-services.json
+
+# Environment Variables
+.env
