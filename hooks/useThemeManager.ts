@@ -10,11 +10,8 @@ import ColorPallete from "../utils/ColorPallete";
 export default function useThemeManager(changeHandler: Function, initialTheme: any, changeNavigationBarColor: any) {
   // Set the initial navigation bar color
   useEffect(() => {
-    if (changeNavigationBarColor === false) {
-      NavigationBar.setBackgroundColorAsync(ColorPallete.purple);
-    } else {
-      NavigationBar.setBackgroundColorAsync(initialTheme.colors.background ?? ColorPallete.purple);
-    }
+    if (changeNavigationBarColor)
+      NavigationBar.setBackgroundColorAsync(initialTheme.colors.background);
   }, []);
 
   // Light/Dark mode change listener
