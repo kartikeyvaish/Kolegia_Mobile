@@ -1,11 +1,5 @@
 // Packages Imports
-import {
-  View,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-  Pressable,
-} from "react-native";
+import { StyleSheet, StyleProp, ViewStyle, Pressable } from "react-native";
 
 // Types/Components imports
 import { AppRowProps } from "../types/ComponentTypes";

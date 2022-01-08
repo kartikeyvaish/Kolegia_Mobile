@@ -6,6 +6,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -57,6 +58,8 @@ function AppIcon(props: AppIconTypes) {
       return <Feather {...finalProps} />;
     case IconNames.FontAwesome:
       return <FontAwesome {...finalProps} />;
+    case IconNames.Ionicons:
+      return <Ionicons {...finalProps} />;
     case IconNames.MaterialCommunityIcons:
       return <MaterialCommunityIcons {...finalProps} />;
     case IconNames.MaterialIcons:
