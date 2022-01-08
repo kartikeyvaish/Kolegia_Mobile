@@ -8,4 +8,5 @@ export default {
     MaterialIcons: "MaterialIcons",
     Entypo: "Entypo",
     FontAwesome: "FontAwesome",
+    Ionicons: "Ionicons",
 };
