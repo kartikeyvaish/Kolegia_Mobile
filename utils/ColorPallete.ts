@@ -11,6 +11,6 @@ export default {
     orange: "#FFA001",
     purple: "#32297C",
     pinkRed: "#F25767",
-    grey: 'E7E7F7',
+    grey: '#E7E7F7',
     googleColor: '#4285F4',
 }
