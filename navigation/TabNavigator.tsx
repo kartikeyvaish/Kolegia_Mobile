@@ -6,8 +6,8 @@ import {
 } from "@react-navigation/bottom-tabs";
 
 // Screen imports
-import DashBoardScreen from "./../screens/DashBoardScreen";
-import NotificationsScreen from "./../screens/NotificationsScreen";
+import HomeScreen from "./../screens/HomeScreen";
+import MyResponsesScreen from "./../screens/MyResponsesScreen";
 import PostNewItemScreen from "./../screens/PostNewItemScreen";
 import ProfileScreen from "./../screens/ProfileScreen";
 import ScreenNames from "./ScreenNames";
@@ -16,12 +16,16 @@ import ScreenNames from "./ScreenNames";
 import AppIcon from "./../components/AppIcon";
 import ColorPallete from "../utils/ColorPallete";
 import IconNames from "../constants/IconNames";
+import { useContext } from "react";
+import GlobalContext from "../contexts/GlobalContext";
 
 // Tab navigator
 const Tab = createBottomTabNavigator();
 
 // Tab navigator screens
 function TabNavigator() {
+  const { User } = useContext(GlobalContext);
+
   // TabBar Screen options
   const screenOptions: BottomTabNavigationOptions = {
     headerShown: false,
@@ -33,10 +37,10 @@ function TabNavigator() {
   return (
     <Tab.Navigator screenOptions={screenOptions}>
       <Tab.Screen
-        name={ScreenNames.DashBoardScreen}
-        component={DashBoardScreen}
+        name={ScreenNames.HomeTabScreen}
+        component={HomeScreen}
         options={{
-          tabBarLabel: "Dashboard",
+          tabBarLabel: "Home",
           tabBarIcon: (props: any) => (
             <AppIcon
               family={IconNames.Ionicons}
@@ -51,7 +55,7 @@ function TabNavigator() {
         name={ScreenNames.PostNewItemScreen}
         component={PostNewItemScreen}
         options={{
-          tabBarLabel: "Post",
+          tabBarLabel: "New Item",
           tabBarIcon: (props: any) => (
             <AppIcon
               family={IconNames.AntDesign}
@@ -63,14 +67,14 @@ function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name={ScreenNames.NotificationsScreen}
-        component={NotificationsScreen}
+        name={ScreenNames.MyResponsesScreen}
+        component={MyResponsesScreen}
         options={{
-          tabBarLabel: "Notifications",
+          tabBarLabel: "Responses",
           tabBarIcon: (props: any) => (
             <AppIcon
-              family={IconNames.FontAwesome}
-              name={props.focused ? "bell" : "bell-o"}
+              family={IconNames.AntDesign}
+              name={props.focused ? "like1" : "like2"}
               size={props.size}
               color={props.color}
             />
@@ -91,6 +95,14 @@ function TabNavigator() {
             />
           ),
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (e: any) => {
+            if (User === null) {
+              e.preventDefault();
+              navigation.navigate(ScreenNames.IntroductionScreen);
+            }
+          },
+        })}
       />
     </Tab.Navigator>
   );
@@ -104,10 +116,10 @@ const styles = StyleSheet.create({
     backgroundColor: ColorPallete.purple,
     marginLeft: 5,
     marginRight: 5,
-    marginBottom: 10,
-    paddingTop: 10,
-    paddingBottom: 10,
-    height: 80,
+    marginBottom: 5,
+    paddingTop: 5,
+    paddingBottom: 8,
+    height: 70,
     borderRadius: 12,
     elevation: 5,
   },

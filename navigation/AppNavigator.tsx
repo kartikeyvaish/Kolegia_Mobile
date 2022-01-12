@@ -3,13 +3,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 // Screen imports
 import BuySellFeedScreen from "./../screens/BuySellFeedScreen";
+import ChatsScreen from "./../screens/ChatsScreen";
 import IntroductionScreen from "../screens/IntroductionScreen";
 import LoginScreen from "./../screens/LoginScreen";
 import LostFoundFeedScreen from "./../screens/LostFoundFeedScreen";
 import MyRequirementsScreen from "./../screens/MyRequirementsScreen";
-import MyResponsesScreen from "./../screens/MyResponsesScreen";
-import MyTicketsScreen from "./../screens/MyTicketsScreen";
-import PostNewItemScreen from "./../screens/PostNewItemScreen";
 import PostNewBuyItemScreen from "../screens/PostNewBuyItemScreen";
 import PostNewLostItemScreen from "../screens/PostNewLostItemScreen";
 import PostNewRequirementScreen from "../screens/PostNewRequirementScreen";
@@ -37,6 +35,7 @@ function AppNavigator() {
           name={ScreenNames.BuySellFeedScreen}
           component={BuySellFeedScreen}
         />
+        <Stack.Screen name={ScreenNames.ChatsScreen} component={ChatsScreen} />
         <Stack.Screen
           name={ScreenNames.LostFoundFeedScreen}
           component={LostFoundFeedScreen}
@@ -44,18 +43,6 @@ function AppNavigator() {
         <Stack.Screen
           name={ScreenNames.MyRequirementsScreen}
           component={MyRequirementsScreen}
-        />
-        <Stack.Screen
-          name={ScreenNames.MyResponsesScreen}
-          component={MyResponsesScreen}
-        />
-        <Stack.Screen
-          name={ScreenNames.MyTicketsScreen}
-          component={MyTicketsScreen}
-        />
-        <Stack.Screen
-          name={ScreenNames.PostNewItemScreen}
-          component={PostNewItemScreen}
         />
         <Stack.Screen
           name={ScreenNames.PostNewBuyItemScreen}

@@ -1,23 +1,22 @@
 export default {
-    // DrawerNavigator
-    BuySellFeedScreen: "BuySellFeedScreen",
-    LostFoundFeedScreen: "LostFoundFeedScreen",
-    NotificationsScreen: "NotificationsScreen",
-    ProfileScreen: "ProfileScreen",
-    MyTicketsScreen: "MyTicketsScreen",
+
+    // TabNavigator
+    HomeTabScreen: 'HomeTabScreen',
+    PostNewItemScreen: "PostNewItemScreen",
     MyResponsesScreen: "MyResponsesScreen",
-    MyRequirementsScreen: "MyRequirementsScreen",
-    ChatsScreen: "ChatsScreen",
+    ProfileScreen: "ProfileScreen",
 
     // AppNavigator
     HomeScreen: "HomeScreen",
-    DashBoardScreen: "DashBoardScreen",
+    BuySellFeedScreen: "BuySellFeedScreen",
+    ChatsScreen: "ChatsScreen",
+    LostFoundFeedScreen: "LostFoundFeedScreen",
+    MyRequirementsScreen: "MyRequirementsScreen",
+    RequirementsFeedScreen: "RequirementsFeedScreen",
     IntroductionScreen: "IntroductionScreen",
     LoginScreen: "LoginScreen",
-    PostNewItemScreen: "PostNewItemScreen",
+    SignUpScreen: "SignUpScreen",
     PostNewBuyItemScreen: "PostNewBuyItemScreen",
     PostNewLostItemScreen: "PostNewLostItemScreen",
     PostNewRequirementScreen: "PostNewRequirementScreen",
-    RequirementsFeedScreen: "RequirementsFeedScreen",
-    SignUpScreen: "SignUpScreen",
 }
