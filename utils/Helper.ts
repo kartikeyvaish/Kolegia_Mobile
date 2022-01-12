@@ -2,7 +2,7 @@
 import { Alert, ToastAndroid, AlertButton, AlertOptions } from "react-native"
 
 // Helper function to show toast
-export const ShowToast = (message: string, duration: number = 2000) => {
+export const ShowToast = (message: string, duration: number = 3000) => {
     ToastAndroid.show(message, duration)
 }
 

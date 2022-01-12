@@ -12,6 +12,7 @@ export interface AppButtonProps {
     textColor?: ColorValue
     loading?: boolean;
     containerStyle?: StyleProp<ViewStyle>;
+    disabled?: boolean;
 }
 
 // AppDialog interface
@@ -98,6 +99,7 @@ export interface AppTextInputProps extends AppHelperTextProps {
     error?: string;
     leftIcon?: React.ReactNode
     rightIcon?: React.ReactNode
+    multiline?: boolean;
 }
 
 // AppLoading interface
@@ -139,4 +141,27 @@ export interface AppIconTypes {
     marginTop?: number;
     marginBottom?: number;
     style?: StyleProp<TextStyle>
+}
+
+// MenuCard Props interface
+export interface MenuCardProps {
+    // Menu Card Props
+    showMenu?: boolean;
+    name?: string;
+    onPress?: () => void;
+    backgroundColor?: ColorValue;
+    color?: ColorValue;
+    containerStyle?: StyleProp<ViewStyle>;
+    textStyle?: StyleProp<TextStyle>;
+    textContainerStyle?: StyleProp<ViewStyle>;
+
+    // Prefix Icon
+    prefixIconProps?: AppIconTypes;
+    showPrefixIcon?: boolean;
+    customPrefixIcon?: React.ReactNode;
+
+    // Suffix Icon
+    suffixIconProps?: AppIconTypes;
+    showSuffixIcon?: boolean;
+    customSuffixIcon?: React.ReactNode;
 }
