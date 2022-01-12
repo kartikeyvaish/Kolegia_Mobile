@@ -4,7 +4,7 @@ import { View, StyleSheet } from "react-native";
 // Components/Types imports
 import AppText from "./AppText";
 import { AppHeaderBarProps } from "../types/ComponentTypes";
-import Icon from "./Icon";
+import AppIcon from "./AppIcon";
 import IconNames from "../constants/IconNames";
 import { useTheme } from "@react-navigation/native";
 
@@ -17,7 +17,7 @@ function AppHeaderBar({ title, onIconPress }: AppHeaderBarProps) {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <AppText text={title} size={25} />
-      <Icon
+      <AppIcon
         family={IconNames.AntDesign}
         name={"logout"}
         size={28}

@@ -41,6 +41,7 @@ function AppTextInput(props: AppTextInputProps) {
     helperTextStyle,
     leftIcon,
     rightIcon,
+    multiline,
   } = props;
 
   // State
@@ -91,6 +92,7 @@ function AppTextInput(props: AppTextInputProps) {
         activeUnderlineColor={ColorPallete.primary}
         onBlur={onBlur}
         keyboardType={keyboardType}
+        multiline={multiline}
         clearButtonMode="always"
       />
       <AppHelperText

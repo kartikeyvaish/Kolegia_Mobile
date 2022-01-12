@@ -1,16 +1,19 @@
-import React from "react";
+// Packages Import
 import { View, StyleSheet, Image } from "react-native";
 
+// Local Files Imports
 import AppRow from "./AppRow";
-import FontNames from "../constants/FontNames";
 import AppText from "./AppText";
-import AppButton from "./AppButton";
 import ColorPallete from "../utils/ColorPallete";
+import FontNames from "../constants/FontNames";
 import { useTheme } from "@react-navigation/native";
 
+// Functional Component for ProfileScreen
 function DashboardMenuCard({ uri, heading, description }: any) {
+  // Theme
   const { colors } = useTheme();
 
+  // Render
   return (
     <AppRow style={[styles.container, { backgroundColor: colors.background }]}>
       <Image source={{ uri: uri }} style={{ width: 100, height: 100 }} />
@@ -26,8 +29,10 @@ function DashboardMenuCard({ uri, heading, description }: any) {
   );
 }
 
+// Exports
 export default DashboardMenuCard;
 
+// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -35,7 +40,7 @@ const styles = StyleSheet.create({
     margin: 10,
     justifyContent: "center",
     alignItems: "center",
-    elevation: 10,
+    elevation: 5,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: ColorPallete.grey,
