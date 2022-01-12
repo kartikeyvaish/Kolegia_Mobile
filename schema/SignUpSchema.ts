@@ -23,27 +23,30 @@ export const TermsAndConditionsMessage = `By signing up, you agree to our Terms 
 
 // Login initial values
 export const RegisterInitialValues = {
-    Name: "",
-    Email: "",
-    Year: "",
-    Batch: "",
-    Hostel: "",
-    Phone: "",
-    Picture: {},
-    Password: "",
-    ConfirmPassword: "",
-    TermsAccepted: false
+    name: "",
+    email: "",
+    roll_number: "",
+    year: "",
+    batch: "",
+    hostel: "",
+    phone: "",
+    password: "",
+    confirm_password: "",
+    terms_accepted: false
 };
+
 
 // validation schema
 export const RegisterValidationSchema = () => Yup.object().shape({
-    Name: Yup.string().required("Name is required"),
-    Email: Yup.string().email().required("Email is required"),
-    Year: Yup.string().required("Year is required").oneOf(Years, "Joining Year should be valid"),
-    Batch: Yup.string().required("Batch is required").oneOf(Batch, "Batch should be valid"),
-    Hostel: Yup.string().required("Hostel is required").oneOf(Hostels, "Hostel should be valid"),
-    Phone: Yup.string().required("Phone is required").length(10, "Phone number should be valid"),
-    Password: Yup.string().required("Password is required").min(6, "Password must be at least 6 characters").max(20, "Password must be less than 20 characters"),
-    ConfirmPassword: Yup.string().oneOf([Yup.ref("Password"), null], "Passwords must match"),
-    TermsAccepted: Yup.boolean().oneOf([true], "You must accept the terms and conditions"),
+    name: Yup.string().required("Name is required"),
+    email: Yup.string().email().required("Email is required"),
+    roll_number: Yup.string().required("Roll Number is required"),
+    year: Yup.string().required("Year is required").oneOf(Years, "Year is invalid"),
+    batch: Yup.string().required("Batch is required").oneOf(Batch, "Batch is invalid"),
+    hostel: Yup.string().required("Hostel is required").oneOf(Hostels, "Hostel should be valid"),
+    phone: Yup.string().required("Phone is required").length(10, "Phone number should be valid"),
+    password: Yup.string().required("Password is required").min(6, "Password must be at least 6 characters").max(20, "Password must be less than 20 characters"),
+    confirm_password: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match"),
+    terms_accepted: Yup.boolean().oneOf([true], "You must accept the terms and conditions"),
 })
+
