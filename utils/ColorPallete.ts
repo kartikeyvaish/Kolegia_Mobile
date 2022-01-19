@@ -12,5 +12,8 @@ export default {
     purple: "#32297C",
     pinkRed: "#F25767",
     grey: '#E7E7F7',
+    darkGrey: '#BDBDBD',
     googleColor: '#4285F4',
+    dodgerblue: "dodgerblue",
+    shadeOfGrey: "#454545"
 }

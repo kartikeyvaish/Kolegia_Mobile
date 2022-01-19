@@ -40,6 +40,7 @@ export interface AppImageProps {
     borderRadius?: number;
     borderColor?: ColorValue;
     borderWidth?: number;
+    showBorder?: boolean;
 }
 
 // AppRow interface
@@ -100,6 +101,8 @@ export interface AppTextInputProps extends AppHelperTextProps {
     leftIcon?: React.ReactNode
     rightIcon?: React.ReactNode
     multiline?: boolean;
+    disabled?: boolean;
+    showError?: boolean;
 }
 
 // AppLoading interface
@@ -140,6 +143,7 @@ export interface AppIconTypes {
     marginRight?: number;
     marginTop?: number;
     marginBottom?: number;
+    loading?: boolean;
     style?: StyleProp<TextStyle>
 }
 
@@ -164,4 +168,22 @@ export interface MenuCardProps {
     suffixIconProps?: AppIconTypes;
     showSuffixIcon?: boolean;
     customSuffixIcon?: React.ReactNode;
+}
+
+// PickerItem Props
+export interface PickerItemProps {
+    label: string;
+    _id?: string | number;
+    onPress?: () => void;
+    value?: string;
+    iconProps?: AppIconTypes;
+}
+
+export interface PickerProps {
+    items: Array<PickerItemProps>;
+    onItemPress?: (item: PickerItemProps) => void;
+    pickerTitle?: string;
+    selected?: PickerItemProps;
+    error?: string;
+    containerStyle?: StyleProp<ViewStyle>;
 }
