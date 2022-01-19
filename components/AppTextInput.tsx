@@ -42,6 +42,8 @@ function AppTextInput(props: AppTextInputProps) {
     leftIcon,
     rightIcon,
     multiline,
+    disabled,
+    showError = true,
   } = props;
 
   // State
@@ -94,13 +96,17 @@ function AppTextInput(props: AppTextInputProps) {
         keyboardType={keyboardType}
         multiline={multiline}
         clearButtonMode="always"
+        disabled={disabled}
       />
-      <AppHelperText
-        text={error}
-        helperTextType={helperTextType}
-        helperTextPadding={helperTextPadding}
-        helperTextStyle={helperTextStyle}
-      />
+
+      {showError ? (
+        <AppHelperText
+          text={error}
+          helperTextType={helperTextType}
+          helperTextPadding={helperTextPadding}
+          helperTextStyle={helperTextStyle}
+        />
+      ) : null}
     </View>
   );
 }

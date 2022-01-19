@@ -1,4 +1,5 @@
 // Packages imports
+import { ActivityIndicator } from "react-native";
 import { useTheme } from "@react-navigation/native";
 
 // Icons Imports
@@ -25,6 +26,7 @@ function AppIcon(props: AppIconTypes) {
     marginBottom,
     style,
     onPress,
+    loading,
     ...otherProps
   } = props;
 
@@ -47,6 +49,16 @@ function AppIcon(props: AppIconTypes) {
     ],
     ...otherProps,
   };
+
+  if (loading)
+    return (
+      <>
+        <ActivityIndicator
+          color={otherProps.color ? otherProps.color : colors.text}
+          size={"large"}
+        />
+      </>
+    );
 
   // return the icon component based on the name
   switch (family) {

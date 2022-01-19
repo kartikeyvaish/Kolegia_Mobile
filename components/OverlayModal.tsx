@@ -7,14 +7,14 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import LayoutConstants from "../constants/Layout";
 
 // Types/Components imports
 import ColorPallete from "../utils/ColorPallete";
 import AppText from "./AppText";
-import { ScreenWidth, ScreenHeight } from "./../constants/Layout";
 
 // Constants
-const containerWidth = ScreenWidth * 0.8;
+const containerWidth = LayoutConstants.ScreenWidth * 0.8;
 
 interface OverlayProps {
   text?: string;
@@ -37,7 +37,7 @@ function Overlay(props: OverlayProps) {
 
   // useEffect to detect changes visiblilty props and accordingly set opacity
   useEffect(() => {
-    if (visible) containerHeight.value = ScreenHeight;
+    if (visible) containerHeight.value = LayoutConstants.ScreenHeight;
     else containerOpacity.value = 0;
   }, [visible]);
 
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     left: 0,
-    width: ScreenWidth,
+    width: LayoutConstants.ScreenWidth,
     zIndex: 1000,
     backgroundColor: "rgba(0,0,0,0.3)",
     justifyContent: "center",

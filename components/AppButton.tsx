@@ -31,6 +31,7 @@ function AppButton(props: AppButtonProps) {
     textColor = ColorPallete.white,
     loading,
     containerStyle,
+    disabled,
   } = props;
 
   // Common View Styles
@@ -39,6 +40,7 @@ function AppButton(props: AppButtonProps) {
       height: height,
       borderRadius: borderRadius,
       width: width,
+      opacity: disabled ? 0.5 : 1,
     },
     containerStyle,
   ];
@@ -64,7 +66,7 @@ function AppButton(props: AppButtonProps) {
   // Render
   return (
     <TouchableRipple
-      onPress={loading ? null : onPress}
+      onPress={loading ? null : disabled ? null : onPress}
       borderless
       style={commonContainerStyles}
     >

@@ -16,9 +16,9 @@ function NewItem({ title, description, onPress }: any) {
         <AppText text={description} size={16} />
       </View>
 
-      <Pressable style={{ justifyContent: "center", alignItems: "center" }}>
+      <View style={{ justifyContent: "center", alignItems: "center" }}>
         <AppIcon family={IconNames.AntDesign} name="pluscircle" size={40} />
-      </Pressable>
+      </View>
     </Pressable>
   );
 }

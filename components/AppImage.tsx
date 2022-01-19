@@ -20,6 +20,7 @@ function AppImage(props: AppImageProps) {
     borderRadius = 0,
     borderColor = "grey",
     borderWidth = 1 - StyleSheet.hairlineWidth,
+    showBorder = true,
   } = props;
 
   // Container Styles
@@ -27,7 +28,7 @@ function AppImage(props: AppImageProps) {
     styles.ImageBoxPart,
     {
       borderColor: borderColor,
-      borderWidth: borderWidth,
+      borderWidth: showBorder ? borderWidth : 0,
     },
     style,
   ];

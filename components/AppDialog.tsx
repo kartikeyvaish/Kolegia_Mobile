@@ -32,7 +32,9 @@ export default function AppDialog(props: AppDialogProps) {
         >
           {title ? <Dialog.Title>{title}</Dialog.Title> : null}
 
-          <Dialog.Content>{children}</Dialog.Content>
+          <Dialog.Content style={{ paddingLeft: 0, paddingRight: 0 }}>
+            {children}
+          </Dialog.Content>
 
           {onDonePress ? (
             <Dialog.Actions style={{ marginRight: 15, marginBottom: 15 }}>
