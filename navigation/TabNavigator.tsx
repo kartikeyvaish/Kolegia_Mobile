@@ -7,17 +7,17 @@ import {
 
 // Screen imports
 import HomeScreen from "./../screens/HomeScreen";
-import MyResponsesScreen from "./../screens/MyResponsesScreen";
-import PostNewItemScreen from "./../screens/PostNewItemScreen";
-import ProfileScreen from "./../screens/ProfileScreen";
+import MyResponsesScreen from "../screens/Chats/MyResponsesScreen";
+import PostNewItemScreen from "./../screens/Misc/PostNewItemScreen";
+import ProfileScreen from "./../screens/Misc/ProfileScreen";
 import ScreenNames from "./ScreenNames";
 
 // Types/components imports
 import AppIcon from "./../components/AppIcon";
 import ColorPallete from "../utils/ColorPallete";
+import GlobalContext from "../contexts/GlobalContext";
 import IconNames from "../constants/IconNames";
 import { useContext } from "react";
-import GlobalContext from "../contexts/GlobalContext";
 
 // Tab navigator
 const Tab = createBottomTabNavigator();
