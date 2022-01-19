@@ -4,12 +4,19 @@ import * as actionTypes from "./actionTypes";
 // Action Creators
 
 // Action Creators: Change theme state variable
-export const ChangeMode = (Mode: string) => ({
+const ChangeMode = (Mode: string) => ({
   type: actionTypes.CHANGE_MODE,
   payload: Mode,
 });
 
 // Action Creators: Reset the state
-export const Reset = () => ({
+const Reset = () => ({
   type: actionTypes.RESET,
 });
+
+const ThemeActionCreators = {
+  ChangeMode,
+  Reset,
+}
+
+export default ThemeActionCreators;
