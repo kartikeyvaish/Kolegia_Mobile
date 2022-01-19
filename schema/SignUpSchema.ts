@@ -2,27 +2,27 @@
 import * as Yup from "yup";
 
 // Possible Years
-export const Years = [
+const Years = [
     "2017", "2018",
     "2019", "2020",
     "2021", "2022",
 ]
 
 // Possible Batches
-export const Batch = [
+const Batch = [
     "BCS", "IMG", "IMT"
 ]
 
 // Possible Hostels
-export const Hostels = [
+const Hostels = [
     "BH-1", "BH-2", "BH-3", "GH-1"
 ]
 
 // Terms and Conditions message
-export const TermsAndConditionsMessage = `By signing up, you agree to our Terms of Service and Privacy Policy.`
+const TermsAndConditionsMessage = `By signing up, you agree to our Terms of Service and Privacy Policy.`
 
 // Login initial values
-export const RegisterInitialValues = {
+const RegisterInitialValues = {
     name: "",
     email: "",
     roll_number: "",
@@ -37,7 +37,7 @@ export const RegisterInitialValues = {
 
 
 // validation schema
-export const RegisterValidationSchema = () => Yup.object().shape({
+const RegisterValidationSchema = () => Yup.object().shape({
     name: Yup.string().required("Name is required"),
     email: Yup.string().email().required("Email is required"),
     roll_number: Yup.string().required("Roll Number is required"),
@@ -50,3 +50,13 @@ export const RegisterValidationSchema = () => Yup.object().shape({
     terms_accepted: Yup.boolean().oneOf([true], "You must accept the terms and conditions"),
 })
 
+const RegisterSchema = {
+    RegisterInitialValues,
+    RegisterValidationSchema,
+    Years,
+    Batch,
+    Hostels,
+    TermsAndConditionsMessage,
+}
+
+export default RegisterSchema;

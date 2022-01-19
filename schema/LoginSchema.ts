@@ -2,13 +2,20 @@
 import * as Yup from "yup";
 
 // Login initial values
-export const LoginInitialValues = {
+const LoginInitialValues = {
   email: "",
   password: "",
 };
 
 // validation schema
-export const LoginValidationSchema = () => Yup.object().shape({
+const LoginValidationSchema = () => Yup.object().shape({
   email: Yup.string().email().required("Email is required"),
   password: Yup.string().required("Password is required"),
 })
+
+const LoginSchema = {
+  LoginInitialValues,
+  LoginValidationSchema,
+}
+
+export default LoginSchema;
