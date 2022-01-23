@@ -1,0 +1,2 @@
+// Auth Action Types
+export const UPDATE_RAISED_HANDS_COUNT = "UPDATE_RAISED_HANDS_COUNT";
