@@ -1,11 +1,18 @@
 // Packages Imports
-import { ColorValue, GestureResponderEvent, ImageStyle, KeyboardTypeOptions, StatusBarStyle, StyleProp, TextProps, TextStyle, ViewStyle } from "react-native";
+import Animated from "react-native-reanimated"
+import { ColorValue, GestureResponderEvent, ImageStyle, KeyboardTypeOptions, OpaqueColorValue, StatusBarStyle, StyleProp, TextProps, TextStyle, ViewStyle } from "react-native";
+
+// AnimatedView Props interface
+export interface AnimatedViewProps extends Animated.AnimateProps<ViewStyle> {
+    children: React.ReactNode;
+    style?: StyleProp<ViewStyle>;
+}
 
 // AppButtonProps interface
 export interface AppButtonProps {
     title?: string;
     onPress?: () => void;
-    backgroundColor?: ColorValue
+    backgroundColor?: any;
     height?: number;
     width?: number | string;
     borderRadius?: number;
@@ -13,6 +20,18 @@ export interface AppButtonProps {
     loading?: boolean;
     containerStyle?: StyleProp<ViewStyle>;
     disabled?: boolean;
+    mode?: "outlined" | "contained" | "text";
+    uppercase?: boolean;
+    labelStyle?: StyleProp<TextStyle>;
+    marginLeft?: number;
+    marginRight?: number;
+    marginTop?: number;
+    marginBottom?: number;
+}
+
+// AppSubmitButton interface
+export interface AppSubmitButtonProps extends AppButtonProps {
+    CustomButton?: React.ComponentType<any>;
 }
 
 // AppDialog interface
@@ -24,6 +43,13 @@ export interface AppDialogProps {
     onDonePress?: () => void;
     okLabel?: string;
 }
+
+// AppFormField interface
+export interface AppFormFieldProps extends AppTextInputProps {
+    title: string;
+    controlled?: boolean;
+}
+
 
 // AppHeaderBar interface
 export interface AppHeaderBarProps {
@@ -65,6 +91,7 @@ export interface AppRadioButtonProps {
     disabled?: boolean;
     containerStyle?: StyleProp<ViewStyle>;
     error?: string;
+    labelSize?: number;
 }
 
 // AppText interface
@@ -147,6 +174,16 @@ export interface AppIconTypes {
     style?: StyleProp<TextStyle>
 }
 
+// Developers Props interface
+export interface DeveloperCardProps {
+    _id?: string | number;
+    name?: string;
+    profile_picture?: string;
+    linkedin_url?: string;
+    github_url?: string;
+    email_address?: string;
+}
+
 // MenuCard Props interface
 export interface MenuCardProps {
     // Menu Card Props
@@ -158,6 +195,8 @@ export interface MenuCardProps {
     containerStyle?: StyleProp<ViewStyle>;
     textStyle?: StyleProp<TextStyle>;
     textContainerStyle?: StyleProp<ViewStyle>;
+    borderBottomColor?: ColorValue;
+    borderBottomWidth?: number;
 
     // Prefix Icon
     prefixIconProps?: AppIconTypes;
