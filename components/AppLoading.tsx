@@ -12,12 +12,15 @@ function AppLoading(props: AppLoadingProps) {
   const { loadingText = "Loading...", loading = true, style } = props;
 
   // Render
-  return loading ? (
+  return (
     <View style={[styles.container, style]}>
-      <ActivityIndicator size={"large"} color={ColorPallete.primary} />
+      {loading ? (
+        <ActivityIndicator size={"large"} color={ColorPallete.primary} />
+      ) : null}
+
       <AppText text={loadingText} marginTop={10} size={25} />
     </View>
-  ) : null;
+  );
 }
 
 // Exports

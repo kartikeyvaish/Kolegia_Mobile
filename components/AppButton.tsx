@@ -1,21 +1,13 @@
 // Packages Imports
-import {
-  ActivityIndicator,
-  StyleProp,
-  StyleSheet,
-  Text,
-  TextStyle,
-  View,
-  ViewStyle,
-} from "react-native";
-import { TouchableRipple } from "react-native-paper";
-import { useTheme } from "@react-navigation/native";
+import { StyleSheet, StyleProp, ViewStyle, TextStyle } from "react-native";
+import { Button } from "react-native-paper";
 
-// Components/Types imports
+// Component/Types imports
 import { AppButtonProps } from "../types/ComponentTypes";
 import ColorPallete from "../utils/ColorPallete";
+import FontNames from "../constants/FontNames";
+import { useTheme } from "@react-navigation/native";
 
-// Exporting the app button function component
 function AppButton(props: AppButtonProps) {
   // Theme
   const { colors } = useTheme();
@@ -25,81 +17,74 @@ function AppButton(props: AppButtonProps) {
     title = "Button",
     onPress = () => {},
     backgroundColor = ColorPallete.primary,
+    textColor = ColorPallete.white,
+    loading,
+    disabled,
+    mode = "contained",
+    uppercase = false,
+    labelStyle,
     height = 60,
     width = "100%",
     borderRadius = 12,
-    textColor = ColorPallete.white,
-    loading,
     containerStyle,
-    disabled,
+    marginBottom,
+    marginTop,
+    marginLeft,
+    marginRight,
   } = props;
 
-  // Common View Styles
-  const commonContainerStyles: StyleProp<ViewStyle> = [
-    {
-      height: height,
-      borderRadius: borderRadius,
-      width: width,
-      opacity: disabled ? 0.5 : 1,
-    },
-    containerStyle,
-  ];
-
-  // Container styles
-  const buttonContainerStyle: StyleProp<ViewStyle> = [
-    styles.buttonContainer,
-    commonContainerStyles,
-    {
-      backgroundColor: backgroundColor,
-      opacity: loading ? 0.5 : 1,
-    },
-  ];
-
   // Text styles
-  const textStyles: StyleProp<TextStyle> = [
+  const finalLabelStyle: StyleProp<TextStyle> = [
     styles.titleStyle,
     {
       color: textColor ? textColor : colors.text,
     },
+    labelStyle,
   ];
 
-  // Render
+  // final container styles
+  const finalContainerStyle: StyleProp<ViewStyle> = [
+    {
+      borderRadius: borderRadius,
+      marginBottom: marginBottom,
+      marginTop: marginTop,
+      marginLeft: marginLeft,
+      marginRight: marginRight,
+    },
+    containerStyle,
+  ];
+
+  // content Style
+  const contentStyle = [
+    {
+      height: height,
+      width: width,
+    },
+  ];
+
   return (
-    <TouchableRipple
+    <Button
+      mode={mode}
+      color={backgroundColor}
+      loading={loading}
+      disabled={loading ? true : disabled}
       onPress={loading ? null : disabled ? null : onPress}
-      borderless
-      style={commonContainerStyles}
+      uppercase={uppercase}
+      labelStyle={finalLabelStyle}
+      contentStyle={contentStyle}
+      style={finalContainerStyle}
     >
-      <View style={buttonContainerStyle}>
-        <Text style={textStyles}>{title}</Text>
-        {loading ? (
-          <ActivityIndicator
-            size="large"
-            color={textColor ? textColor : colors.text}
-            style={styles.loadingIndicator}
-          />
-        ) : null}
-      </View>
-    </TouchableRipple>
+      {title}
+    </Button>
   );
 }
 
-// Exports
 export default AppButton;
 
 // Styles
 const styles = StyleSheet.create({
-  buttonContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
-  },
   titleStyle: {
-    color: ColorPallete.white,
     fontSize: 20,
-  },
-  loadingIndicator: {
-    position: "absolute",
-    right: 15,
+    fontFamily: FontNames.Sofia_Pro_Regular,
   },
 });

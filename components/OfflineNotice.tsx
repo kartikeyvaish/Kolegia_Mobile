@@ -56,7 +56,7 @@ function OfflineNotice() {
   return (
     <Animated.View style={[styles.container, ContainerStyle]}>
       <Animated.Text style={[styles.label, LabelStyle]}>
-        No Intenernet Connection
+        No Internet Connection
       </Animated.Text>
     </Animated.View>
   );

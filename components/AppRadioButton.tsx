@@ -3,9 +3,9 @@ import { StyleSheet, Pressable, View } from "react-native";
 import { RadioButton } from "react-native-paper";
 
 // Components/Types imports
+import AppText from "./AppText";
 import { AppRadioButtonProps } from "../types/ComponentTypes";
 import ColorPallete from "../utils/ColorPallete";
-import AppText from "./AppText";
 
 // functional component for AppRadioButton
 function AppRadioButton(props: AppRadioButtonProps) {
@@ -17,6 +17,7 @@ function AppRadioButton(props: AppRadioButtonProps) {
     labelComponent,
     disabled,
     containerStyle,
+    labelSize = 18,
   } = props;
 
   // Render
@@ -35,7 +36,12 @@ function AppRadioButton(props: AppRadioButtonProps) {
         labelComponent
       ) : (
         <View style={{ flex: 1 }}>
-          <AppText text={label} size={18} marginTop={-3} marginLeft={10} />
+          <AppText
+            text={label}
+            size={labelSize}
+            marginTop={-3}
+            marginLeft={10}
+          />
         </View>
       )}
     </Pressable>

@@ -22,28 +22,21 @@ function AppTextInput(props: AppTextInputProps) {
 
   // Destructuring props
   const {
-    label,
-    placeholder,
-    placeholderTextColor,
     borderRadius = 12,
     backgroundColor,
     containerStyle,
     textInputStyle,
-    onChangeText,
     secureTextEntry,
-    value,
-    mode,
     error,
     helperTextType = "error",
     helperTextPadding = "normal",
-    onBlur,
-    keyboardType,
     helperTextStyle,
     leftIcon,
     rightIcon,
-    multiline,
-    disabled,
     showError = true,
+    placeholderTextColor = colors.text,
+    helperTextColor,
+    ...otherProps
   } = props;
 
   // State
@@ -71,9 +64,17 @@ function AppTextInput(props: AppTextInputProps) {
     rightIcon
   ) : secureTextEntry ? (
     Secured ? (
-      <TextInput.Icon name="eye" onPress={() => SetSecured(!Secured)} />
+      <TextInput.Icon
+        name="eye"
+        color={colors.text}
+        onPress={() => SetSecured(!Secured)}
+      />
     ) : (
-      <TextInput.Icon name="eye-off" onPress={() => SetSecured(!Secured)} />
+      <TextInput.Icon
+        name="eye-off"
+        color={colors.text}
+        onPress={() => SetSecured(!Secured)}
+      />
     )
   ) : null;
 
@@ -81,28 +82,25 @@ function AppTextInput(props: AppTextInputProps) {
   return (
     <View style={containerStyles}>
       <TextInput
-        placeholder={placeholder}
-        label={label}
-        style={textInputStyles}
-        mode={mode}
-        secureTextEntry={Secured}
-        value={value}
-        onChangeText={onChangeText}
         right={finalRightIcon}
         left={leftIcon}
-        placeholderTextColor={placeholderTextColor}
+        style={textInputStyles}
+        secureTextEntry={Secured}
         activeUnderlineColor={ColorPallete.primary}
-        onBlur={onBlur}
-        keyboardType={keyboardType}
-        multiline={multiline}
-        clearButtonMode="always"
-        disabled={disabled}
+        selectionColor={colors.text}
+        outlineColor={colors.text}
+        underlineColorAndroid={colors.text}
+        activeOutlineColor={error ? ColorPallete.red : ColorPallete.primary}
+        underlineColor={colors.text}
+        placeholderTextColor={placeholderTextColor}
+        {...otherProps}
       />
 
       {showError ? (
         <AppHelperText
           text={error}
           helperTextType={helperTextType}
+          helperTextColor={helperTextColor}
           helperTextPadding={helperTextPadding}
           helperTextStyle={helperTextStyle}
         />

@@ -1,15 +1,26 @@
 // Packages Imports
-import { StyleSheet, Pressable, StyleProp } from "react-native";
+import {
+  StyleSheet,
+  Pressable,
+  StyleProp,
+  View,
+  ActivityIndicator,
+} from "react-native";
 import FastImage, { ImageStyle } from "react-native-fast-image";
 import { useTheme } from "@react-navigation/native";
 
 // Components/Types imports
 import { AppImageProps } from "../types/ComponentTypes";
+import ColorPallete from "../utils/ColorPallete";
+import { useState } from "react";
 
 // function component
 function AppImage(props: AppImageProps) {
   // Theme
   const { colors } = useTheme();
+
+  // Local State to hold the image load progress
+  const [isLoaded, SetisLoaded] = useState(false);
 
   // Destructuring props
   const {
@@ -56,7 +67,14 @@ function AppImage(props: AppImageProps) {
         style={imageStyle}
         source={{ uri: uri }}
         resizeMode={imageResizeMode}
+        onLoad={() => SetisLoaded(true)}
       />
+
+      {!isLoaded ? (
+        <View style={styles.loadingComponent}>
+          <ActivityIndicator size="small" color={ColorPallete.primary} />
+        </View>
+      ) : null}
     </Pressable>
   );
 }
@@ -76,5 +94,14 @@ const styles = StyleSheet.create({
   Image: {
     width: "100%",
     height: "100%",
+  },
+  loadingComponent: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

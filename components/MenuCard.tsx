@@ -8,9 +8,13 @@ import AppText from "./AppText";
 import FontNames from "../constants/FontNames";
 import IconNames from "../constants/IconNames";
 import { MenuCardProps } from "../types/ComponentTypes";
+import { useTheme } from "@react-navigation/native";
 
 // functional component for MenuCard
 function MenuCard(props: MenuCardProps) {
+  // Theme
+  const { colors } = useTheme();
+
   // Destructuring props
   const {
     showMenu = true,
@@ -27,18 +31,26 @@ function MenuCard(props: MenuCardProps) {
     suffixIconProps,
     textContainerStyle,
     textStyle,
+    borderBottomColor = colors.text,
+    borderBottomWidth = 0,
   } = props;
 
   // Final container style
   const FinalContainerStyle: StyleProp<ViewStyle> = [
     styles.container,
+    {
+      borderBottomColor: borderBottomColor,
+      borderBottomWidth: borderBottomWidth,
+    },
     containerStyle,
   ];
 
   // Text container style
   const TextContainerStyle: StyleProp<ViewStyle> = [
     { flex: 1, marginLeft: 15 },
-    { backgroundColor },
+    {
+      backgroundColor,
+    },
     textContainerStyle,
   ];
 
@@ -91,10 +103,11 @@ export default MenuCard;
 // Styles
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
     padding: 15,
-    paddingLeft: 5,
-    paddingRight: 5,
+    paddingLeft: 0,
+    paddingRight: 0,
+    marginLeft: 10,
+    marginRight: 10,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
