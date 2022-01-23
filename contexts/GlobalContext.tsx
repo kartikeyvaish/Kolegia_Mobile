@@ -7,6 +7,7 @@ interface GlobalContextProps {
   SetOverlayVisible?: any;
   Text?: string;
   SetText?: any;
+  ToggleMode?: any;
 }
 
 const GlobalContext = React.createContext<GlobalContextProps>({});
