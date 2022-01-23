@@ -1,3 +1,4 @@
+// Local 
 import ColorPallete from "../../utils/ColorPallete";
 
 export default {
@@ -5,12 +6,17 @@ export default {
   colors: {
     primary: ColorPallete.primary,
     background: ColorPallete.black,
-    card: ColorPallete.black,
-    text: ColorPallete.white,
-    border: ColorPallete.black,
+    surface: ColorPallete.black,
+    accent: ColorPallete.black,
+    error: ColorPallete.red,
+    text: ColorPallete.darkModeText,
+    onSurface: ColorPallete.black,
+    disabled: ColorPallete.grey,
+    placeholder: ColorPallete.white,
+    backdrop: ColorPallete.grey,
     notification: ColorPallete.black,
+    card: ColorPallete.black,
+    border: ColorPallete.black,
     statusBarColor: ColorPallete.black,
   },
 };
-
-
