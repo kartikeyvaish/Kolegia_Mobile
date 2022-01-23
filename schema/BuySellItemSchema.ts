@@ -26,7 +26,7 @@ const supported_file_types = [
 // validation schema
 const BuyProductValidationSchema = () => Yup.object().shape({
     name: Yup.string().required("Name is required"),
-    price: Yup.number().required("Price is required"),
+    price: Yup.number().min(1, "Price is required").required("Price is required"),
     description: Yup.string().required("Description is required"),
 }).unknown(true);
 

@@ -32,7 +32,8 @@ const RegisterInitialValues = {
     phone: "",
     password: "",
     confirm_password: "",
-    terms_accepted: false
+    terms_accepted: false,
+    room_number: "",
 };
 
 
@@ -44,6 +45,7 @@ const RegisterValidationSchema = () => Yup.object().shape({
     year: Yup.string().required("Year is required").oneOf(Years, "Year is invalid"),
     batch: Yup.string().required("Batch is required").oneOf(Batch, "Batch is invalid"),
     hostel: Yup.string().required("Hostel is required").oneOf(Hostels, "Hostel should be valid"),
+    room_number: Yup.string().required("Room Number is required"),
     phone: Yup.string().required("Phone is required").length(10, "Phone number should be valid"),
     password: Yup.string().required("Password is required").min(6, "Password must be at least 6 characters").max(20, "Password must be less than 20 characters"),
     confirm_password: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match"),
