@@ -5,14 +5,14 @@ import { Provider } from "react-native-paper";
 
 // Components/Screens imports
 import AppNavigator from "./navigation/AppNavigator";
+import AuthActionCreators from "./store/auth/actions";
 import GlobalContext from "./contexts/GlobalContext";
 import OfflineNotice from "./components/OfflineNotice";
 import Overlay from "./components/OverlayModal";
+import ThemeActionCreators from "./store/theme/actions";
 import useModalOverlay from "./hooks/useModalOverlay";
 import useThemeManager from "./hooks/useThemeManager";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
-import ThemeActionCreators from "./store/theme/actions";
-import AuthActionCreators from "./store/auth/actions";
 
 // AsyncStorage.clear();
 
@@ -31,6 +31,7 @@ function App(props) {
   const provider_value = {
     User: User,
     SetUser: SetUser,
+    ToggleMode: ToggleMode,
     ...modal_props,
   };
 
