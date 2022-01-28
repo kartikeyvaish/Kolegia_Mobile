@@ -1,4 +1,5 @@
 // Packages Imports
+import { useContext } from "react";
 import { StyleSheet } from "react-native";
 import {
   BottomTabNavigationOptions,
@@ -9,7 +10,7 @@ import {
 import HomeScreen from "./../screens/HomeScreen";
 import MyResponsesScreen from "../screens/Chats/MyResponsesScreen";
 import PostNewItemScreen from "./../screens/Misc/PostNewItemScreen";
-import ProfileScreen from "./../screens/Misc/ProfileScreen";
+import ProfileScreen from "./../screens/Profile/ProfileScreen";
 import ScreenNames from "./ScreenNames";
 
 // Types/components imports
@@ -17,14 +18,15 @@ import AppIcon from "./../components/AppIcon";
 import ColorPallete from "../utils/ColorPallete";
 import GlobalContext from "../contexts/GlobalContext";
 import IconNames from "../constants/IconNames";
-import { useContext } from "react";
+import FontNames from "../constants/FontNames";
 
 // Tab navigator
 const Tab = createBottomTabNavigator();
 
 // Tab navigator screens
 function TabNavigator() {
-  const { User } = useContext(GlobalContext);
+  // Get the User object from the global context
+  const { User, RaisedHandsCount } = useContext(GlobalContext);
 
   // TabBar Screen options
   const screenOptions: BottomTabNavigationOptions = {
@@ -35,7 +37,17 @@ function TabNavigator() {
   };
 
   return (
-    <Tab.Navigator screenOptions={screenOptions}>
+    <Tab.Navigator
+      screenOptions={screenOptions}
+      screenListeners={({ navigation }) => ({
+        tabPress: (e: any) => {
+          if (User === null) {
+            e.preventDefault();
+            navigation.navigate(ScreenNames.IntroductionScreen);
+          }
+        },
+      })}
+    >
       <Tab.Screen
         name={ScreenNames.HomeTabScreen}
         component={HomeScreen}
@@ -50,6 +62,12 @@ function TabNavigator() {
             />
           ),
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (e: any) => {
+            e.preventDefault();
+            navigation.navigate(ScreenNames.HomeTabScreen);
+          },
+        })}
       />
       <Tab.Screen
         name={ScreenNames.PostNewItemScreen}
@@ -71,6 +89,12 @@ function TabNavigator() {
         component={MyResponsesScreen}
         options={{
           tabBarLabel: "Responses",
+          tabBarBadge: RaisedHandsCount > 0 ? RaisedHandsCount : null,
+          tabBarBadgeStyle: {
+            color: ColorPallete.white,
+            backgroundColor: ColorPallete.red,
+            fontFamily: FontNames.Sofia_Pro_Bold,
+          },
           tabBarIcon: (props: any) => (
             <AppIcon
               family={IconNames.AntDesign}
@@ -95,14 +119,6 @@ function TabNavigator() {
             />
           ),
         }}
-        listeners={({ navigation }) => ({
-          tabPress: (e: any) => {
-            if (User === null) {
-              e.preventDefault();
-              navigation.navigate(ScreenNames.IntroductionScreen);
-            }
-          },
-        })}
       />
     </Tab.Navigator>
   );

@@ -2,30 +2,40 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
 // Screen imports
+import AboutScreen from "./../screens/Misc/AboutScreen";
 import BuySellEditScreen from "./../screens/BuySell/BuySellEditScreen";
 import BuySellFeedScreen from "./../screens/BuySell/BuySellFeedScreen";
 import BuySellProductDetailsScreen from "./../screens/BuySell/BuySellProductDetailsScreen";
+import EditLostFoundItemScreen from "./../screens/LostFound/EditLostFoundItemScreen";
+import EditProfileScreen from "./../screens/Profile/EditProfileScreen";
+import EditRequirementsScreen from "./../screens/Requirements/EditRequirementsScreen";
+import ChangePasswordScreen from "../screens/Misc/ChangePasswordScreen";
+import ChangeThemeScreen from "./../screens/Misc/ChangeThemeScreen";
 import ChatsScreen from "./../screens/Chats/ChatsScreen";
-import GoogleSignUpScreen from "./../screens/Auth/GoogleSignUpScreen";
+import EmailSignUpScreen from "../screens/Auth/EmailSignUp";
+import EmailOTPScreen from "../screens/Auth/EmailOTPScreen";
 import IntroductionScreen from "./../screens/Auth/IntroductionScreen";
 import LoginScreen from "./../screens/Auth/LoginScreen";
 import LostFoundFeedScreen from "./../screens/LostFound/LostFoundFeedScreen";
+import LostFoundProductDetailsScreen from "../screens/LostFound/LostFoundProductDetailsScreen";
 import MyBuySellItemsScreen from "./../screens/BuySell/MyBuySellItemsScreen";
+import MyLostFoundItemsScreen from "./../screens/LostFound/MyLostFoundItemsScreen";
 import MyRequirementsScreen from "./../screens/Requirements/MyRequirementsScreen";
+import NotificationsPreferenceScreen from "./../screens/Misc/NotificationsPreferenceScreen";
 import PostNewBuyItemScreen from "../screens/BuySell/PostNewBuyItemScreen";
 import PostNewLostItemScreen from "./../screens/LostFound/PostNewLostItemScreen";
 import PostNewRequirementScreen from "./../screens/Requirements/PostNewRequirementScreen";
+import RaiseHandOnItemScreen from "./../screens/RaiseHands/RaiseHandOnItemScreen";
 import RequirementsFeedScreen from "./../screens/Requirements/RequirementsFeedScreen";
+import SettingsScreen from "../screens/Misc/SettingsScreen";
 import SignUpScreen from "./../screens/Auth/SignUpScreen";
 
 // Types/components/Navigators imports
 import AppContainer from "./../components/AppContainer";
 import ScreenNames from "./ScreenNames";
 import TabNavigator from "./TabNavigator";
-import MyLostFoundItemsScreen from "./../screens/LostFound/MyLostFoundItemsScreen";
-import LostFoundProductDetailsScreen from "../screens/LostFound/LostFoundProductDetailsScreen";
-import RaiseHandOnItemScreen from "./../screens/RaiseHands/RaiseHandOnItemScreen";
-import EditLostFoundItemScreen from "./../screens/LostFound/EditLostFoundItemScreen";
+import ResetPasswordScreen from "../screens/Auth/ResetPassword";
+import ChatRoomScreen from "./../screens/Chats/ChatRoomScreen";
 
 // Stack Navigator
 const Stack = createStackNavigator();
@@ -35,10 +45,22 @@ function AppNavigator() {
   // Render
   return (
     <AppContainer style={{ flex: 1 }}>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
         {/* App Screens */}
 
         <Stack.Screen name={ScreenNames.HomeScreen} component={TabNavigator} />
+        <Stack.Screen
+          name={ScreenNames.AboutScreen}
+          component={AboutScreen}
+          options={{
+            headerShown: true,
+            headerTitle: "About",
+          }}
+        />
         <Stack.Screen
           name={ScreenNames.BuySellEditScreen}
           component={BuySellEditScreen}
@@ -46,19 +68,65 @@ function AppNavigator() {
         <Stack.Screen
           name={ScreenNames.BuySellFeedScreen}
           component={BuySellFeedScreen}
+          options={{
+            headerShown: true,
+            headerTitle: "Buy & Sell",
+          }}
         />
         <Stack.Screen
           name={ScreenNames.BuySellProductDetailsScreen}
           component={BuySellProductDetailsScreen}
         />
-        <Stack.Screen name={ScreenNames.ChatsScreen} component={ChatsScreen} />
+        <Stack.Screen
+          name={ScreenNames.ChatsScreen}
+          component={ChatsScreen}
+          options={{
+            headerShown: true,
+            headerTitle: "Chats",
+          }}
+        />
+        <Stack.Screen
+          name={ScreenNames.ChatRoomScreen}
+          component={ChatRoomScreen}
+          options={{
+            headerShown: true,
+            headerTitle: "Chats",
+          }}
+        />
+        <Stack.Screen
+          name={ScreenNames.ChangePasswordScreen}
+          component={ChangePasswordScreen}
+          options={{ headerShown: true, title: "Change Password" }}
+        />
+        <Stack.Screen
+          name={ScreenNames.ChangeThemeScreen}
+          component={ChangeThemeScreen}
+          options={{ headerShown: true, title: "Change Theme" }}
+        />
         <Stack.Screen
           name={ScreenNames.EditLostFoundItemScreen}
           component={EditLostFoundItemScreen}
         />
         <Stack.Screen
+          name={ScreenNames.EditProfileScreen}
+          component={EditProfileScreen}
+          options={{ headerShown: true, title: "Edit Profile" }}
+        />
+        <Stack.Screen
+          name={ScreenNames.EmailSignUpScreen}
+          component={EmailSignUpScreen}
+        />
+        <Stack.Screen
+          name={ScreenNames.EmailOTPScreen}
+          component={EmailOTPScreen}
+        />
+        <Stack.Screen
           name={ScreenNames.LostFoundFeedScreen}
           component={LostFoundFeedScreen}
+          options={{
+            headerShown: true,
+            headerTitle: "Lost & Found",
+          }}
         />
         <Stack.Screen
           name={ScreenNames.MyBuySellItemsScreen}
@@ -77,8 +145,28 @@ function AppNavigator() {
           }}
         />
         <Stack.Screen
+          name={ScreenNames.NotificationsPreferenceScreen}
+          component={NotificationsPreferenceScreen}
+          options={{
+            headerShown: true,
+            headerTitle: "Notifications",
+          }}
+        />
+        <Stack.Screen
+          name={ScreenNames.EditRequirementsScreen}
+          component={EditRequirementsScreen}
+          options={{
+            headerShown: true,
+            headerTitle: "Edit Requirement",
+          }}
+        />
+        <Stack.Screen
           name={ScreenNames.MyRequirementsScreen}
           component={MyRequirementsScreen}
+          options={{
+            headerShown: true,
+            headerTitle: "My Requirements",
+          }}
         />
         <Stack.Screen
           name={ScreenNames.LostFoundProductDetailsScreen}
@@ -95,22 +183,42 @@ function AppNavigator() {
         <Stack.Screen
           name={ScreenNames.PostNewRequirementScreen}
           component={PostNewRequirementScreen}
+          options={{
+            headerShown: true,
+            headerTitle: "Post New Requirement",
+          }}
         />
         <Stack.Screen
           name={ScreenNames.RequirementsFeedScreen}
           component={RequirementsFeedScreen}
+          options={{
+            headerShown: true,
+            headerTitle: "Requirments Feed",
+          }}
         />
         <Stack.Screen
           name={ScreenNames.RaiseHandOnItemScreen}
           component={RaiseHandOnItemScreen}
         />
+        <Stack.Screen
+          name={ScreenNames.SettingsScreen}
+          component={SettingsScreen}
+          options={{
+            headerShown: true,
+            headerTitle: "Settings",
+          }}
+        />
+        <Stack.Screen
+          name={ScreenNames.ResetPasswordScreen}
+          component={ResetPasswordScreen}
+          options={{
+            headerShown: true,
+            headerTitle: "Reset Password",
+          }}
+        />
 
         {/* Auth Screens */}
 
-        <Stack.Screen
-          name={ScreenNames.GoogleSignUpScreen}
-          component={GoogleSignUpScreen}
-        />
         <Stack.Screen
           name={ScreenNames.IntroductionScreen}
           component={IntroductionScreen}
