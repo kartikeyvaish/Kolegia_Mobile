@@ -1,8 +1,12 @@
 // Client import
 import { ApiResponse } from "apisauce";
-import apiClient from "./client";
 
-const LostFoundRoute = "/lost-found-items";
+// Local Types Imports
+import apiClient from "./client";
+import configurations from "../config/config";
+
+// Main Route for LostFound
+const LostFoundRoute = configurations.lostfound_route;
 
 // Endpoints
 const create_buy_sell = `${LostFoundRoute}/create-new-lost-found-product`;
@@ -10,6 +14,21 @@ const get_own_lostfound = `${LostFoundRoute}/get-own-lost-found-list`;
 const delete_lostfound = `${LostFoundRoute}/delete-lost-found-product`;
 const get_lostfound_details = `${LostFoundRoute}/get-lost-found-product-details`;
 const edit_lostfound = `${LostFoundRoute}/edit-lost-found-product`;
+const get_lost_found_feed = `${LostFoundRoute}/get-lost-found-feed`;
+const search_lost_found = `${LostFoundRoute}/search-lost-found-products`;
+
+// GetLostFoundFeed Endpoint function
+function GetLostFoundFeed(after: string, Token: string): Promise<ApiResponse<any, any>> {
+    return apiClient.get(
+        get_lost_found_feed,
+        { after: after },
+        {
+            headers: {
+                Authorization: `Bearer ${Token}`,
+            },
+        }
+    );
+}
 
 // PostLostFoundItem Endpoint function
 function PostLostFoundItem(DATA: any, Token: string): Promise<ApiResponse<any, any>> {
@@ -76,6 +95,7 @@ const LostFoundAPI = {
     GetLostFoundItemDetails,
     GetOwnLostFoundItems,
     DeleteLostFoundItem,
+    GetLostFoundFeed
 }
 
 // Exports

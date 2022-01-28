@@ -1,8 +1,12 @@
 // Client import
 import { ApiResponse } from "apisauce";
-import apiClient from "./client";
 
-const BuySellRoute = "/buy-sell-items";
+// Local types imports
+import apiClient from "./client";
+import configurations from "../config/config";
+
+// Main route for BuySell
+const BuySellRoute = configurations.buysell_route;
 
 // Endpoints
 const create_buy_sell = `${BuySellRoute}/create-new-buysell-product`;
@@ -10,6 +14,21 @@ const edit_buysell_item = `${BuySellRoute}/edit-buy-sell-product`;
 const get_own_buy_sell = `${BuySellRoute}/get-own-buy-sell-list`;
 const delete_buy_sell = `${BuySellRoute}/delete-buy-sell-product`;
 const get_buysell_details = `${BuySellRoute}/get-buysell-product-details`;
+const get_buy_sell_feed = `${BuySellRoute}/get-buy-sell-feed`;
+const search_buy_sell = `${BuySellRoute}/search-buy-sell-products`;
+
+// GetBuySellFeed Endpoint function
+function GetBuySellFeed(after: string, Token: string): Promise<ApiResponse<any, any>> {
+    return apiClient.get(
+        get_buy_sell_feed,
+        { after: after },
+        {
+            headers: {
+                Authorization: `Bearer ${Token}`,
+            },
+        }
+    );
+}
 
 // PostNewBuySellItem Endpoint function
 function PostNewBuySellItem(DATA: any, Token: string): Promise<ApiResponse<any, any>> {
@@ -76,6 +95,7 @@ const BuySellAPI = {
     GetBuySellProductDetails,
     GetOwnBuySellList,
     DeleteBuySellItem,
+    GetBuySellFeed
 }
 
 // Exporting Auth Endpoints
