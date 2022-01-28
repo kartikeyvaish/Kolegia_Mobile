@@ -1,0 +1,15 @@
+// Action Types for Chat Room
+export const SET_CHAT_THREAD = "SET_CHAT_THREAD";
+export const UPDATE_CHAT_THREAD = "UPDATE_CHAT_THREAD";
+export const SET_MESSAGE = "SET_MESSAGE";
+export const SET_USERS_COUNT = "SET_USERS_COUNT";
+export const SET_SELECTED_FILE = "SET_SELECTED_FILE";
+export const SET_FULL_FILE = "SET_FULL_FILE";
+export const SET_PREVIEW_MODAL = "SET_PREVIEW_MODL";
+export const SET_FULL_MODAL = "SET_FULL_MODAL";
+export const SET_LOADING = "SET_LOADING";
+export const SET_SEND_LOADING = "SET_SEND_LOADING";
+export const SET_TYPING = "SET_TYPING";
+export const MARK_AS_READ = "MARK_AS_READ";
+export const UPDATE_A_MESSAGE_ITEM = "UPDATE_A_MESSAGE_ITEM";
+export const REMOVE_MESSAGE_ITEM = "REMOVE_MESSAGE_ITEM";

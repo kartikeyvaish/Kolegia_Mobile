@@ -11,7 +11,6 @@ const persistedReducer = persistReducer(
   {
     key: "root",
     storage: AsyncStorage,
-    blacklist: ["GlobalState"]
   },
   rootReducer
 );

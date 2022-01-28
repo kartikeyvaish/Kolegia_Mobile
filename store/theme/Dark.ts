@@ -14,7 +14,7 @@ export default {
     disabled: ColorPallete.grey,
     placeholder: ColorPallete.white,
     backdrop: ColorPallete.grey,
-    notification: ColorPallete.black,
+    notification: ColorPallete.primary,
     card: ColorPallete.black,
     border: ColorPallete.black,
     statusBarColor: ColorPallete.black,

@@ -5,6 +5,7 @@ import * as actionTypes from "./actionTypes";
 // Defining the initial state
 const InitialState = {
   RaisedHandsCount: 0,
+  UnreadMessagesCount: 0,
 };
 
 // Reducers
@@ -17,6 +18,18 @@ const globalReducer = (state = InitialState, action: StoreActionType) => {
         ...state,
         RaisedHandsCount: action.payload,
       };
+
+    // UpdateUnreadCount
+    case actionTypes.UPDATE_UNREAD_COUNT:
+      return {
+        ...state,
+        UnreadMessagesCount: action.payload,
+      };
+
+    // Reset
+    case actionTypes.RESET: {
+      return InitialState;
+    }
 
     // Default
     default:

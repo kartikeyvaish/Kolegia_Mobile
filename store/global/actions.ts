@@ -7,9 +7,22 @@ const UpdateRaisedHandsCount = (count: any) => ({
   payload: count,
 });
 
+// UpdateUnreadCount Action Creator
+const UpdateUnreadCount = (count: any) => ({
+  type: actionTypes.UPDATE_UNREAD_COUNT,
+  payload: count,
+});
+
+// RESET Action Creator
+const Reset = () => ({
+  type: actionTypes.RESET,
+});
 
 const GlobalActionCreators = {
   UpdateRaisedHandsCount,
+  UpdateUnreadCount,
+  Reset
 }
+
 
 export default GlobalActionCreators;

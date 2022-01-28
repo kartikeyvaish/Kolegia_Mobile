@@ -8,7 +8,6 @@ const InitialState = {
 };
 
 // Reducers
-
 const authReducer = (state = InitialState, action: StoreActionType) => {
   switch (action.type) {
     // User Login
@@ -30,6 +29,11 @@ const authReducer = (state = InitialState, action: StoreActionType) => {
       const myState = { ...state };
       myState.User = null;
       return myState;
+    }
+
+    // Reset
+    case actionTypes.RESET: {
+      return InitialState;
     }
 
     // Default

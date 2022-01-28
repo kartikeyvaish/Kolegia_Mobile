@@ -19,7 +19,6 @@ const Logout = () => ({
   type: actionTypes.LOGOUT,
 });
 
-
 const AuthActionCreators = {
   Login,
   UpdateUser,
