@@ -20,4 +20,6 @@ export default {
     backdrop: "rgba(0, 0, 0, 0.5)",
     disabled: "rgba(0, 0, 0, 0.26)",
     placeholder: "rgba(0, 0, 0, 0.54)",
+    properBlack: "#000000",
+    lightGreen: "#dcf8c6"
 }

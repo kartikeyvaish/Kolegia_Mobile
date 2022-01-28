@@ -1,5 +1,7 @@
 // Packages imports
-import { Alert, ToastAndroid, AlertButton, AlertOptions } from "react-native"
+import { Alert, ToastAndroid, AlertButton, AlertOptions, Linking } from "react-native"
+import dayjs from 'dayjs';
+import dayOfYear from "dayjs/plugin/dayOfYear"
 
 const DEFAULT_PRODUCT_IMAGE = "asset:/images/DefaultProduct.jpg"
 
@@ -58,7 +60,11 @@ function convert_to_rupees(price: number) {
 // Get timestamp converted to a string with appropriate format
 // For Ex - "1 day ago", "1 hour ago", "1 minute ago", "Yesterday"
 // and after that it will return the date in the format "dd/mm/yyyy"
-function get_time_ago(timestamp: number) {
+function get_time_ago(timestamp: string) {
+    if (!timestamp) return "";
+
+    if (typeof timestamp !== "string") return "";
+
     let date = new Date(timestamp);
     let now = new Date();
     let seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
@@ -79,6 +85,62 @@ function get_time_ago(timestamp: number) {
     }
 }
 
+// function to abbreviate a string 
+// 2500 becomes 2.5K
+// 250000 becomes 2.5M
+// 99 becomes 99
+// 1500 becomes 1.5K
+function abbreviate_number(number: number) {
+    if (number < 1000) return number;
+
+    if (number < 1000000) {
+        return `${(number / 1000).toFixed(0)}K`;
+    } else {
+        return `${(number / 1000000).toFixed(0)}M`;
+    }
+}
+
+// open whatsapp
+async function OpenWhatsApp(phone: string) {
+    try {
+        let mobile_number = `+91${phone}`;
+        let whatsapp_url = `whatsapp://send?text=&phone=${mobile_number}`
+        Linking.openURL(whatsapp_url);
+    } catch (error) {
+    }
+}
+
+// Get datetime in h:mm A format
+function get_formatted_time(datetime: string) {
+    const newDate = dayjs(datetime);
+    return newDate.format("h:mm A");
+}
+
+// get top date data
+const get_top_date = (dateOne, dateTwo) => {
+    const OBJ_ONE = dayjs(dateOne);
+    const OBJ_TWO = dayjs(dateTwo);
+
+    if (!OBJ_ONE && !OBJ_TWO) return null;
+
+    if (dateTwo === null || dateOne === null) {
+        return OBJ_ONE.format("dddd, MMMM D YYYY, h:mm:ss a");
+    }
+
+    let dayOne = OBJ_ONE.dayOfYear();
+    let yearOne = OBJ_ONE.year();
+
+    let dayTwo = OBJ_TWO.dayOfYear();
+    let yearTwo = OBJ_TWO.year();
+
+    if (dayOne !== dayTwo || yearOne !== yearTwo) {
+        return OBJ_ONE.format("dddd, MMMM Do YYYY, h:mm:ss a");
+    }
+
+    return null;
+};
+
+// Exports
 const Helper = {
     ShowToast,
     ShowAlert,
@@ -86,7 +148,11 @@ const Helper = {
     get_file_type,
     get_first_image,
     convert_to_rupees,
-    get_time_ago
+    get_time_ago,
+    abbreviate_number,
+    OpenWhatsApp,
+    get_formatted_time,
+    get_top_date
 }
 
 export default Helper;
