@@ -33,11 +33,11 @@ function Caraousel({ files = [] }: CaraouselProps) {
           renderItem={({ item }) => (
             <CaraouselItem uri={item.uri} onPress={onItemPress(item)} />
           )}
-          autoplay
+          autoplay={false}
           autoplayInterval={3000}
           sliderWidth={LayoutConstants.ScreenWidth}
           itemWidth={LayoutConstants.ScreenWidth}
-          loop={true}
+          loop={false}
           onSnapToItem={(index) => SetActiveSlide(index)}
         />
       </View>

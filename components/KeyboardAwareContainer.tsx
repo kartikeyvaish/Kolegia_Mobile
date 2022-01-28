@@ -52,7 +52,7 @@ function KeyboardAwareContainer(props: AppContainerProps) {
       <StatusBar
         barStyle={barStyle}
         backgroundColor={barBackgroundColor}
-        animated={true}
+        animated={false}
         showHideTransition="slide"
       />
       <KeyboardAvoidingView style={containerStyles}>

@@ -52,8 +52,7 @@ function AppContainer(props: AppContainerProps) {
       <StatusBar
         barStyle={barStyle}
         backgroundColor={barBackgroundColor}
-        animated={true}
-        showHideTransition="slide"
+        animated={false}
       />
       <View style={containerStyles}>{children}</View>
     </>

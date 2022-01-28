@@ -1,5 +1,5 @@
 // packages imports
-import { View, StyleSheet, Text, StyleProp, TextStyle } from "react-native";
+import { Text, StyleProp, TextStyle } from "react-native";
 import { useTheme } from "@react-navigation/native";
 
 // Types imports
@@ -35,18 +35,11 @@ function AppText(props: AppTextProps) {
 
   // Rendering the AppText component
   return (
-    <View style={styles.container}>
-      <Text style={textStyles} onPress={onPress} {...textProps}>
-        {text}
-      </Text>
-    </View>
+    <Text style={textStyles} onPress={onPress} {...textProps}>
+      {text}
+    </Text>
   );
 }
 
 // Exports
 export default AppText;
-
-// Styles
-const styles = StyleSheet.create({
-  container: {},
-});

@@ -61,6 +61,7 @@ function MyProductListCard(props) {
               size={20}
               marginTop={10}
               color={ColorPallete.green}
+              family={FontNames.Sofia_Pro_Bold}
             />
           ) : null}
         </View>

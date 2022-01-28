@@ -10,8 +10,8 @@ import Animated, {
 import LayoutConstants from "../constants/Layout";
 
 // Types/Components imports
-import ColorPallete from "../utils/ColorPallete";
 import AppText from "./AppText";
+import ColorPallete from "../utils/ColorPallete";
 
 // Constants
 const containerWidth = LayoutConstants.ScreenWidth * 0.8;

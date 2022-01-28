@@ -52,7 +52,7 @@ function AppScrollContainer(props: AppContainerProps) {
       <StatusBar
         barStyle={barStyle}
         backgroundColor={barBackgroundColor}
-        animated={true}
+        animated={false}
         showHideTransition="slide"
       />
       <ScrollView style={containerStyles}>{children}</ScrollView>

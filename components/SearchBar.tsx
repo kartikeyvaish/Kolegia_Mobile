@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Searchbar } from "react-native-paper";
+import { useTheme } from "@react-navigation/native";
 
 // Component Props
 import ColorPallete from "../utils/ColorPallete";
@@ -18,6 +19,9 @@ interface SearchBarProps {
 function SearchBar(props: SearchBarProps) {
   // destructuring props
   const { placeholder, onComplete, value, onChangeText } = props;
+
+  // hook Theme
+  const { colors } = useTheme();
 
   // Search query Updation Search
   useEffect(() => {
@@ -38,7 +42,8 @@ function SearchBar(props: SearchBarProps) {
         onChangeText={onChangeText}
         value={value}
         selectionColor={ColorPallete.primary}
-        style={styles.SearchBar}
+        style={[{ backgroundColor: colors.background }, styles.SearchBar]}
+        placeholderTextColor={colors.text}
       />
     </View>
   );

@@ -1,5 +1,5 @@
 // Packages Imports
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { FadeInLeft, FadeOutLeft, Layout } from "react-native-reanimated";
 
@@ -21,16 +21,14 @@ function RaisedHandsCard({
   product_details,
   raised_by_details,
   onDeletePress = (_id: any) => {},
-  onNavigatePress = (room_id: string) => {},
+  onNavigatePress = (data: any) => {},
   auth_token,
 }) {
   // Local States
   const [RejectLoading, SetRejectLoading] = useState(false);
   const [AcceptLoading, SetAcceptLoading] = useState(false);
   const [Accepted, SetAccepted] = useState(false);
-
-  // Local Refs
-  const RoomID = useRef<any>(null);
+  const [RoomData, SetRoomData] = useState<any>(null);
 
   // API call to delete raised hand
   const DeleteResponseAPI = async () => {
@@ -54,8 +52,14 @@ function RaisedHandsCard({
       const apiResponse = await RaisedHandAPI.AcceptRaisedhand(_id, auth_token);
       SetAcceptLoading(false);
 
-      if (apiResponse.ok) SetAccepted(true);
-      else Helper.ShowToast(apiResponse.data.message);
+      if (apiResponse.ok) {
+        SetRoomData({
+          item_id: _id,
+          room_id: apiResponse.data.room_id,
+          chatting_with: apiResponse.data.raised_by_details,
+        });
+        SetAccepted(true);
+      } else Helper.ShowToast(apiResponse.data.message);
     } catch (error) {
       SetAcceptLoading(false);
       Helper.ShowToast(ToastMessages.SERVER_ERROR_MESSAGE);
@@ -65,7 +69,7 @@ function RaisedHandsCard({
   // Render
   return (
     <AnimatedView entering={FadeInLeft} exiting={FadeOutLeft} layout={Layout}>
-      <AppCard style={styles.container} elevation={10}>
+      <AppCard style={styles.container} elevation={10} onPress={null}>
         <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
           <AppText
             size={20}
@@ -102,7 +106,7 @@ function RaisedHandsCard({
                 title="Go To Chat Room"
                 height={50}
                 backgroundColor={ColorPallete.primary}
-                onPress={() => onNavigatePress(RoomID.current)}
+                onPress={() => onNavigatePress(RoomData)}
               />
             </View>
           ) : (
@@ -121,7 +125,7 @@ function RaisedHandsCard({
                   title="Accept"
                   height={50}
                   backgroundColor={ColorPallete.green}
-                  onPress={AcceptResponseAPI}
+                  onPress={() => AcceptResponseAPI()}
                   loading={AcceptLoading}
                 />
               </View>

@@ -1,29 +1,46 @@
 // Packages Imports
-import { View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import { FadeInUp, FadeOutUp, Layout } from "react-native-reanimated";
 
 // Components/Types imports
-import AppText from "./AppText";
+import AnimatedView from "./AnimatedView";
 import { AppHeaderBarProps } from "../types/ComponentTypes";
 import AppIcon from "./AppIcon";
+import AppText from "./AppText";
+import ColorPallete from "../utils/ColorPallete";
 import IconNames from "../constants/IconNames";
-import { useTheme } from "@react-navigation/native";
 
 // Function component that renders the AppHeaderBar
-function AppHeaderBar({ title, onIconPress }: AppHeaderBarProps) {
-  // Theme Hook
-  const { colors } = useTheme();
+function AppHeaderBar(props: AppHeaderBarProps) {
+  // Destructuring props
+  const {
+    title,
+    onIconPress,
+    backgroundColor = ColorPallete.properBlack,
+  } = props;
 
   // Render
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <AppText text={title} size={25} />
+    <AnimatedView
+      entering={FadeInUp}
+      exiting={FadeOutUp}
+      layout={Layout.springify()}
+      style={[styles.container, { backgroundColor }]}
+    >
       <AppIcon
         family={IconNames.AntDesign}
-        name={"logout"}
+        name={"arrowleft"}
         size={28}
         onPress={onIconPress}
+        color={ColorPallete.white}
       />
-    </View>
+      <AppText
+        text={title}
+        size={25}
+        marginLeft={15}
+        color={ColorPallete.white}
+      />
+    </AnimatedView>
   );
 }
 
@@ -34,10 +51,8 @@ export default AppHeaderBar;
 const styles = StyleSheet.create({
   container: {
     padding: 15,
-    margin: 5,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
     elevation: 2,
   },
 });

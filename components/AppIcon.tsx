@@ -27,16 +27,19 @@ function AppIcon(props: AppIconTypes) {
     style,
     onPress,
     loading,
+    color,
     ...otherProps
   } = props;
 
   // Theme Manager
   const { colors } = useTheme();
 
+  const IconColor = color ? color : colors.text;
+
   // Icon Component Props
   const finalProps = {
     // name: name,
-    color: colors.text,
+    color: IconColor,
     onPress: onPress,
     style: [
       {
@@ -53,10 +56,7 @@ function AppIcon(props: AppIconTypes) {
   if (loading)
     return (
       <>
-        <ActivityIndicator
-          color={otherProps.color ? otherProps.color : colors.text}
-          size={"large"}
-        />
+        <ActivityIndicator color={IconColor} size={"large"} />
       </>
     );
 

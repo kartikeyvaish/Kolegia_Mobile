@@ -96,7 +96,7 @@ function AppTextInput(props: AppTextInputProps) {
         {...otherProps}
       />
 
-      {showError ? (
+      {!otherProps.disabled && showError ? (
         <AppHelperText
           text={error}
           helperTextType={helperTextType}
