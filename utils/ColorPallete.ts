@@ -13,6 +13,7 @@ export default {
     pinkRed: "#F25767",
     grey: '#E7E7F7',
     darkGrey: '#BDBDBD',
+    lightGrey: "#ebebeb",
     googleColor: '#4285F4',
     dodgerblue: "dodgerblue",
     shadeOfGrey: "#454545",
@@ -21,5 +22,7 @@ export default {
     disabled: "rgba(0, 0, 0, 0.26)",
     placeholder: "rgba(0, 0, 0, 0.54)",
     properBlack: "#000000",
-    lightGreen: "#dcf8c6"
+    lightGreen: "#dcf8c6",
+    greyRipple: "rgba(255,255,255,0.1)",
+    lightRipple: "rgba(0,0,0,0.1)"
 }

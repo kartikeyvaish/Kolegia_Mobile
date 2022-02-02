@@ -3,6 +3,8 @@ import { Alert, ToastAndroid, AlertButton, AlertOptions, Linking } from "react-n
 import dayjs from 'dayjs';
 import dayOfYear from "dayjs/plugin/dayOfYear"
 
+dayjs.extend(dayOfYear);
+
 const DEFAULT_PRODUCT_IMAGE = "asset:/images/DefaultProduct.jpg"
 
 // Helper function to show toast
@@ -91,6 +93,8 @@ function get_time_ago(timestamp: string) {
 // 99 becomes 99
 // 1500 becomes 1.5K
 function abbreviate_number(number: number) {
+    if (!number) return "0"
+
     if (number < 1000) return number;
 
     if (number < 1000000) {
@@ -118,24 +122,22 @@ function get_formatted_time(datetime: string) {
 
 // get top date data
 const get_top_date = (dateOne, dateTwo) => {
-    const OBJ_ONE = dayjs(dateOne);
-    const OBJ_TWO = dayjs(dateTwo);
+    // if day number of dateTwo is not same as day number of dateOne
+    // then return dateTwo in formatted way
+    // otherwise return an empty string
 
-    if (!OBJ_ONE && !OBJ_TWO) return null;
+    if (!dateOne) return null;
+    if (!dateTwo) return dayjs(dateOne).format("MMM DD, YYYY");
 
-    if (dateTwo === null || dateOne === null) {
-        return OBJ_ONE.format("dddd, MMMM D YYYY, h:mm:ss a");
-    }
+    let year_one = dayjs(dateOne).year();
+    let year_two = dayjs(dateTwo).year();
 
-    let dayOne = OBJ_ONE.dayOfYear();
-    let yearOne = OBJ_ONE.year();
+    if (year_one - year_two > 0) return dayjs(dateOne).format("MMM DD, YYYY");
 
-    let dayTwo = OBJ_TWO.dayOfYear();
-    let yearTwo = OBJ_TWO.year();
+    let dayOfYear_one = dayjs(dateOne).dayOfYear();
+    let dayOfYear_two = dayjs(dateTwo).dayOfYear();
 
-    if (dayOne !== dayTwo || yearOne !== yearTwo) {
-        return OBJ_ONE.format("dddd, MMMM Do YYYY, h:mm:ss a");
-    }
+    if (dayOfYear_one - dayOfYear_two > 0) return dayjs(dateOne).format("MMM DD, YYYY");
 
     return null;
 };
