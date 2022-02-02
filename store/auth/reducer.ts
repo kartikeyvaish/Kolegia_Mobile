@@ -5,6 +5,7 @@ import * as actionTypes from "./actionTypes";
 // Defining the initial state
 const InitialState = {
   User: null,
+  PushToken: null,
 };
 
 // Reducers
@@ -31,9 +32,18 @@ const authReducer = (state = InitialState, action: StoreActionType) => {
       return myState;
     }
 
+    // Update Push Token
+    case actionTypes.UPDATE_PUSH_TOKEN: {
+      const myState = { ...state };
+      myState.PushToken = action.payload;
+      return myState;
+    }
+
     // Reset
     case actionTypes.RESET: {
-      return InitialState;
+      const myState = { ...state };
+      myState.User = null;
+      return myState;
     }
 
     // Default

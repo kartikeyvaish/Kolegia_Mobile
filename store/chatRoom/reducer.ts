@@ -108,10 +108,15 @@ const chatRoomReducer = (state = chatRoomInitialState, action: StoreActionType) 
         (item) => item._id === action.payload.message_id
       );
 
+      // if payload.message contains _id, then delete _id property
+      // not removing the _id, re renders the whole component
+      // make sure to NOT UPDATE THE _id property
+      if (action.payload.message)
+        delete action.payload.message._id;
+
       // Update the message
-      if (index !== -1) {
-        myState.chat_thread[index] = action.payload.message;
-      }
+      if (index !== -1)
+        myState.chat_thread[index] = { ...myState.chat_thread[index], ...action.payload.message };
 
       return myState;
     }

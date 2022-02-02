@@ -19,10 +19,17 @@ const Logout = () => ({
   type: actionTypes.LOGOUT,
 });
 
+// Update Push Token for User
+const UpdatePushToken = (PushToken) => ({
+  type: actionTypes.UPDATE_PUSH_TOKEN,
+  payload: PushToken,
+});
+
 const AuthActionCreators = {
   Login,
   UpdateUser,
   Logout,
+  UpdatePushToken
 }
 
 export default AuthActionCreators;

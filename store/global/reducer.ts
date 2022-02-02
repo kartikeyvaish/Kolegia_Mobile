@@ -4,6 +4,9 @@ import * as actionTypes from "./actionTypes";
 
 // Defining the initial state
 const InitialState = {
+  LostItemsCount: 0,
+  FoundItemsCount: 0,
+  UsersCount: 0,
   RaisedHandsCount: 0,
   UnreadMessagesCount: 0,
 };
@@ -12,6 +15,13 @@ const InitialState = {
 
 const globalReducer = (state = InitialState, action: StoreActionType) => {
   switch (action.type) {
+    // Update counts
+    case actionTypes.UPDATE_COUNT:
+      return {
+        ...state,
+        ...action.payload,
+      };
+
     // UpdateRaisedHandsCount
     case actionTypes.UPDATE_RAISED_HANDS_COUNT:
       return {
@@ -19,8 +29,8 @@ const globalReducer = (state = InitialState, action: StoreActionType) => {
         RaisedHandsCount: action.payload,
       };
 
-    // UpdateUnreadCount
-    case actionTypes.UPDATE_UNREAD_COUNT:
+    // UpdateUnreadMessagesCount
+    case actionTypes.UPDATE_UNREAD_MESSAGES_COUNT:
       return {
         ...state,
         UnreadMessagesCount: action.payload,
