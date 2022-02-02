@@ -20,7 +20,6 @@ const supported_file_types = [
     "video/mp4",
     "image/png",
     "image/jpg",
-    "video/mkv",
 ];
 
 // validation schema

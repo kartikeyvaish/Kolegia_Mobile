@@ -11,15 +11,15 @@ const DeveloperDetails: Array<DeveloperCardProps> = [
         email_address: "kartikeyvaish99@gmail.com",
         github_url: "https://github.com/kartikeyvaish",
         linkedin_url: "https://www.linkedin.com/in/kartikeyvaish/",
-        profile_picture: "https://res.cloudinary.com/kartikeyvaish/image/upload/v1642756189/Kolegia/AboutUs/Kartikey/IMG-20171222-WA0000_aacwai.jpg"
+        profile_picture: "https://res.cloudinary.com/kartikeyvaish/image/upload/v1643618648/Kolegia/AboutUs/Kartikey/KartikeyVaish_v0nlxe.jpg"
     },
     {
         _id: 2,
         name: "Kislay Singh",
-        email_address: "kartikeyvaish99@gmail.com",
-        github_url: "https://github.com/kartikeyvaish",
-        linkedin_url: "https://www.linkedin.com/in/kartikeyvaish/",
-        profile_picture: "https://res.cloudinary.com/kartikeyvaish/image/upload/v1642756189/Kolegia/AboutUs/Kartikey/IMG-20171222-WA0000_aacwai.jpg"
+        email_address: "kislaysingh1210@gmail.com",
+        github_url: "https://github.com/KislaySingh10",
+        linkedin_url: "https://www.linkedin.com/in/kislay-singh-546554194/",
+        profile_picture: "https://res.cloudinary.com/kartikeyvaish/image/upload/v1643618500/Kolegia/AboutUs/Kislay/KislayPic_nzsvdl.jpg"
     },
     {
         _id: 3,
@@ -32,10 +32,10 @@ const DeveloperDetails: Array<DeveloperCardProps> = [
     {
         _id: 4,
         name: "Aditya Pandey",
-        email_address: "kartikeyvaish99@gmail.com",
-        github_url: "https://github.com/Vivek-Sherkhane",
-        linkedin_url: "https://www.linkedin.com/in/vivek-sherkhane-a00710197/",
-        profile_picture: "https://res.cloudinary.com/kartikeyvaish/image/upload/v1642794459/Kolegia/AboutUs/Vivek/Vivek_wc6dau.jpg"
+        email_address: "pandey.aditya4272@gmail.com",
+        github_url: "https://github.com/AdityaPandey03",
+        linkedin_url: "https://www.linkedin.com/in/adityapandey2607/",
+        profile_picture: "https://res.cloudinary.com/kartikeyvaish/image/upload/v1643745473/Kolegia/AboutUs/Aditya/Aditya_azbmmk.jpg"
     },
     {
         _id: 5,

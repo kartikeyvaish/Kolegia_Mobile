@@ -14,7 +14,7 @@ export const ExploreCards = [
         uri: "asset:/images/LostFoundItem.png",
         heading: "Lost & Found",
         description: "Users posts lost items for other users to find them.",
-        navigate: ScreenNames.LostFoundFeedScreen
+        navigate: ScreenNames.LostItemsFeedScreen
     },
     {
         _id: "3",
