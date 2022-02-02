@@ -4,34 +4,40 @@ import { connect } from "react-redux";
 // Components/Screens imports
 import AuthActionCreators from "../store/auth/actions";
 import GlobalContext from "../contexts/GlobalContext";
+import { GlobalContextProps } from "../types/ComponentTypes";
 import OfflineNotice from "../components/OfflineNotice";
 import Overlay from "../components/OverlayModal";
 import ThemeProvider from "./ThemeProvider";
+
+// Custom Hooks
 import useModalOverlay from "../hooks/useModalOverlay";
+import useNotifications from "../hooks/useNotifications";
 
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-
-// AsyncStorage.clear();
-
-interface GlobalProviderProps {
-  children?: any;
-  User?: any;
-  SetUser?: any;
-  GlobalState?: any;
-  modal_props?: any;
-}
+// import AsncStoreage from "@react-native-async-storage/async-storage";
+// AsncStoreage.clear();
 
 // GlobalProvider function component
-function GlobalProvider(props: GlobalProviderProps) {
+function GlobalProvider(props: GlobalContextProps) {
   // Destructure props
-  const { GlobalState, children, User, ...otherProps } = props;
+  const {
+    GlobalState,
+    children,
+    User,
+    PushToken,
+    SetPushToken,
+    ...otherProps
+  } = props;
 
   // Use modal custom hook
   const modal_props = useModalOverlay();
 
+  // Notification/Push Token handlers using custom hook
+  useNotifications(PushToken, SetPushToken);
+
   // Global Provider Value
   const provider_value = {
     User,
+    PushToken,
     ...GlobalState,
     ...modal_props,
     ...otherProps,
@@ -55,6 +61,7 @@ const mapStateToProps = (state) => {
     Theme: state.ThemeState.Theme,
     User: state.AuthState.User,
     GlobalState: state.GlobalState,
+    PushToken: state.AuthState.PushToken,
   };
 };
 
@@ -62,6 +69,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     SetUser: (user: any) => dispatch(AuthActionCreators.Login(user)),
+    SetPushToken: (pushToken: any) =>
+      dispatch(AuthActionCreators.UpdatePushToken(pushToken)),
   };
 };
 

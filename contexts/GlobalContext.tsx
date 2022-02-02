@@ -1,16 +1,11 @@
-import React from "react";
+// Modules imports
+import { createContext } from "react";
 
-interface GlobalContextProps {
-  User?: any;
-  SetUser?: any;
-  visible?: boolean;
-  setVisible?: any;
-  text?: string;
-  setText?: any;
-  ToggleMode?: any;
-  [key: string]: any;
-}
+// Local Imports
+import { GlobalContextProps } from "../types/ComponentTypes";
 
-const GlobalContext = React.createContext<GlobalContextProps>({});
+// Context
+const GlobalContext = createContext<GlobalContextProps>({});
 
+// exports
 export default GlobalContext;
