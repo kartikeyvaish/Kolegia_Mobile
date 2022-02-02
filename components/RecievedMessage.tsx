@@ -37,7 +37,10 @@ function RecievedMessage(props: MessageProps) {
   // CardStyles
   const cardStyle: StyleProp<ViewStyle> = [
     styles.MessageBox,
-    { backgroundColor },
+    {
+      backgroundColor,
+      borderColor: dark ? ColorPallete.black : ColorPallete.lightGrey,
+    },
   ];
 
   // Render
@@ -108,19 +111,24 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     padding: 5,
+    paddingBottom: 0,
   },
   MessageBox: {
     flexWrap: "wrap",
     maxWidth: MaxCardWidth,
     padding: 10,
     borderRadius: 10,
-    elevation: 10,
+    borderWidth: 1,
+    elevation: 1,
+    paddingRight: 6,
+    paddingBottom: 10,
+    paddingTop: 5,
   },
   tickAndTimeStamp: {
     flexDirection: "row",
     alignSelf: "flex-end",
     marginTop: 0,
-    marginRight: 5,
+    marginRight: 0,
     alignItems: "center",
   },
 });

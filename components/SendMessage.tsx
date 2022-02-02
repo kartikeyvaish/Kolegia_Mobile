@@ -1,5 +1,6 @@
 // packages Imports
 import { View, StyleSheet, StyleProp, ViewStyle } from "react-native";
+import { FadeInRight, FadeOutRight, Layout } from "react-native-reanimated";
 import { useTheme } from "@react-navigation/native";
 
 // Local components imports
@@ -30,24 +31,26 @@ function SendMessage(props: SendMessageProps) {
   } = props;
 
   // Theme Hook
-  const { dark, colors } = useTheme();
+  const { dark } = useTheme();
 
   // conditionally check background color
-  let backgroundColor = dark ? ColorPallete.properBlack : ColorPallete.white;
+  let backgroundColor = dark ? ColorPallete.black : ColorPallete.lightGrey;
 
   // CardStyles
   const cardStyle: StyleProp<ViewStyle> = [
     styles.messageBox,
     {
       backgroundColor,
-      borderColor: colors.text,
-      elevation: 10,
-      borderWidth: 0,
     },
   ];
 
   return (
-    <AnimatedView style={styles.container}>
+    <AnimatedView
+      style={styles.container}
+      entering={FadeInRight}
+      exiting={FadeOutRight}
+      layout={Layout.springify()}
+    >
       {upper_date ? (
         <AppText
           text={upper_date}
@@ -105,18 +108,22 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     padding: 5,
+    paddingBottom: 0,
   },
   messageBox: {
     flexWrap: "wrap",
     maxWidth: MaxCardWidth,
     padding: 10,
     borderRadius: 10,
+    elevation: 1,
+    paddingBottom: 10,
+    paddingRight: 5,
   },
   tickAndTimeStamp: {
     flexDirection: "row",
     alignSelf: "flex-end",
     marginTop: 0,
-    marginRight: 5,
+    marginRight: 0,
     alignItems: "center",
   },
 });

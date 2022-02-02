@@ -7,13 +7,7 @@ import {
   StyleProp,
   ViewStyle,
 } from "react-native";
-import {
-  FadeInRight,
-  FadeOutRight,
-  Layout,
-  ZoomIn,
-  ZoomOut,
-} from "react-native-reanimated";
+import { Layout, ZoomIn, ZoomOut } from "react-native-reanimated";
 import { TouchableRipple } from "react-native-paper";
 import { useTheme } from "@react-navigation/native";
 
@@ -44,7 +38,7 @@ function ChatKeyboard(props: ChatKeyboardProps) {
   } = props;
 
   // Theme hook
-  const { colors, dark } = useTheme();
+  const { colors } = useTheme();
 
   // get text Color
   let textColor = color ? color : colors.text;
@@ -61,11 +55,7 @@ function ChatKeyboard(props: ChatKeyboardProps) {
     containerStyle,
     styles.container,
     {
-      backgroundColor: backgroundColor
-        ? backgroundColor
-        : dark
-        ? ColorPallete.properBlack
-        : colors.background,
+      backgroundColor: backgroundColor ? backgroundColor : colors.background,
     },
   ];
 
@@ -152,6 +142,8 @@ const styles = StyleSheet.create({
     margin: 5,
     elevation: 5,
     borderRadius: 200,
+    borderWidth: 1,
+    borderColor: ColorPallete.darkGrey,
   },
   innerContainer: {
     minHeight: 30,

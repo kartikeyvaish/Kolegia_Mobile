@@ -1,21 +1,18 @@
 // Packages Imports
-import React from "react";
-import { View, StyleSheet, Pressable } from "react-native";
+import { memo } from "react";
+import { StyleSheet, Pressable } from "react-native";
 
 // Local components imports
 import AppIcon from "./AppIcon";
 import AppImage from "./AppImage";
+import { CaraouselItemProps } from "../types/ComponentTypes";
 import ColorPallete from "../utils/ColorPallete";
 import IconNames from "../constants/IconNames";
 import Helper from "../utils/Helper";
 
-interface CaraouselItemProps {
-  uri: string;
-  onPress?: () => void;
-}
-
 // function component for CaraouselItem
 const CaraouselItem = ({ uri, onPress }: CaraouselItemProps) => {
+  // check if uri is a image
   let isImage = Helper.get_file_type(uri) === "image";
 
   // if its an image, render the image
@@ -45,7 +42,7 @@ const CaraouselItem = ({ uri, onPress }: CaraouselItemProps) => {
 };
 
 // Exports
-export default React.memo(CaraouselItem);
+export default memo(CaraouselItem);
 
 // Styles
 const styles = StyleSheet.create({

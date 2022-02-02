@@ -15,14 +15,12 @@ export interface AppBadgeProps {
 }
 
 // function component for AppBadge
-function AppBadge({
-  style,
-  onPress,
-  badgeCount,
-  badgeContainerStyle,
-}: AppBadgeProps) {
+function AppBadge(props: AppBadgeProps) {
+  // Destructuring props
+  const { style, onPress, badgeCount, badgeContainerStyle } = props;
+
   // render
-  return badgeCount === 0 ? null : (
+  return !badgeCount ? null : (
     <AnimatedView
       style={badgeContainerStyle}
       entering={ZoomIn}

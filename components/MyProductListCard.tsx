@@ -1,6 +1,7 @@
 // Packages imports
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { View, StyleSheet, Image } from "react-native";
+import { Button } from "react-native-paper";
 
 // Local files and components imports
 import AppCard from "./AppCard";
@@ -11,15 +12,38 @@ import ColorPallete from "../utils/ColorPallete";
 import FontNames from "../constants/FontNames";
 import GlobalContext from "./../contexts/GlobalContext";
 import Helper from "../utils/Helper";
+import LostFoundAPI from "../api/LostFoundAPI";
+import ToastMessages from "./../constants/Messages";
 
 // function component for MyProductListCard
 function MyProductListCard(props) {
   // Get first image from the array of images
   let product_image = Helper.get_first_image(props.files);
-  let isNetworkImage = product_image.startsWith("http");
+  let isNetworkImage = product_image?.startsWith("http");
+  const [Found, SetFound] = useState(props?.found_by_someone);
 
   // Get current User
   const { User } = useContext(GlobalContext);
+
+  const MarkProductAsFound = async () => {
+    try {
+      SetFound(true);
+      const response = await LostFoundAPI.MarkAsFound(
+        {
+          product_id: props._id,
+        },
+        User.auth_token
+      );
+
+      if (!response.ok) {
+        SetFound(false);
+        Helper.ShowToast(response.data?.message);
+      }
+    } catch (error) {
+      Helper.ShowToast(ToastMessages.SERVER_ERROR_MESSAGE);
+      SetFound(false);
+    }
+  };
 
   // Render
   return (
@@ -86,6 +110,34 @@ function MyProductListCard(props) {
           <AppText text={Helper.get_time_ago(props.posted_on)} size={16} />
         </AppRow>
       ) : null}
+
+      {props.ShowFoundButton ? (
+        User?._id === props.posted_by ? (
+          Found !== undefined ? (
+            <View style={styles.foundNotFoundContainer}>
+              {!Found ? (
+                <Button
+                  mode="contained"
+                  color={ColorPallete.green}
+                  labelStyle={{ color: "white" }}
+                  onPress={MarkProductAsFound}
+                >
+                  Mark as Found
+                </Button>
+              ) : (
+                <View></View>
+              )}
+
+              <AppText
+                text={Found ? "Found" : "Not Found"}
+                size={16}
+                family={FontNames.Inter_Bold}
+                color={Found ? ColorPallete.green : ColorPallete.red}
+              />
+            </View>
+          ) : null
+        ) : null
+      ) : null}
     </AppCard>
   );
 }
@@ -104,4 +156,10 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   image: { width: "100%", height: "100%", borderRadius: 10 },
+  foundNotFoundContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
+    alignItems: "center",
+  },
 });

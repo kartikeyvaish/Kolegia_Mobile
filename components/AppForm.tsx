@@ -1,22 +1,14 @@
-import React from "react";
-import { StyleSheet } from "react-native";
+// Packages Imports
 import { Formik } from "formik";
 
-interface AppForm {
-  initialValues: {
-    [key: string]: any;
-  };
-  onSubmit: (values: any) => void;
-  validationSchema: any;
-  children: React.ReactNode;
-}
+// Types import
+import { AppFormProps } from "../types/ComponentTypes";
 
-function AppForm({
-  initialValues,
-  onSubmit,
-  validationSchema,
-  children,
-}: AppForm) {
+function AppForm(props: AppFormProps) {
+  // Destructuring props
+  const { initialValues, onSubmit, validationSchema, children } = props;
+
+  // render
   return (
     <Formik
       initialValues={initialValues}
@@ -28,8 +20,5 @@ function AppForm({
   );
 }
 
+// exports
 export default AppForm;
-
-const styles = StyleSheet.create({
-  container: {},
-});

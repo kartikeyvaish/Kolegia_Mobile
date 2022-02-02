@@ -32,6 +32,7 @@ function AppImage(props: AppImageProps) {
     borderColor = "grey",
     borderWidth = 1 - StyleSheet.hairlineWidth,
     showBorder = true,
+    backgroundColor = colors.background,
   } = props;
 
   // Container Styles
@@ -49,7 +50,7 @@ function AppImage(props: AppImageProps) {
     {
       width: "100%",
       height: "100%",
-      backgroundColor: colors.background,
+      backgroundColor,
       borderRadius: borderRadius,
     },
   ];

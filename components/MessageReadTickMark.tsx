@@ -1,22 +1,18 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import { Layout, ZoomInEasyUp, ZoomOutEasyDown } from "react-native-reanimated";
-import IconNames from "../constants/IconNames";
-import ColorPallete from "../utils/ColorPallete";
-import AnimatedView from "./AnimatedView";
+// local imports
 import AppIcon from "./AppIcon";
+import ColorPallete from "../utils/ColorPallete";
+import IconNames from "../constants/IconNames";
+import { MessageReadTickMarkProps } from "../types/ComponentTypes";
 
-export interface MessageReadTickMarkProps {
-  read?: boolean;
-  delivered?: boolean;
-  iconColor?: string | null;
-}
-
+// function component for MessageReadTickMark
 function MessageReadTickMark(props: MessageReadTickMarkProps) {
+  // Destructuring Props
   const { read, delivered, iconColor } = props;
 
+  // get color
   const mainIconColor = iconColor ? iconColor : undefined;
 
+  // render
   return delivered === false ? (
     <AppIcon
       family={IconNames.Ionicons}
@@ -28,16 +24,13 @@ function MessageReadTickMark(props: MessageReadTickMarkProps) {
   ) : (
     <AppIcon
       family={IconNames.Ionicons}
-      name={read ? "checkmark-done" : "checkmark"}
-      color={read ? ColorPallete.primary : mainIconColor}
+      name={read === true ? "checkmark-done" : "checkmark"}
+      color={read === true ? ColorPallete.primary : mainIconColor}
       size={17}
       marginLeft={5}
     />
   );
 }
 
+// exports
 export default MessageReadTickMark;
-
-const styles = StyleSheet.create({
-  container: {},
-});

@@ -32,7 +32,11 @@ function DeveloperCard(props: DeveloperCardProps) {
   return (
     <AnimatedView style={styles.container} entering={FadeInRight}>
       <View style={styles.imageContainer}>
-        <AppImage uri={profile_picture} style={styles.image} />
+        <AppImage
+          uri={profile_picture}
+          style={styles.image}
+          showBorder={false}
+        />
       </View>
 
       <View style={{ flex: 1, marginLeft: 15 }}>

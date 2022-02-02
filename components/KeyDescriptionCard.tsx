@@ -7,9 +7,9 @@ import AppRow from "./AppRow";
 import AppText from "./AppText";
 
 // function component for KeyDescriptionCard
-function KeyDescriptionCard({ title, description }) {
+function KeyDescriptionCard({ title, description, style }: any) {
   return (
-    <AppRow justifyContent="center">
+    <AppRow justifyContent="center" style={style}>
       <AppText text={title} size={22} family={FontNames.Sofia_Pro_Bold} />
       <View style={{ flex: 1, justifyContent: "center" }}>
         <AppText

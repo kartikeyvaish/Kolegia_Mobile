@@ -1,25 +1,33 @@
-import React from "react";
+// Packages Imports
 import { View, StyleSheet } from "react-native";
-import IconNames from "../constants/IconNames";
-import { ScreenWidth } from "../constants/Layout";
-import ColorPallete from "../utils/ColorPallete";
-import Helper from "../utils/Helper";
+
+// component imports
 import AppIcon from "./AppIcon";
 import AppImage from "./AppImage";
+import ColorPallete from "../utils/ColorPallete";
+import Helper from "../utils/Helper";
+import IconNames from "../constants/IconNames";
+import { MessageProps } from "../types/ComponentTypes";
+import { ScreenWidth } from "../constants/Layout";
 import TimeStamp from "./TimeStamp";
 
 // constants
 const MaxCardWidth = ScreenWidth * 0.7;
 
-function FileMessageCard({
-  message_type,
-  message_file,
-  onMessagePress,
-  message_datetime,
-  read,
-  delivered = true,
-  showTickMark = true,
-}) {
+// function component for FileMessageCard
+function FileMessageCard(props: MessageProps) {
+  // Destructuring props
+  const {
+    message_type,
+    message_file,
+    onMessagePress,
+    message_datetime,
+    read,
+    delivered = true,
+    showTickMark = true,
+  } = props;
+
+  // render
   return message_type === "file" ? (
     <View style={styles.FileBox}>
       {message_file.mimeType.slice(0, 5) === "image" ? (
@@ -56,6 +64,7 @@ function FileMessageCard({
   ) : null;
 }
 
+// exports
 export default FileMessageCard;
 
 // styles
@@ -85,6 +94,7 @@ const styles = StyleSheet.create({
   Image: {
     width: MaxCardWidth - 20,
     height: MaxCardWidth - 20,
+    borderRadius: 5,
   },
   PlayIcon: {
     position: "absolute",

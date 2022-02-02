@@ -1,37 +1,44 @@
 // Packages Imports
+import { StyleProp, ViewStyle, StyleSheet } from "react-native";
 import Modal from "react-native-modal";
+
+// Types imports
 import { AppModalProps } from "../types/ComponentTypes";
 
 // function component for AppModal
-function AppModal({
-  isVisible,
-  style,
-  children,
-  backdropColor,
-  backdropOpacity = 1,
-  coverScreen = true,
-  hasBackdrop = true,
-  onBackButtonPress,
-  onDismiss,
-  useNativeDriver,
-  backgroundColor,
-  ...otherProps
-}: AppModalProps) {
+function AppModal(props: AppModalProps) {
+  // Destructuring props
+  const {
+    isVisible,
+    style,
+    children,
+    backdropColor,
+    backdropOpacity = 1,
+    coverScreen = true,
+    hasBackdrop = true,
+    onBackButtonPress,
+    onDismiss,
+    useNativeDriver,
+    animationInTiming = 300,
+    animationOutTiming = 300,
+    backgroundColor,
+    ...otherProps
+  } = props;
+
+  const modalStyles: StyleProp<ViewStyle> = [
+    {
+      backgroundColor: backgroundColor,
+    },
+    styles.modal,
+    style,
+  ];
+
   // Render
   return (
     <Modal
       isVisible={isVisible}
-      style={[
-        {
-          backgroundColor: backgroundColor,
-          flex: 1,
-          padding: 0,
-          margin: 0,
-          justifyContent: "flex-start",
-          alignItems: "flex-start",
-        },
-        style,
-      ]}
+      style={modalStyles}
+      animationOut={"fadeOutDown"}
       backdropColor={backdropColor}
       backdropOpacity={backdropOpacity}
       coverScreen={coverScreen}
@@ -39,9 +46,8 @@ function AppModal({
       onBackButtonPress={onBackButtonPress}
       onDismiss={onDismiss}
       useNativeDriver={useNativeDriver}
-      animationInTiming={1}
-      animationOutTiming={300}
-      animationOut={"fadeOutDown"}
+      animationInTiming={animationInTiming}
+      animationOutTiming={animationOutTiming}
       {...otherProps}
     >
       {children}
@@ -51,3 +57,13 @@ function AppModal({
 
 // Exports
 export default AppModal;
+
+const styles = StyleSheet.create({
+  modal: {
+    flex: 1,
+    padding: 0,
+    margin: 0,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+  },
+});

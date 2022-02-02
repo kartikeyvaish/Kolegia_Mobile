@@ -7,7 +7,6 @@ import AnimatedView from "./AnimatedView";
 import { AppHeaderBarProps } from "../types/ComponentTypes";
 import AppIcon from "./AppIcon";
 import AppText from "./AppText";
-import ColorPallete from "../utils/ColorPallete";
 import IconNames from "../constants/IconNames";
 
 // Function component that renders the AppHeaderBar
@@ -15,30 +14,33 @@ function AppHeaderBar(props: AppHeaderBarProps) {
   // Destructuring props
   const {
     title,
+    titleColor,
     onIconPress,
-    backgroundColor = ColorPallete.properBlack,
+    backgroundColor,
+    isHeaderVisible,
+    style,
   } = props;
 
   // Render
-  return (
+  return !isHeaderVisible ? null : (
     <AnimatedView
       entering={FadeInUp}
       exiting={FadeOutUp}
       layout={Layout.springify()}
-      style={[styles.container, { backgroundColor }]}
+      style={[styles.container, { backgroundColor }, style]}
     >
       <AppIcon
         family={IconNames.AntDesign}
         name={"arrowleft"}
         size={28}
         onPress={onIconPress}
-        color={ColorPallete.white}
+        color={titleColor ? titleColor : undefined}
       />
       <AppText
         text={title}
         size={25}
         marginLeft={15}
-        color={ColorPallete.white}
+        color={titleColor ? titleColor : undefined}
       />
     </AnimatedView>
   );
@@ -54,5 +56,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     elevation: 2,
+    width: "100%",
   },
 });

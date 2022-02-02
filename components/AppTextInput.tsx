@@ -14,6 +14,8 @@ import { useTheme } from "@react-navigation/native";
 import AppHelperText from "./AppHelperText";
 import { AppTextInputProps } from "../types/ComponentTypes";
 import ColorPallete from "../utils/ColorPallete";
+import AppIcon from "./AppIcon";
+import IconNames from "../constants/IconNames";
 
 // AppTextInput function component
 function AppTextInput(props: AppTextInputProps) {
@@ -36,6 +38,8 @@ function AppTextInput(props: AppTextInputProps) {
     showError = true,
     placeholderTextColor = colors.text,
     helperTextColor,
+    label,
+    mandatory,
     ...otherProps
   } = props;
 
@@ -83,7 +87,7 @@ function AppTextInput(props: AppTextInputProps) {
     <View style={containerStyles}>
       <TextInput
         right={finalRightIcon}
-        left={leftIcon}
+        left={leftIcon ? <TextInput.Icon name={leftIcon} /> : null}
         style={textInputStyles}
         secureTextEntry={Secured}
         activeUnderlineColor={ColorPallete.primary}
@@ -93,6 +97,7 @@ function AppTextInput(props: AppTextInputProps) {
         activeOutlineColor={error ? ColorPallete.red : ColorPallete.primary}
         underlineColor={colors.text}
         placeholderTextColor={placeholderTextColor}
+        label={label ? (mandatory ? label + "*" : label) : null}
         {...otherProps}
       />
 

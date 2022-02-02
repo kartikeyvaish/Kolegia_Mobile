@@ -15,7 +15,11 @@ function MenuSwitch({ title, textProps, onPress, value, loading }: any) {
       {loading ? (
         <ActivityIndicator color={ColorPallete.primary} size={"large"} />
       ) : (
-        <Switch onValueChange={onPress} value={value} />
+        <Switch
+          onValueChange={onPress}
+          value={value}
+          thumbColor={value ? ColorPallete.primary : ColorPallete.white}
+        />
       )}
     </View>
   );
