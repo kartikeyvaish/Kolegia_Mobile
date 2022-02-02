@@ -1,6 +1,6 @@
 // Packages Imports
 import Animated from "react-native-reanimated"
-import { ColorValue, GestureResponderEvent, ImageStyle, KeyboardTypeOptions, OpaqueColorValue, StatusBarStyle, StyleProp, TextProps, TextStyle, ViewStyle } from "react-native";
+import { ColorValue, GestureResponderEvent, ImageStyle, KeyboardTypeOptions, OpaqueColorValue, ScrollViewProps, StatusBarStyle, StyleProp, TextProps, TextStyle, ViewStyle } from "react-native";
 import { AVPlaybackSource, AVPlaybackStatusToSet } from "expo-av/build/AV.types";
 
 // AnimatedView Props interface
@@ -48,6 +48,8 @@ export interface AppDialogProps {
     children?: React.ReactNode;
     onDonePress?: () => void;
     okLabel?: string;
+    backdropColor?: string;
+    backgroundColor?: string;
 }
 
 // AppFormField interface
@@ -62,6 +64,9 @@ export interface AppHeaderBarProps {
     title?: string;
     onIconPress?: () => void;
     backgroundColor?: ColorValue;
+    isHeaderVisible?: boolean;
+    titleColor?: ColorValue;
+    style?: StyleProp<ViewStyle>;
 }
 
 // AppImage interface
@@ -74,6 +79,7 @@ export interface AppImageProps {
     borderColor?: ColorValue;
     borderWidth?: number;
     showBorder?: boolean;
+    backgroundColor?: string;
 }
 
 // AppRow interface
@@ -132,12 +138,13 @@ export interface AppTextInputProps extends AppHelperTextProps {
     onBlur?: () => void;
     keyboardType?: KeyboardTypeOptions;
     error?: string;
-    leftIcon?: React.ReactNode
+    leftIcon?: any;
     rightIcon?: React.ReactNode
     multiline?: boolean;
     disabled?: boolean;
     showError?: boolean;
     maxLength?: number;
+    mandatory?: boolean;
 }
 
 // AppLoading interface
@@ -162,10 +169,12 @@ export interface AppModalProps {
     onDismiss?: () => void;
     useNativeDriver?: boolean;
     backgroundColor?: string;
+    animationInTiming?: number;
+    animationOutTiming?: number;
 }
 
 // Container Props interface
-export interface AppContainerProps {
+export interface AppContainerProps extends ScrollViewProps {
     children?: any
     style?: StyleProp<ViewStyle>
     backgroundColor?: ColorValue
@@ -213,6 +222,31 @@ export interface ChatKeyboardProps {
     color?: ColorValue;
 }
 
+// ColorBox props
+export interface ColorBoxProps {
+    style?: StyleProp<ViewStyle>;
+    color?: ColorValue;
+    title?: string;
+}
+
+// AppPickerItemProps Interface 
+export interface AppPickerItemProps {
+    _id?: string;
+    label?: string;
+    value?: string;
+    iconProps?: AppIconTypes;
+}
+
+// AppPickerProps Interface 
+export interface AppPickerProps {
+    items?: Array<AppPickerItemProps>;
+    pickerTitle?: string;
+    onItemSelect?: (item: AppPickerItemProps) => void;
+    selectedItem?: AppPickerItemProps;
+    formTitle?: string;
+    initialValue?: string;
+}
+
 // Developers Props interface
 export interface DeveloperCardProps {
     _id?: string | number;
@@ -228,10 +262,13 @@ export interface FileModalProps extends AppModalProps {
     // File Props
     uri?: string;
     mimeType?: string;
+    message?: string;
+    mode?: "selection" | "view";
 
     // Caption Props
     text?: string;
     headerTitle?: string;
+    isHeaderVisible?: boolean;
 
     // Keyboard Props
     onChangeText?: (text: string) => void;
@@ -268,6 +305,13 @@ export interface MenuCardProps {
     suffixIconProps?: AppIconTypes;
     showSuffixIcon?: boolean;
     customSuffixIcon?: React.ReactNode;
+}
+
+// interface MessageReadTickMarkProps
+export interface MessageReadTickMarkProps {
+    read?: boolean;
+    delivered?: boolean;
+    iconColor?: string | null;
 }
 
 // Message Props interface
@@ -326,6 +370,14 @@ export interface PickerProps {
 // RoundIconButtonProps interface
 export interface RoundIconButtonProps extends AppIconTypes {
     style?: StyleProp<ViewStyle>;
+}
+
+// RowDetailsCard interface
+export interface RowDetailsCardProps {
+    style?: StyleProp<ViewStyle>;
+    title?: string
+    description?: string;
+    descriptionProps?: AppTextProps;
 }
 
 // RippleIconButtonProps interface
