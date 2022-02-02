@@ -152,8 +152,8 @@ const LostFoundValidationSchema = () => Yup.object().shape({
     brand: Yup.string(),
     category: Yup.string(),
     color: Yup.string(),
-    lost_date: Yup.string(),
-    lost_time: Yup.string(),
+    lost_date: Yup.string().nullable().optional(),
+    lost_time: Yup.string().nullable().optional(),
     lost_location: Yup.string(),
 }).unknown(true);
 
