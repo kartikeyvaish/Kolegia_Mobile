@@ -13,6 +13,7 @@ const raise_a_hand = `${RaisedHandRoute}/raise-hand-on-an-item`;
 const get_raisedHands_list = `${RaisedHandRoute}/get-raised-responses`;
 const accept_raised_hand = `${RaisedHandRoute}/accept-raised-hand`;
 const reject_raised_hand = `${RaisedHandRoute}/reject-raised-hand`;
+const raised_by_you = `${RaisedHandRoute}/get-raised_by-me-responses`;
 
 // RaiseHand Endpoint function
 function RaiseHandOnItem(DATA: any, Token: string): Promise<ApiResponse<any, any>> {
@@ -27,6 +28,19 @@ function RaiseHandOnItem(DATA: any, Token: string): Promise<ApiResponse<any, any
 function GetRaisedHands(Token: string): Promise<ApiResponse<any, any>> {
     return apiClient.get(
         get_raisedHands_list,
+        {},
+        {
+            headers: {
+                Authorization: `Bearer ${Token}`,
+            },
+        }
+    );
+}
+
+// GetRaisedHands Endpoint function
+function GetRaisedHandsByMe(Token: string): Promise<ApiResponse<any, any>> {
+    return apiClient.get(
+        raised_by_you,
         {},
         {
             headers: {
@@ -60,7 +74,8 @@ const RaisedHandAPI = {
     RaiseHandOnItem,
     GetRaisedHands,
     AcceptRaisedhand,
-    RejectRaisedHand
+    RejectRaisedHand,
+    GetRaisedHandsByMe
 };
 
 // Export the API

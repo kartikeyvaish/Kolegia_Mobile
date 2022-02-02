@@ -19,6 +19,20 @@ const reset_password = `${AuthRoute}/reset-password`;
 const send_email_verify_otp = `${AuthRoute}/send-email-register-otp`;
 const send_password_reset_otp = `${AuthRoute}/send-forgot-password-otp`;
 const toggle_push_notif = `${AuthRoute}/toggle-push-notifications`;
+const get_dashboard_stats = `${AuthRoute}/get-dashboard-statistics`;
+
+// GetDashboardStats Endpoint function
+function GetDashboardStats(Token: string): Promise<ApiResponse<any, any>> {
+    return apiClient.get(
+        get_dashboard_stats,
+        {},
+        {
+            headers: {
+                Authorization: `Bearer ${Token}`,
+            },
+        }
+    );
+}
 
 // Login Endpoint function
 function Login(DATA: any): Promise<ApiResponse<any, any>> {
@@ -101,7 +115,8 @@ const AuthAPI = {
     TogglePushNotification,
     SendEmailVerifyOTP,
     SendPasswordResetOTP,
-    ResetPassword
+    ResetPassword,
+    GetDashboardStats
 };
 
 

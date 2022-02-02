@@ -16,6 +16,7 @@ const get_lostfound_details = `${LostFoundRoute}/get-lost-found-product-details`
 const edit_lostfound = `${LostFoundRoute}/edit-lost-found-product`;
 const get_lost_found_feed = `${LostFoundRoute}/get-lost-found-feed`;
 const search_lost_found = `${LostFoundRoute}/search-lost-found-products`;
+const mark_as_found = `${LostFoundRoute}/mark-as-found`;
 
 // GetLostFoundFeed Endpoint function
 function GetLostFoundFeed(after: string, Token: string): Promise<ApiResponse<any, any>> {
@@ -42,6 +43,15 @@ function PostLostFoundItem(DATA: any, Token: string): Promise<ApiResponse<any, a
 // Edit Buy Sell Item Endpoint function
 function EditLostFoundItem(DATA: any, Token: string): Promise<ApiResponse<any, any>> {
     return apiClient.put(edit_lostfound, DATA, {
+        headers: {
+            Authorization: `Bearer ${Token}`,
+        },
+    });
+}
+
+// MarkAsFound Endpoint function
+function MarkAsFound(DATA: any, Token: string): Promise<ApiResponse<any, any>> {
+    return apiClient.put(mark_as_found, DATA, {
         headers: {
             Authorization: `Bearer ${Token}`,
         },
@@ -95,7 +105,8 @@ const LostFoundAPI = {
     GetLostFoundItemDetails,
     GetOwnLostFoundItems,
     DeleteLostFoundItem,
-    GetLostFoundFeed
+    GetLostFoundFeed,
+    MarkAsFound
 }
 
 // Exports
