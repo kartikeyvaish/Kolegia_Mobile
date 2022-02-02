@@ -5,6 +5,7 @@ export interface ConfigProps {
     application_tag_line?: string;
     default_profile_picture?: string;
     JWT_Key?: string;
+    default_channel_id?: string;
 
     // Network Variables
     __DEV__?: boolean;
@@ -21,7 +22,6 @@ export interface ConfigProps {
     otp_route?: string;
     buysell_route?: string;
     lostfound_route?: string;
-    notifications_route?: string;
 
     // Auth Endpoints
     editProfile?: string;

@@ -35,6 +35,16 @@ export interface AppButtonProps {
     marginBottom?: number;
 }
 
+// interface for AppForm
+export interface AppFormProps {
+    initialValues: {
+        [key: string]: any;
+    };
+    onSubmit: (values: any) => void;
+    validationSchema: any;
+    children: React.ReactNode;
+}
+
 // AppSubmitButton interface
 export interface AppSubmitButtonProps extends AppButtonProps {
     CustomButton?: React.ComponentType<any>;
@@ -222,6 +232,12 @@ export interface ChatKeyboardProps {
     color?: ColorValue;
 }
 
+// CaraouselItemProps interface
+export interface CaraouselItemProps {
+    uri: string;
+    onPress?: () => void;
+}
+
 // ColorBox props
 export interface ColorBoxProps {
     style?: StyleProp<ViewStyle>;
@@ -255,6 +271,21 @@ export interface DeveloperCardProps {
     linkedin_url?: string;
     github_url?: string;
     email_address?: string;
+}
+
+// GlobalContextProps interface
+export interface GlobalContextProps {
+    User?: any;
+    SetUser?: any;
+    visible?: boolean;
+    setVisible?: any;
+    text?: string;
+    setText?: any;
+    ToggleMode?: any;
+    children?: any;
+    GlobalState?: any;
+    modal_props?: any;
+    [key: string]: any;
 }
 
 // FileModalProps interface
@@ -334,6 +365,7 @@ export interface MessageProps {
         height?: Number,
         width?: Number,
     };
+    [key: string]: any;
 }
 
 // export MessageCardProps
