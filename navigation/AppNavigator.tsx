@@ -6,7 +6,7 @@ import AboutScreen from "./../screens/Misc/AboutScreen";
 import BuySellEditScreen from "./../screens/BuySell/BuySellEditScreen";
 import BuySellFeedScreen from "./../screens/BuySell/BuySellFeedScreen";
 import BuySellProductDetailsScreen from "./../screens/BuySell/BuySellProductDetailsScreen";
-import EditLostFoundItemScreen from "./../screens/LostFound/EditLostFoundItemScreen";
+import EditLostItemScreen from "./../screens/LostFound/EditLostItemScreen";
 import EditProfileScreen from "./../screens/Profile/EditProfileScreen";
 import EditRequirementsScreen from "./../screens/Requirements/EditRequirementsScreen";
 import ChangePasswordScreen from "../screens/Misc/ChangePasswordScreen";
@@ -16,7 +16,7 @@ import EmailSignUpScreen from "../screens/Auth/EmailSignUp";
 import EmailOTPScreen from "../screens/Auth/EmailOTPScreen";
 import IntroductionScreen from "./../screens/Auth/IntroductionScreen";
 import LoginScreen from "./../screens/Auth/LoginScreen";
-import LostFoundFeedScreen from "./../screens/LostFound/LostFoundFeedScreen";
+import LostItemsFeedScreen from "./../screens/LostFound/LostItemsFeedScreen";
 import LostFoundProductDetailsScreen from "../screens/LostFound/LostFoundProductDetailsScreen";
 import MyBuySellItemsScreen from "./../screens/BuySell/MyBuySellItemsScreen";
 import MyLostFoundItemsScreen from "./../screens/LostFound/MyLostFoundItemsScreen";
@@ -36,6 +36,7 @@ import ScreenNames from "./ScreenNames";
 import TabNavigator from "./TabNavigator";
 import ResetPasswordScreen from "../screens/Auth/ResetPassword";
 import ChatRoomScreen from "./../screens/Chats/ChatRoomScreen";
+import MyRaisedHandsScreen from "../screens/RaiseHands/MyRaisedHandsScreen";
 
 // Stack Navigator
 const Stack = createStackNavigator();
@@ -104,8 +105,8 @@ function AppNavigator() {
           options={{ headerShown: true, title: "Change Theme" }}
         />
         <Stack.Screen
-          name={ScreenNames.EditLostFoundItemScreen}
-          component={EditLostFoundItemScreen}
+          name={ScreenNames.EditLostItemScreen}
+          component={EditLostItemScreen}
         />
         <Stack.Screen
           name={ScreenNames.EditProfileScreen}
@@ -121,8 +122,8 @@ function AppNavigator() {
           component={EmailOTPScreen}
         />
         <Stack.Screen
-          name={ScreenNames.LostFoundFeedScreen}
-          component={LostFoundFeedScreen}
+          name={ScreenNames.LostItemsFeedScreen}
+          component={LostItemsFeedScreen}
           options={{
             headerShown: true,
             headerTitle: "Lost & Found",
@@ -141,7 +142,15 @@ function AppNavigator() {
           component={MyLostFoundItemsScreen}
           options={{
             headerShown: true,
-            headerTitle: "My Lost Found Items",
+            headerTitle: "My Lost Items",
+          }}
+        />
+        <Stack.Screen
+          name={ScreenNames.MyRaisedHandsScreen}
+          component={MyRaisedHandsScreen}
+          options={{
+            headerShown: true,
+            headerTitle: "My Raised Hands",
           }}
         />
         <Stack.Screen
@@ -149,7 +158,7 @@ function AppNavigator() {
           component={NotificationsPreferenceScreen}
           options={{
             headerShown: true,
-            headerTitle: "Notifications",
+            headerTitle: "Push Notifications",
           }}
         />
         <Stack.Screen

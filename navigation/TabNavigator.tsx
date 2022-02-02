@@ -11,14 +11,15 @@ import HomeScreen from "./../screens/HomeScreen";
 import MyResponsesScreen from "../screens/Chats/MyResponsesScreen";
 import PostNewItemScreen from "./../screens/Misc/PostNewItemScreen";
 import ProfileScreen from "./../screens/Profile/ProfileScreen";
-import ScreenNames from "./ScreenNames";
 
 // Types/components imports
 import AppIcon from "./../components/AppIcon";
 import ColorPallete from "../utils/ColorPallete";
-import GlobalContext from "../contexts/GlobalContext";
-import IconNames from "../constants/IconNames";
 import FontNames from "../constants/FontNames";
+import GlobalContext from "../contexts/GlobalContext";
+import Helper from "../utils/Helper";
+import IconNames from "../constants/IconNames";
+import ScreenNames from "./ScreenNames";
 
 // Tab navigator
 const Tab = createBottomTabNavigator();
@@ -89,7 +90,10 @@ function TabNavigator() {
         component={MyResponsesScreen}
         options={{
           tabBarLabel: "Responses",
-          tabBarBadge: RaisedHandsCount > 0 ? RaisedHandsCount : null,
+          tabBarBadge:
+            RaisedHandsCount > 0
+              ? Helper.abbreviate_number(RaisedHandsCount)
+              : null,
           tabBarBadgeStyle: {
             color: ColorPallete.white,
             backgroundColor: ColorPallete.red,
