@@ -10,7 +10,7 @@ import DeveloperCard from "../../components/DeveloperCard";
 import FontNames from "../../constants/FontNames";
 
 // function component for AboutUsScreen
-function AboutScreen(props) {
+function AboutScreen() {
   // Render
   return (
     <View style={styles.container}>

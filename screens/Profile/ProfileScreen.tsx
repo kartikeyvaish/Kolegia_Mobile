@@ -134,6 +134,15 @@ function ProfileScreen({ navigation }: any) {
           />
 
           <MenuCard
+            name="Raised by You"
+            prefixIconProps={{
+              family: IconNames.FontAwesome5,
+              name: "fist-raised",
+            }}
+            onPress={() => navigation.navigate(ScreenNames.MyRaisedHandsScreen)}
+          />
+
+          <MenuCard
             name="Logout"
             prefixIconProps={{
               family: IconNames.AntDesign,

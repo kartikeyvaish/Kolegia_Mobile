@@ -4,7 +4,7 @@ import { View, StyleSheet, FlatList } from "react-native";
 import { FadeInLeft } from "react-native-reanimated";
 
 // Local components imports
-import AnimatedView from "./../../components/AnimatedView";
+import AnimatedView from "../../components/AnimatedView";
 import AppLoading from "../../components/AppLoading";
 import GlobalContext from "../../contexts/GlobalContext";
 import Helper from "../../utils/Helper";
@@ -74,6 +74,7 @@ function MyLostFoundItemsScreen({ navigation }: any) {
             owner_details: User,
           })
         }
+        ShowFoundButton={true}
         owner_details={User}
       />
     </AnimatedView>

@@ -31,6 +31,31 @@ function ChatsScreen({ navigation }) {
     InitialCall();
   }, []);
 
+  useEffect(() => {
+    UpdateCount();
+  }, [Chats]);
+
+  // Whenever chats are updated, update the count using dispatch
+  const UpdateCount = () => {
+    try {
+      if (Chats.length > 0) {
+        // Count number of chats whose last message is not read
+        const UnreadMessagesCount = Chats.reduce((acc, chat) => {
+          if (
+            chat.last_message.reciever_id === User?._id &&
+            chat.last_message.read === false
+          )
+            acc++;
+          return acc;
+        }, 0);
+
+        dispatch(
+          GlobalActionCreators.UpdateUnreadMessagesCount(UnreadMessagesCount)
+        );
+      }
+    } catch (error) {}
+  };
+
   // Initial call to get chats
   const InitialCall = async () => {
     try {
@@ -48,24 +73,7 @@ function ChatsScreen({ navigation }) {
       const apiResponse = await ChatsAPI.GetChats(User?.auth_token);
 
       if (apiResponse.ok) {
-        if (apiResponse.data.Chats.length > 0) {
-          SetChats(apiResponse.data.Chats);
-
-          // Count number of chats whose last message is not read
-          const UnreadMessagesCount = apiResponse.data.Chats.reduce(
-            (acc, chat) => {
-              if (
-                chat.last_message.reciever_id === User?._id &&
-                chat.last_message.read === false
-              )
-                acc++;
-              return acc;
-            },
-            0
-          );
-
-          dispatch(GlobalActionCreators.UpdateUnreadCount(UnreadMessagesCount));
-        }
+        if (apiResponse.data.Chats.length > 0) SetChats(apiResponse.data.Chats);
       } else Helper.ShowToast(apiResponse.data.message);
     } catch (error) {
       Helper.ShowToast(ToastMessages.SERVER_ERROR_MESSAGE);
@@ -83,13 +91,35 @@ function ChatsScreen({ navigation }) {
     }
   };
 
+  // functio to mark chat as read and navigate
+  const onChatPress = async (chat: any) => {
+    try {
+      const chatId = chat._id;
+
+      if (!chatId) return;
+
+      if (chat.sender_id !== User?._id) {
+        // Make a deep copy of state.chats array and then update the read property of the chat
+        const chats = [...Chats];
+        const chatIndex = chats.findIndex((chat) => chat._id === chatId);
+        if (chatIndex !== -1) chats[chatIndex].last_message.read = true;
+
+        // Update the state
+        SetChats(chats);
+        UpdateCount();
+      }
+
+      navigation.navigate(ScreenNames.ChatRoomScreen, chat);
+    } catch (error) {}
+  };
+
   // function to renderItem
   const renderItem = (chat: any) => (
     <ChatsCard
       key={chat._id}
       {...chat}
       current_user={User}
-      onPress={() => navigation.navigate(ScreenNames.ChatRoomScreen, chat)}
+      onPress={() => onChatPress(chat)}
     />
   );
 

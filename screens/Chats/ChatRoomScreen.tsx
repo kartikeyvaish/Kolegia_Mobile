@@ -8,11 +8,16 @@ import AppLoading from "../../components/AppLoading";
 import ChatsAPI from "../../api/ChatsAPI";
 import ChatHeader from "../../components/ChatHeader";
 import ChatKeyboard from "../../components/ChatKeyboard";
-import FileModal from "../../components/FileModal";
 import Helper from "../../utils/Helper";
 import MessageCard from "../../components/MessageCard";
+import SelectFileModal from "../../components/SelectFileModal";
 import ToastMessages from "../../constants/Messages";
+import ViewFileModal from "../../components/ViewFileModal";
+
+// custom hooks imports
+import useCamera from "../../hooks/useCamera";
 import useDocumentPicker from "./../../hooks/useDocumentPicker";
+import useFileViewer from "./../../hooks/useFileViewer";
 import useLoading from "./../../hooks/useLoading";
 import useSocket from "../../hooks/useSocket";
 
@@ -21,7 +26,6 @@ import chatRoomReducer, {
   chatRoomInitialState,
 } from "../../store/chatRoom/reducer";
 import ChatRoomActionCreators from "../../store/chatRoom/actions";
-import useBackHandler from "./../../hooks/useBackHandler";
 
 // function component for ChatRoomScreen
 function ChatRoomScreen({ navigation, route, User }) {
@@ -46,13 +50,9 @@ function ChatRoomScreen({ navigation, route, User }) {
 
   // Custom Hooks
   const { PickDocument, selectedFile, unselectFile, setSelectedFile } =
-    useDocumentPicker();
-
-  // Back Button Handler
-  useBackHandler(() => {
-    navigation.popToTop();
-    return true;
-  });
+    useDocumentPicker({});
+  const { viewing_file, view_file, stop_viewing } = useFileViewer();
+  const { Capture } = useCamera({ onCapture: setSelectedFile });
 
   // Initial useEffect call
   useEffect(() => {
@@ -73,10 +73,6 @@ function ChatRoomScreen({ navigation, route, User }) {
   // Changes in chat_thread
   useEffect(() => {
     Skip.current = state.chat_thread.length;
-
-    if (state.chat_thread.length > 0) {
-      // Update the last message in redux store
-    }
   }, [state.chat_thread]);
 
   // useLayoutEffect to update the user details in the header
@@ -95,7 +91,7 @@ function ChatRoomScreen({ navigation, route, User }) {
           imageUri={reciever_profile_picture}
           name={receiver_name}
           phone={reciever_phone}
-          onBackPress={() => navigation.popToTop()}
+          onBackPress={() => navigation.goBack()}
         />
       ),
     });
@@ -151,7 +147,8 @@ function ChatRoomScreen({ navigation, route, User }) {
   const OtherUserEntered = (count) => {
     try {
       dispatch(ChatRoomActionCreators.SetUsersCount(count));
-      dispatch(ChatRoomActionCreators.MarkMessageAsRead(owner_id));
+      if (count > 1)
+        dispatch(ChatRoomActionCreators.MarkMessageAsRead(owner_id));
     } catch (error) {}
   };
 
@@ -167,6 +164,7 @@ function ChatRoomScreen({ navigation, route, User }) {
 
       // get the current message and trim it.
       let message = state.message.trim();
+      let newDateTime = new Date().toString();
 
       // if message is empty, return
       if (message.length === 0) return;
@@ -181,7 +179,7 @@ function ChatRoomScreen({ navigation, route, User }) {
         delivered: false,
         read: state.online_users > 1 ? true : false,
         _id: temp_id,
-        message_datetime: Date.now(),
+        message_datetime: newDateTime,
       };
 
       // prepare the api payload
@@ -189,6 +187,7 @@ function ChatRoomScreen({ navigation, route, User }) {
       api_payload.append("room_id", room_id);
       api_payload.append("message", message);
       api_payload.append("read", state.online_users > 1 ? true : false);
+      api_payload.append("message_datetime", newDateTime);
 
       // add the message to chat Thread
       AddToChatThread(socket_payload);
@@ -201,10 +200,10 @@ function ChatRoomScreen({ navigation, route, User }) {
       if (response.ok) {
         SendToSocket(response.data.newMessage);
         dispatch(
-          ChatRoomActionCreators.UpdateMessageItem(
-            temp_id,
-            response.data.newMessage
-          )
+          ChatRoomActionCreators.UpdateMessageItem(temp_id, {
+            delivered: true,
+            ...response.data.newMessage,
+          })
         );
       } else {
         dispatch(ChatRoomActionCreators.RemoveMessageItem(temp_id));
@@ -221,6 +220,7 @@ function ChatRoomScreen({ navigation, route, User }) {
   const SendFileMessage = async () => {
     try {
       Keyboard.dismiss();
+      let newDateTime = new Date().toString();
 
       const api_payload: any = new FormData();
       api_payload.append("room_id", room_id);
@@ -232,6 +232,7 @@ function ChatRoomScreen({ navigation, route, User }) {
       };
       api_payload.append("file", file_payload);
       api_payload.append("read", state.online_users > 1 ? true : false);
+      api_payload.append("message_datetime", newDateTime);
 
       dispatch(ChatRoomActionCreators.SetSendLoading(true));
       const response = await ChatsAPI.SendMessage(api_payload, User.auth_token);
@@ -251,12 +252,23 @@ function ChatRoomScreen({ navigation, route, User }) {
   };
 
   // Render Item Function
-  const renderItem = ({ item }: any) => (
+  const renderItem = ({ item, index }: any) => (
     <MessageCard
       {...item}
-      upper_date={null}
+      upper_date={Helper.get_top_date(
+        item.message_datetime,
+        index + 1 === state.chat_thread.length
+          ? null
+          : state.chat_thread[index + 1].message_datetime
+      )}
       onMessagePress={() =>
-        item.message_type === "file" ? setSelectedFile(item.message_file) : null
+        item.message_type === "file"
+          ? view_file({
+              ...item.message_file,
+              sender_id: item.sender_id,
+              message: item.message,
+            })
+          : null
       }
     />
   );
@@ -288,9 +300,22 @@ function ChatRoomScreen({ navigation, route, User }) {
         }
         onSubmit={() => SendMessage()}
         onPickPress={PickDocument}
+        onCameraPress={Capture}
       />
 
-      <FileModal
+      <ViewFileModal
+        isVisible={viewing_file !== null}
+        mimeType={viewing_file?.mimeType}
+        onBackButtonPress={stop_viewing}
+        onDismiss={stop_viewing}
+        uri={viewing_file?.uri}
+        message={viewing_file?.message}
+        headerTitle={
+          viewing_file?.sender_id === owner_id ? "You" : receiver_name
+        }
+      />
+
+      <SelectFileModal
         placeholder="Type a Message.."
         isVisible={selectedFile !== null}
         mimeType={selectedFile?.mimeType}
@@ -303,7 +328,9 @@ function ChatRoomScreen({ navigation, route, User }) {
         onDismiss={unselectFile}
         value={state.message}
         uri={selectedFile?.uri}
-        showKeyboard={true}
+        message={selectedFile?.message}
+        showKeyboard={viewing_file ? false : true}
+        isHeaderVisible={viewing_file ? false : true}
       />
     </View>
   );

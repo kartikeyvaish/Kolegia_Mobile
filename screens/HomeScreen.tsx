@@ -1,7 +1,8 @@
 // Packages imports
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import { FadeInLeft } from "react-native-reanimated";
+import { useDispatch } from "react-redux";
 
 // Components/Types/Utils imports
 import AnimatedView from "../components/AnimatedView";
@@ -10,18 +11,57 @@ import AppIcon from "../components/AppIcon";
 import AppRow from "../components/AppRow";
 import AppScrollContainer from "./../components/AppScrollContainer";
 import AppText from "../components/AppText";
+import AuthAPI from "../api/AuthAPI";
 import ColorPallete from "../utils/ColorPallete";
 import DashboardMenuCard from "../components/DashboardMenuCard";
 import { ExploreCards } from "./../schema/HomeScreenData";
-import IconNames from "../constants/IconNames";
-import FontNames from "../constants/FontNames";
+import GlobalActionCreators from "../store/global/actions";
 import GlobalContext from "./../contexts/GlobalContext";
+import FontNames from "../constants/FontNames";
+import IconNames from "../constants/IconNames";
 import ScreenNames from "../navigation/ScreenNames";
+import StatsCard from "../components/StatsCard";
 
 // functional component for Dashboard Screen
 function HomeScreen({ navigation }) {
-  // Get the user
-  const { User, UnreadMessagesCount } = useContext(GlobalContext);
+  // Get the constants
+  const {
+    User,
+    UnreadMessagesCount,
+    LostItemsCount,
+    FoundItemsCount,
+    UsersCount,
+  } = useContext(GlobalContext);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    GetStats();
+  }, [User]);
+
+  const GetStats = async () => {
+    try {
+      if (User) {
+        const apiResponse = await AuthAPI.GetDashboardStats(User?.auth_token);
+
+        if (apiResponse.ok) {
+          const statsData = apiResponse.data?.stats;
+
+          if (statsData) {
+            let payload = {
+              LostItemsCount: statsData.lost_items_count,
+              FoundItemsCount: statsData.found_items_count,
+              UsersCount: statsData.users_count,
+              RaisedHandsCount: statsData.raised_hands_count,
+              UnreadMessagesCount: statsData.unread_messages_count,
+            };
+
+            dispatch(GlobalActionCreators.UpdateCounts(payload));
+          }
+        }
+      }
+    } catch (error) {}
+  };
 
   // Render
   return (
@@ -70,6 +110,28 @@ function HomeScreen({ navigation }) {
         </View>
       </AppRow>
 
+      {User ? (
+        <View style={styles.statsContainer}>
+          <StatsCard
+            count={LostItemsCount}
+            title={"Lost Items"}
+            color={ColorPallete.red}
+          />
+
+          <StatsCard
+            count={FoundItemsCount}
+            title={"Found Items"}
+            color={ColorPallete.green}
+          />
+
+          <StatsCard
+            count={UsersCount}
+            title={"Users Count"}
+            color={ColorPallete.primary}
+          />
+        </View>
+      ) : null}
+
       {ExploreCards.map((card) => (
         <AnimatedView entering={FadeInLeft} key={card._id}>
           <DashboardMenuCard
@@ -116,5 +178,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -10,
     right: -10,
+  },
+  statsContainer: {
+    width: "100%",
+    flexDirection: "row",
   },
 });

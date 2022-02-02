@@ -1,40 +1,45 @@
 // Packages Imports
-import { useContext } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Switch } from "react-native";
 import { connect } from "react-redux";
 
 // Local Imports
-import AppRadioButton from "./../../components/AppRadioButton";
 import AppText from "../../components/AppText";
+import ColorPallete from "../../utils/ColorPallete";
 import FontNames from "../../constants/FontNames";
-import GlobalContext from "./../../contexts/GlobalContext";
+import ThemeActionCreators from "./../../store/theme/actions";
+import AppContainer from "../../components/AppContainer";
 
 // function component for the ChangeThemeScreen
-function ChangeThemeScreen({ Mode }) {
-  const { ToggleMode } = useContext(GlobalContext);
+function ChangeThemeScreen({ Mode, ToggleMode }) {
+  // Constants
+  const trackColor = {
+    false: ColorPallete.properBlack,
+    true: ColorPallete.googleColor,
+  };
+
+  const thumbColor = Mode !== "light" ? ColorPallete.white : ColorPallete.grey;
 
   // Render
   return (
-    <View style={styles.container}>
+    <AppContainer style={styles.container}>
       <AppText
         text="Choose A Mode"
         size={25}
         family={FontNames.Sofia_Pro_Bold}
         marginBottom={20}
       />
-      <AppRadioButton
-        label="Dark"
-        labelSize={20}
-        status={Mode === "dark"}
-        onPress={() => ToggleMode("dark")}
-      />
-      <AppRadioButton
-        label="Light"
-        labelSize={20}
-        status={Mode === "light"}
-        onPress={() => ToggleMode("light")}
-      />
-    </View>
+
+      <View style={styles.modeChangeContainer}>
+        <AppText text="Dark Mode" family={FontNames.Inter_Regular} />
+        <Switch
+          trackColor={trackColor}
+          thumbColor={thumbColor}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={(value) => ToggleMode(!value ? "light" : "dark")}
+          value={Mode !== "light"}
+        />
+      </View>
+    </AppContainer>
   );
 }
 
@@ -45,8 +50,16 @@ const mapStateToProps = (state: any) => {
   };
 };
 
+// Dispatchers that will change the states
+const mapDispatchToProps = (dispatch) => {
+  return {
+    ToggleMode: (colorScheme) =>
+      dispatch(ThemeActionCreators.ChangeMode(colorScheme)),
+  };
+};
+
 // Connect and Export
-export default connect(mapStateToProps, null)(ChangeThemeScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ChangeThemeScreen);
 
 // Styles
 const styles = StyleSheet.create({
@@ -54,5 +67,11 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 20,
     paddingRight: 20,
+  },
+  modeChangeContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
   },
 });

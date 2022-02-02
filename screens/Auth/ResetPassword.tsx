@@ -1,8 +1,9 @@
 // Packages Imports
 import { useContext, useRef, useState } from "react";
-import { StyleSheet, View, Keyboard } from "react-native";
+import { StyleSheet, Keyboard } from "react-native";
 
 // Local components imports
+import AppContainer from "./../../components/AppContainer";
 import AppText from "./../../components/AppText";
 import AppForm from "../../components/AppForm";
 import AppFormField from "./../../components/AppFormField";
@@ -30,7 +31,7 @@ function ResetPasswordScreen({ navigation }) {
   const reset_request_id = useRef<string>("");
 
   // Global Context
-  const { SetUser } = useContext(GlobalContext);
+  const { SetUser, PushToken } = useContext(GlobalContext);
 
   // Custom Loading Hook
   const { Loading, SetLoading } = useLoading({ initialValue: false });
@@ -87,11 +88,13 @@ function ResetPasswordScreen({ navigation }) {
     try {
       SetLoading(true);
 
-      let payload = {
+      let payload: any = {
         email: email.current,
         password: values.NewPassword,
         reset_request_id: reset_request_id.current,
       };
+
+      if (PushToken) payload.push_notification_token = PushToken;
 
       const apiResponse = await AuthAPI.ResetPassword(payload);
       SetLoading(false);
@@ -116,7 +119,7 @@ function ResetPasswordScreen({ navigation }) {
 
   // Render
   return (
-    <View style={styles.container}>
+    <AppContainer style={styles.container}>
       <AppText
         text={
           CodeSent === false
@@ -207,7 +210,7 @@ function ResetPasswordScreen({ navigation }) {
           />
         </AppForm>
       ) : null}
-    </View>
+    </AppContainer>
   );
 }
 

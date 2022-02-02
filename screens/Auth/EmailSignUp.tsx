@@ -1,20 +1,21 @@
 // Packages Imports
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 
 // Local components Imports and Types
-import AppText from "../../components/AppText";
+import AppContainer from "./../../components/AppContainer";
 import AppForm from "./../../components/AppForm";
 import AppFormField from "./../../components/AppFormField";
+import AppText from "../../components/AppText";
 import AppSubmitButton from "./../../components/AppSubmitButton";
+import AuthAPI from "./../../api/AuthAPI";
 import ColorPallete from "../../utils/ColorPallete";
 import EmailSignUpSchema from "./../../schema/EmailSignUp";
+import Helper from "./../../utils/Helper";
 import IconNames from "../../constants/IconNames";
 import RoundIconButton from "./../../components/RoundIconButton";
 import ScreenNames from "../../navigation/ScreenNames";
-import useLoading from "../../hooks/useLoading";
-import Helper from "./../../utils/Helper";
 import ToastMessages from "./../../constants/Messages";
-import AuthAPI from "./../../api/AuthAPI";
+import useLoading from "../../hooks/useLoading";
 
 // Constants
 const InitialValues = EmailSignUpSchema.EmailSignUpInitialValues;
@@ -52,7 +53,7 @@ function EmailSignUpScreen({ navigation }) {
 
   // Render
   return (
-    <View style={styles.container}>
+    <AppContainer style={styles.container}>
       <AppText text="What's your email?" size={22} />
 
       <AppForm
@@ -81,7 +82,7 @@ function EmailSignUpScreen({ navigation }) {
           )}
         />
       </AppForm>
-    </View>
+    </AppContainer>
   );
 }
 

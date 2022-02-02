@@ -1,5 +1,5 @@
 // Packages Imports
-import { View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
 // Local components
 import AppText from "../../components/AppText";
@@ -13,6 +13,7 @@ import OTPSchema from "../../schema/OTPSchema";
 import ScreenNames from "../../navigation/ScreenNames";
 import ToastMessages from "./../../constants/Messages";
 import useLoading from "../../hooks/useLoading";
+import AppContainer from "./../../components/AppContainer";
 
 // function component for EmailOTPScreen
 function EmailOTPScreen({ navigation, route }) {
@@ -46,7 +47,7 @@ function EmailOTPScreen({ navigation, route }) {
   };
 
   return (
-    <View style={styles.container}>
+    <AppContainer style={styles.container}>
       <AppText
         text={
           "An OTP has been sent to your Email address to verify your account. Please enter that OTP below"
@@ -77,7 +78,7 @@ function EmailOTPScreen({ navigation, route }) {
           loading={Loading}
         />
       </AppForm>
-    </View>
+    </AppContainer>
   );
 }
 

@@ -1,29 +1,29 @@
 // Packages imports
-import { useState } from "react";
-import { Image, Keyboard, ScrollView, StyleSheet, View } from "react-native";
+import { useContext } from "react";
+import { Keyboard, ScrollView, StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
-import * as DocumentPicker from "expo-document-picker";
 
 // components/screens imports
 import AppForm from "../../components/AppForm";
 import AppFormField from "../../components/AppFormField";
 import AppCheckBoxFormField from "../../components/AppCheckBoxFormField";
-import AppIcon from "../../components/AppIcon";
 import AppRow from "../../components/AppRow";
 import AppSubmitButton from "../../components/AppSubmitButton";
 import AppText from "../../components/AppText";
 import AuthAPI from "../../api/AuthAPI";
 import AuthActionCreators from "./../../store/auth/actions";
+import ChoosePicture from "../../components/ChoosePicture";
 import ColorPallete from "../../utils/ColorPallete";
 import configurations from "../../config/config";
-import Helper from "../../utils/Helper";
-import IconNames from "../../constants/IconNames";
 import FontNames from "../../constants/FontNames";
+import GlobalContext from "../../contexts/GlobalContext";
+import Helper from "../../utils/Helper";
 import JWT from "../../auth/JWT";
 import KeyboardAwareContainer from "../../components/KeyboardAwareContainer";
 import RegisterSchema from "./../../schema/SignUpSchema";
 import ScreenNames from "../../navigation/ScreenNames";
 import ToastMessages from "../../constants/Messages";
+import useDocumentPicker from "../../hooks/useDocumentPicker";
 import useLoading from "../../hooks/useLoading";
 
 // default picture
@@ -48,16 +48,21 @@ interface Props {
 function SignUpScreen({ navigation, SetUser, route }: Props) {
   // construct initial Values
   let initial_profile_picture =
-    route.params?.profile_picture ?? initial_picture;
-  const props_initial_values = route.params ?? {};
+    route?.params?.profile_picture ?? initial_picture;
+  const props_initial_values = route?.params ?? {};
   const initialValues = {
     ...RegisterSchema.RegisterInitialValues,
     ...props_initial_values,
   };
 
-  // Local States
+  const { PushToken } = useContext(GlobalContext);
+
+  // Custom Hooks
   const { Loading, SetLoading } = useLoading({ initialValue: false });
-  const [Picture, SetPicture] = useState(initial_profile_picture);
+  const { PickDocument, selectedFile, unselectFile, SameAsInitial } =
+    useDocumentPicker({
+      initial_file: initial_profile_picture,
+    });
 
   // API call for Register
   const SignUp = async (values: any) => {
@@ -73,17 +78,19 @@ function SignUpScreen({ navigation, SetUser, route }: Props) {
         if (key !== "profile_picture") formData.append(key, values[key]);
       });
 
+      if (PushToken) formData.append("push_notification_token", PushToken);
+
       // If google image is present
-      let isNetworkImage = Picture.uri.startsWith("http");
+      let isNetworkImage = selectedFile.uri.startsWith("http");
       if (isNetworkImage) {
-        formData.append("remote_profile_picture", Picture.uri);
+        formData.append("remote_profile_picture", selectedFile.uri);
       } else {
-        if (Picture.uri !== initial_profile_picture.uri) {
-          // If user has chosen a Profile Picture then append it to the formData
+        if (selectedFile.uri !== initial_profile_picture.uri) {
+          // If user has chosen a Profile selectedFile then append it to the formData
           let profile_picture: any = {
-            uri: Picture.uri,
-            type: Picture.mimeType ?? "image/jpeg",
-            name: Picture.name ?? "profile_picture.jpeg",
+            uri: selectedFile.uri,
+            type: selectedFile.mimeType ?? "image/jpeg",
+            name: selectedFile.name ?? "profile_picture.jpeg",
           };
 
           formData.append("profile_picture", profile_picture);
@@ -111,19 +118,6 @@ function SignUpScreen({ navigation, SetUser, route }: Props) {
     }
   };
 
-  // function to pick profile_picture
-  const PickImage = async () => {
-    try {
-      const pickedFile = await DocumentPicker.getDocumentAsync({
-        type: "image/*",
-      });
-
-      if (pickedFile.type === "success") SetPicture(pickedFile);
-    } catch (error) {
-      Helper.ShowToast("Some Error Occured while picking the image");
-    }
-  };
-
   // Render
   return (
     <KeyboardAwareContainer style={styles.container}>
@@ -136,24 +130,12 @@ function SignUpScreen({ navigation, SetUser, route }: Props) {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
       >
-        <View style={styles.PicAndIconContainer}>
-          <View style={styles.ImageContainer}>
-            <Image
-              source={{ uri: Picture.uri }}
-              style={{ width: "100%", height: "100%" }}
-              resizeMode="contain"
-            />
-          </View>
-
-          <AppIcon
-            family={IconNames.Entypo}
-            name={"edit"}
-            size={30}
-            color={ColorPallete.primary}
-            style={styles.EditIcon}
-            onPress={PickImage}
-          />
-        </View>
+        <ChoosePicture
+          uri={selectedFile.uri}
+          onPickPress={PickDocument}
+          onRemovePress={unselectFile}
+          showRemoveIcon={SameAsInitial}
+        />
 
         <AppForm
           initialValues={initialValues}
@@ -164,17 +146,13 @@ function SignUpScreen({ navigation, SetUser, route }: Props) {
             label="Name"
             title="name"
             disabled={props_initial_values.name ? true : false}
-            mode="outlined"
             controlled
-            containerStyle={{ marginBottom: 0 }}
           />
 
           <AppFormField
             label="Email"
             title="email"
-            showError={false}
             disabled={props_initial_values.email ? true : false}
-            mode="outlined"
             controlled
           />
 
@@ -184,39 +162,25 @@ function SignUpScreen({ navigation, SetUser, route }: Props) {
             placeholder="2019-BCS***"
           />
 
-          <AppRow>
-            <View style={{ flex: 1, marginRight: 20 }}>
-              <AppFormField
-                label="Year"
-                placeholder="2019, 2020..."
-                title="year"
-              />
-            </View>
-            <View style={{ flex: 1, marginLeft: 20 }}>
-              <AppFormField
-                label="Batch"
-                placeholder="BCS, IMG, IMT.."
-                title="batch"
-              />
-            </View>
-          </AppRow>
+          <AppFormField label="Year" placeholder="2019, 2020..." title="year" />
 
-          <AppRow>
-            <View style={{ flex: 1, marginRight: 20 }}>
-              <AppFormField
-                label="Hostel"
-                placeholder="BH-1, BH-2, GH-1"
-                title="hostel"
-              />
-            </View>
-            <View style={{ flex: 1, marginLeft: 20 }}>
-              <AppFormField
-                label="Room Number"
-                placeholder="1, 2, 45, 56.."
-                title="room_number"
-              />
-            </View>
-          </AppRow>
+          <AppFormField
+            label="Batch"
+            placeholder="BCS, IMG, IMT.."
+            title="batch"
+          />
+
+          <AppFormField
+            label="Hostel"
+            placeholder="BH-1, BH-2, GH-1"
+            title="hostel"
+          />
+
+          <AppFormField
+            label="Room Number"
+            placeholder="1, 2, 45, 56.."
+            title="room_number"
+          />
 
           <AppFormField
             label="Phone"
@@ -228,14 +192,12 @@ function SignUpScreen({ navigation, SetUser, route }: Props) {
           <AppFormField
             placeholder="Password"
             title="password"
-            containerStyle={{ marginBottom: 10 }}
             secureTextEntry={true}
           />
 
           <AppFormField
             placeholder="Confirm Password"
             title="confirm_password"
-            containerStyle={{ marginBottom: 10 }}
             secureTextEntry={true}
           />
 
@@ -284,37 +246,11 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
-  GoogleIconConatainer: {
-    borderColor: ColorPallete.googleColor,
-    borderRadius: 50,
-    borderWidth: 1,
-    alignSelf: "center",
-    padding: 10,
-    marginTop: 30,
-  },
   newUserContainer: {
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
     marginBottom: 10,
     marginTop: 30,
-  },
-  PicAndIconContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.1)",
-    padding: 15,
-  },
-  ImageContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    overflow: "hidden",
-  },
-  EditIcon: {
-    position: "absolute",
-    zIndex: 10,
-    top: 10,
-    right: 10,
   },
 });

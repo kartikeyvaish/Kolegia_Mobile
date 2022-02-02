@@ -1,16 +1,19 @@
 // packages import
+import { useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 // Components/Types/Utils imports
-import AppText from "../../components/AppText";
 import AppButton from "../../components/AppButton";
+import AppContainer from "./../../components/AppContainer";
+import AppText from "../../components/AppText";
 import AuthActionCreators from "./../../store/auth/actions";
 import AuthAPI from "../../api/AuthAPI";
 import configurations from "../../config/config";
 import ColorPallete from "./../../utils/ColorPallete";
 import FontNames from "./../../constants/FontNames";
+import GlobalContext from "./../../contexts/GlobalContext";
 import Helper from "../../utils/Helper";
 import JWT from "../../auth/JWT";
 import ScreenNames from "./../../navigation/ScreenNames";
@@ -29,6 +32,7 @@ GoogleSignin.configure({
 function IntroductionScreen({ navigation, SetUser }: any) {
   // Custom Hooks
   const { Loading, SetLoading } = useLoading({ initialValue: false });
+  const { PushToken } = useContext(GlobalContext);
 
   // Login function using Google
   const LoginWithGoogle = async () => {
@@ -41,10 +45,14 @@ function IntroductionScreen({ navigation, SetUser }: any) {
       const idToken = response.idToken;
       const user = response.user;
 
-      const { data: apiResponse } = await AuthAPI.GoogleLogin({
+      let payload: any = {
         ID_Token: idToken,
         user: user,
-      });
+      };
+
+      if (PushToken) payload.push_notification_token = PushToken;
+
+      const { data: apiResponse } = await AuthAPI.GoogleLogin(payload);
 
       SetLoading(false);
 
@@ -74,7 +82,7 @@ function IntroductionScreen({ navigation, SetUser }: any) {
 
   // Render
   return (
-    <View style={styles.container}>
+    <AppContainer style={styles.container}>
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <AppText
           text={configurations.application_name}
@@ -104,7 +112,7 @@ function IntroductionScreen({ navigation, SetUser }: any) {
           onPress={() => navigation.navigate(ScreenNames.EmailSignUpScreen)}
         />
       </View>
-    </View>
+    </AppContainer>
   );
 }
 

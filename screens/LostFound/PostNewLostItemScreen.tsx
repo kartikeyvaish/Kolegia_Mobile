@@ -6,16 +6,22 @@ import { connect } from "react-redux";
 import AppForm from "./../../components/AppForm";
 import AppFormField from "../../components/AppFormField";
 import AppIcon from "../../components/AppIcon";
+import AppPicker from "../../components/AppPicker";
 import AppRow from "../../components/AppRow";
 import AppSubmitButton from "../../components/AppSubmitButton";
 import AppText from "../../components/AppText";
 import ColorPallete from "../../utils/ColorPallete";
+import ColorPicker from "../../components/ColorPicker";
+import DatePicker from "../../components/DatePicker";
 import FontNames from "../../constants/FontNames";
 import FilePreviewCard from "../../components/FilePreviewCard";
 import Helper from "../../utils/Helper";
 import IconNames from "../../constants/IconNames";
 import LostFoundAPI from "../../api/LostFoundAPI";
-import LostFoundSchema from "../../schema/LostFoundItemSchema";
+import LostFoundSchema, {
+  LOST_FOUND_CATEGORY,
+} from "../../schema/LostFoundItemSchema";
+import TimePicker from "../../components/TimePicker";
 import ToastMessages from "../../constants/Messages";
 import useLoading from "../../hooks/useLoading";
 import useImagePicker from "../../hooks/useImagePicker";
@@ -39,7 +45,7 @@ function PostNewLostItemScreen({ navigation, User }: any) {
 
       // now append all the properties of the values object into the formData
       Object.keys(values).forEach((key) => {
-        formData.append(key, values[key]);
+        if (values[key]) formData.append(key, values[key].toString());
       });
 
       // Now append the files to the formData in the `files` property
@@ -59,10 +65,7 @@ function PostNewLostItemScreen({ navigation, User }: any) {
       );
 
       SetLoading(false);
-
-      if (apiResponse.ok) {
-        Helper.ShowToast("Product Posted Successfully");
-      }
+      if (apiResponse.ok) Helper.ShowToast("Product Posted Successfully");
 
       navigation.popToTop();
     } catch (error) {
@@ -81,7 +84,7 @@ function PostNewLostItemScreen({ navigation, User }: any) {
     >
       <AppForm
         initialValues={LostFoundSchema.LostFoundInitialValues}
-        onSubmit={(values) => PostProduct(values)}
+        onSubmit={PostProduct}
         validationSchema={LostFoundSchema.LostFoundValidationSchema}
       >
         <AppRow
@@ -107,16 +110,38 @@ function PostNewLostItemScreen({ navigation, User }: any) {
           />
         </AppRow>
 
-        <AppFormField placeholder="Name" label="Name" title="name" />
+        <AppFormField label="Name" title="name" mandatory={true} />
 
         <AppFormField
-          placeholder="Description"
           label="Description"
           title="description"
           multiline={true}
           containerStyle={{ maxHeight: 150 }}
           mode="outlined"
+          mandatory={true}
         />
+
+        <AppPicker items={LOST_FOUND_CATEGORY} formTitle="category" />
+
+        <AppFormField placeholder="Brand" title="brand" />
+
+        <ColorPicker title="color" placeholder="Color" controlled={false} />
+
+        <AppFormField
+          placeholder="Location"
+          title="lost_location"
+          leftIcon={() => (
+            <AppIcon
+              family={IconNames.Entypo}
+              name={"location-pin"}
+              size={20}
+            />
+          )}
+        />
+
+        <DatePicker formTitle="lost_date" />
+
+        <TimePicker formTitle="lost_time" />
       </AppForm>
 
       <View style={styles.titleContainer}>

@@ -1,5 +1,5 @@
 // Packages Imports
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 
@@ -44,7 +44,7 @@ function NotificationsPreferenceScreen({ UpdateUser }) {
   return (
     <View style={styles.container}>
       <MenuSwitch
-        title="Send Notifications"
+        title="Send Push Notifications"
         value={User.send_push_notification}
         onPress={TogglePushNotification}
         loading={Loading}

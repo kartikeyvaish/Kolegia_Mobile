@@ -5,19 +5,19 @@ import { connect } from "react-redux";
 import { FadeInLeft } from "react-native-reanimated";
 
 // Local imports
-import AnimatedView from "./../../components/AnimatedView";
-import AppLoading from "./../../components/AppLoading";
-import AppContainer from "./../../components/AppContainer";
-import Helper from "./../../utils/Helper";
+import AnimatedView from "../../components/AnimatedView";
+import AppLoading from "../../components/AppLoading";
+import AppContainer from "../../components/AppContainer";
+import Helper from "../../utils/Helper";
 import LostFoundAPI from "../../api/LostFoundAPI";
 import LoadMoreComponent from "../../components/LoadMoreComponent";
 import MyProductListCard from "../../components/MyProductListCard";
 import ScreenNames from "../../navigation/ScreenNames";
-import SearchBar from "./../../components/SearchBar";
-import ToastMessages from "./../../constants/Messages";
+import SearchBar from "../../components/SearchBar";
+import ToastMessages from "../../constants/Messages";
 
-// function component for LostFoundFeedScreen
-function LostFoundFeedScreen({ navigation, User }) {
+// function component for LostItemsFeedScreen
+function LostItemsFeedScreen({ navigation, User }) {
   // Local Refs
   const After_ID = useRef<string | null>(null);
 
@@ -153,4 +153,4 @@ const mapStateToProps = (state) => {
 };
 
 // Connect and Export the component
-export default connect(mapStateToProps)(LostFoundFeedScreen);
+export default connect(mapStateToProps)(LostItemsFeedScreen);

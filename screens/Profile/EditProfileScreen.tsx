@@ -1,24 +1,22 @@
 // Packages Imports
-import { useContext, useState } from "react";
-import { Image, View, StyleSheet, ScrollView } from "react-native";
-import * as DocumentPicker from "expo-document-picker";
+import { useContext } from "react";
+import { StyleSheet, ScrollView } from "react-native";
 
 // Local Components/Types imports
-import AppIcon from "../../components/AppIcon";
 import AppForm from "../../components/AppForm";
 import AppFormField from "../../components/AppFormField";
 import AppRow from "../../components/AppRow";
 import AppSubmitButton from "../../components/AppSubmitButton";
 import AuthAPI from "../../api/AuthAPI";
 import ColorPallete from "../../utils/ColorPallete";
+import ChoosePicture from "../../components/ChoosePicture";
 import EditProfileSchema from "../../schema/EditProfileSchema";
 import GlobalContext from "../../contexts/GlobalContext";
 import Helper from "../../utils/Helper";
-import IconNames from "../../constants/IconNames";
+import RowDetailsCard from "../../components/RowDetailsCard";
 import ToastMessages from "../../constants/Messages";
 import useLoading from "../../hooks/useLoading";
-import AppText from "./../../components/AppText";
-import FontNames from "../../constants/FontNames";
+import useDocumentPicker from "../../hooks/useDocumentPicker";
 
 // function component for EditProfileScreen
 function EditProfileScreen({ navigation }) {
@@ -28,12 +26,12 @@ function EditProfileScreen({ navigation }) {
   // Construct the initial fields
   const initial_fields = { ...User };
 
-  // Local States
-  const [Picture, SetPicture] = useState<any>({
-    uri: initial_fields.profile_picture,
-  });
-
+  // Custom Hooks
   const { Loading, SetLoading } = useLoading({ initialValue: false });
+  const { PickDocument, selectedFile, unselectFile, SameAsInitial } =
+    useDocumentPicker({
+      initial_file: { uri: initial_fields.profile_picture },
+    });
 
   // API call for Editing Profile
   const EditProfile_API = async (values: any) => {
@@ -61,12 +59,12 @@ function EditProfileScreen({ navigation }) {
       if (values.room_number !== initial_fields.room_number)
         formData.append("room_number", values.room_number);
 
-      // If user has chosen a Profile Picture then append it to the formData
-      if (Picture.uri !== initial_fields.profile_picture) {
+      // If user has chosen a Profile selectedFile then append it to the formData
+      if (selectedFile.uri !== initial_fields.profile_picture) {
         let profile_picture: any = {
-          uri: Picture.uri,
-          type: Picture.mimeType,
-          name: Picture.name,
+          uri: selectedFile.uri,
+          type: selectedFile.mimeType,
+          name: selectedFile.name,
         };
 
         formData.append("profile_picture", profile_picture);
@@ -94,19 +92,6 @@ function EditProfileScreen({ navigation }) {
     }
   };
 
-  // function to pick profile_picture
-  const PickImage = async () => {
-    try {
-      const pickedFile = await DocumentPicker.getDocumentAsync({
-        type: "image/*",
-      });
-
-      if (pickedFile.type === "success") SetPicture(pickedFile);
-    } catch (error) {
-      Helper.ShowToast("Some Error Occured while picking the image");
-    }
-  };
-
   // if user is not logged in, return null
   if (!User) return null;
 
@@ -118,54 +103,40 @@ function EditProfileScreen({ navigation }) {
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="always"
     >
-      <View style={styles.PicAndIconContainer}>
-        <View style={styles.ImageContainer}>
-          <Image
-            source={{ uri: Picture.uri }}
-            style={styles.image}
-            resizeMode="cover"
-          />
-        </View>
+      <ChoosePicture
+        uri={selectedFile.uri}
+        onPickPress={PickDocument}
+        onRemovePress={unselectFile}
+        showRemoveIcon={SameAsInitial}
+      />
 
-        <AppIcon
-          family={IconNames.Entypo}
-          name={"edit"}
-          size={30}
-          color={ColorPallete.primary}
-          style={styles.EditIcon}
-          onPress={PickImage}
-        />
-      </View>
+      <RowDetailsCard
+        title="Email"
+        description={initial_fields.email}
+        descriptionProps={{
+          color: ColorPallete.green,
+        }}
+      />
+
+      <RowDetailsCard
+        title="Roll Number"
+        description={initial_fields.roll_number}
+      />
+
+      <RowDetailsCard title="Batch" description={initial_fields.batch} />
+
+      <RowDetailsCard
+        title="Year"
+        description={initial_fields.year}
+        style={{ marginBottom: 5 }}
+      />
 
       <AppForm
         initialValues={initial_fields}
         validationSchema={EditProfileSchema.EditProfileValidationSchema}
         onSubmit={EditProfile_API}
       >
-        <AppFormField
-          label="Name"
-          title="name"
-          placeholder="Name"
-          controlled
-          mode="outlined"
-        />
-
-        <AppFormField
-          label="Email"
-          title="email"
-          controlled
-          mode="outlined"
-          disabled
-        />
-        <AppText
-          text="Email is Verified"
-          color={ColorPallete.green}
-          size={13}
-          marginBottom={15}
-          marginLeft={3}
-          marginTop={3}
-          family={FontNames.Inter_Bold}
-        />
+        <AppFormField label="Name" title="name" placeholder="Name" controlled />
 
         <AppFormField
           label="Phone"
@@ -173,40 +144,7 @@ function EditProfileScreen({ navigation }) {
           placeholder="Phone"
           controlled
           keyboardType="numeric"
-          mode="outlined"
         />
-
-        <AppFormField
-          title="roll_number"
-          placeholder="Roll Number"
-          disabled
-          controlled
-          label="Roll Number"
-          mode="outlined"
-        />
-
-        <AppRow marginBottom={5} marginTop={5}>
-          <AppFormField
-            label="Batch"
-            title="batch"
-            placeholder="Batch"
-            disabled
-            controlled
-            containerStyle={{ flex: 1, marginRight: 10 }}
-            mode="outlined"
-          />
-
-          <AppFormField
-            title="year"
-            placeholder="Year"
-            disabled
-            controlled
-            keyboardType="numeric"
-            label="Year"
-            mode="outlined"
-            containerStyle={{ flex: 1, marginLeft: 10 }}
-          />
-        </AppRow>
 
         <AppRow>
           <AppFormField
@@ -215,15 +153,14 @@ function EditProfileScreen({ navigation }) {
             controlled
             keyboardType="numeric"
             label="Hostel"
-            mode="outlined"
             containerStyle={{ flex: 1, marginRight: 10 }}
           />
+
           <AppFormField
             title="room_number"
             placeholder="Room Number"
             controlled
             label="Room Number"
-            mode="outlined"
             containerStyle={{ flex: 1, marginLeft: 10 }}
           />
         </AppRow>
@@ -248,30 +185,5 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingLeft: 15,
     paddingRight: 15,
-  },
-  PicAndIconContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.1)",
-    padding: 15,
-    marginBottom: 20,
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-  },
-  ImageContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: ColorPallete.primary,
-  },
-  EditIcon: {
-    position: "absolute",
-    zIndex: 10,
-    top: 10,
-    right: 10,
   },
 });

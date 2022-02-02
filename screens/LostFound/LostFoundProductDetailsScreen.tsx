@@ -4,16 +4,17 @@ import { View, StyleSheet, ScrollView, RefreshControl } from "react-native";
 
 // Local components imports
 import AppButton from "../../components/AppButton";
+import AppText from "../../components/AppText";
 import Caraousel from "../../components/Caraousel";
 import ColorPallete from "../../utils/ColorPallete";
+import FontNames from "../../constants/FontNames";
 import GlobalContext from "../../contexts/GlobalContext";
 import Helper from "../../utils/Helper";
+import KeyDescriptionCard from "../../components/KeyDescriptionCard";
 import LayoutConstants from "../../constants/Layout";
 import LostFoundAPI from "../../api/LostFoundAPI";
 import OwnerDetailsCard from "./../../components/OwnerDetailsCard";
 import ScreenNames from "../../navigation/ScreenNames";
-import AppText from "../../components/AppText";
-import FontNames from "../../constants/FontNames";
 
 // function component for LostFoundProductDetailsScreen
 function LostFoundProductDetailsScreen({ navigation, route }) {
@@ -22,8 +23,7 @@ function LostFoundProductDetailsScreen({ navigation, route }) {
   const [Refreshing, SetRefreshing] = useState(false);
 
   // Destructuring State
-  const { files, description, name, _id, posted_by, owner_details } =
-    ProductDetails;
+  const { files, _id, posted_by } = ProductDetails;
 
   // Context vars
   const { User, setVisible, setText } = useContext(GlobalContext);
@@ -106,22 +106,73 @@ function LostFoundProductDetailsScreen({ navigation, route }) {
       >
         {files?.length > 0 ? (
           <View style={styles.imageContainer}>
-            <Caraousel files={files} />
+            <Caraousel files={ProductDetails.files} />
           </View>
         ) : null}
 
         <View style={{ paddingLeft: 10, paddingRight: 10 }}>
           <AppText
-            text={name}
+            text={ProductDetails.name}
             size={22}
             family={FontNames.Sofia_Pro_Bold}
-            marginBottom={5}
           />
 
-          <AppText text={description} size={18} />
+          {ProductDetails.category ? (
+            <AppText
+              text={`in ${ProductDetails.category}`}
+              size={15}
+              family={FontNames.Sofia_Pro_Light}
+              marginBottom={5}
+            />
+          ) : null}
+
+          <AppText
+            text={"Description"}
+            size={20}
+            family={FontNames.Sofia_Pro_Medium}
+          />
+
+          <AppText text={ProductDetails.description} size={16} />
         </View>
 
-        <OwnerDetailsCard owner_details={owner_details} />
+        <View style={styles.productDetails}>
+          {ProductDetails.brand ? (
+            <KeyDescriptionCard
+              title={"Brand : "}
+              description={ProductDetails.brand}
+            />
+          ) : null}
+
+          {ProductDetails.color ? (
+            <KeyDescriptionCard
+              title={"Color : "}
+              description={ProductDetails.color}
+            />
+          ) : null}
+
+          {ProductDetails.lost_location ? (
+            <KeyDescriptionCard
+              title={"Last Location : "}
+              description={ProductDetails.lost_location}
+            />
+          ) : null}
+
+          {ProductDetails.lost_date ? (
+            <KeyDescriptionCard
+              title={"Lost Date : "}
+              description={Helper.get_top_date(ProductDetails.lost_date, null)}
+            />
+          ) : null}
+
+          {ProductDetails.lost_time ? (
+            <KeyDescriptionCard
+              title={"Lost Time : "}
+              description={Helper.get_formatted_time(ProductDetails.lost_time)}
+            />
+          ) : null}
+        </View>
+
+        <OwnerDetailsCard owner_details={ProductDetails.owner_details} />
       </ScrollView>
 
       <View style={{ flexDirection: "row" }}>
@@ -142,7 +193,7 @@ function LostFoundProductDetailsScreen({ navigation, route }) {
                 backgroundColor={ColorPallete.dodgerblue}
                 onPress={() =>
                   navigation.navigate(
-                    ScreenNames.EditLostFoundItemScreen,
+                    ScreenNames.EditLostItemScreen,
                     ProductDetails
                   )
                 }
@@ -180,5 +231,9 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: LayoutConstants.ScreenWidth,
     height: LayoutConstants.ScreenWidth,
+  },
+  productDetails: {
+    marginLeft: 15,
+    marginTop: 10,
   },
 });

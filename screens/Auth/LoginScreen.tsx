@@ -1,4 +1,5 @@
 // Packages imports
+import { useContext } from "react";
 import { Keyboard, ScrollView, StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 
@@ -13,22 +14,27 @@ import AuthActionCreators from "./../../store/auth/actions";
 import ColorPallete from "../../utils/ColorPallete";
 import configurations from "../../config/config";
 import FontNames from "../../constants/FontNames";
+import GlobalContext from "./../../contexts/GlobalContext";
+import Helper from "./../../utils/Helper";
+import JWT from "../../auth/JWT";
 import KeyboardAwareContainer from "../../components/KeyboardAwareContainer";
 import LoginSchema from "../../schema/LoginSchema";
 import ScreenNames from "../../navigation/ScreenNames";
-import useLoading from "../../hooks/useLoading";
-import Helper from "./../../utils/Helper";
 import ToastMessages from "./../../constants/Messages";
-import JWT from "../../auth/JWT";
+import useLoading from "../../hooks/useLoading";
 
 // functional components for LoginScreen
 function LoginScreen({ navigation, SetUser }: any) {
+  // Custom Hooks and COntext
   const { Loading, SetLoading } = useLoading({ initialValue: false });
+  const { PushToken } = useContext(GlobalContext);
 
   // API call to login
   const LoginAPICall = async (values: any) => {
     try {
       Keyboard.dismiss();
+
+      if (PushToken) values.push_notification_token = PushToken;
 
       SetLoading(true);
       const loginResponse = await AuthAPI.Login(values);
@@ -76,12 +82,14 @@ function LoginScreen({ navigation, SetUser }: any) {
             title="email"
             placeholder="Email"
             keyboardType="email-address"
+            mandatory={true}
           />
 
           <AppFormField
             title="password"
             placeholder="Password"
             secureTextEntry={true}
+            mandatory={true}
           />
 
           <View style={styles.forgotPasswordContainer}>
