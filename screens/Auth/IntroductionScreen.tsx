@@ -43,11 +43,9 @@ function IntroductionScreen({ navigation, SetUser }: any) {
       const response = await GoogleSignin.signIn();
 
       const idToken = response.idToken;
-      const user = response.user;
 
       let payload: any = {
-        ID_Token: idToken,
-        user: user,
+        id_token: idToken,
       };
 
       if (PushToken) payload.push_notification_token = PushToken;
