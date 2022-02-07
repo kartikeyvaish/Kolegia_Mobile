@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "Kolegia",
-    "slug": "Kolegia",
+    "name": "kolegia",
+    "slug": "kolegia",
     "version": "1.0.0",
     "jsEngine": "hermes",
     "assetBundlePatterns": [
       "**/*"
     ]
   },
-  "name": "Kolegia"
+  "name": "kolegia"
 }
