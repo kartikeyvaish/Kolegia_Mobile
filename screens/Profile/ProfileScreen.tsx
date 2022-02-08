@@ -1,6 +1,7 @@
 // Packages Imports
 import { useContext, useMemo } from "react";
-import { View, StyleSheet, Pressable } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
+import { useDispatch } from "react-redux";
 
 // Local Files Imports
 import AppIcon from "../../components/AppIcon";
@@ -10,31 +11,38 @@ import AppText from "../../components/AppText";
 import AuthAPI from "./../../api/AuthAPI";
 import ColorPallete from "../../utils/ColorPallete";
 import FontNames from "../../constants/FontNames";
+import GlobalActionCreators from "./../../store/global/actions";
 import GlobalContext from "../../contexts/GlobalContext";
 import IconNames from "../../constants/IconNames";
 import MenuCard from "../../components/MenuCard";
 import ScreenNames from "../../navigation/ScreenNames";
 import { version } from "../../package.json";
-import { useDispatch } from "react-redux";
-import GlobalActionCreators from "../../store/global/actions";
 
 // Functional Component for ProfileScreen
 function ProfileScreen({ navigation }: any) {
   // Contexts
-  const { User, setText, setVisible } = useContext(GlobalContext);
+  const {
+    User,
+    SetIsLoading,
+    SetOverlayText,
+    IsUpdateAvailable,
+    UpdateDownloading,
+    checkForUpdates,
+    downloadUpdate,
+  } = useContext(GlobalContext);
 
-  // Dispathcer
+  // Dispatcher
   const dispatch = useDispatch();
 
   // Logout API
   const Logout_API = async () => {
     try {
-      setVisible(true);
-      setText("Logging out...");
-      setVisible(true);
+      SetIsLoading(true);
+      SetOverlayText("Logging out...");
+      SetIsLoading(true);
       await AuthAPI.Logout(User.auth_token);
+      SetIsLoading(false);
       dispatch(GlobalActionCreators.Reset());
-      setVisible(false);
       navigation.jumpTo(ScreenNames.HomeTabScreen);
     } catch (error) {}
   };
@@ -66,100 +74,118 @@ function ProfileScreen({ navigation }: any) {
     <View style={styles.container}>
       {HeaderBar}
 
-      {User ? (
-        <>
-          <Pressable style={styles.profileContainer}>
-            <View style={styles.imageContainer}>
-              <AppImage
-                uri={User?.profile_picture}
-                style={{ width: "100%", height: "100%" }}
-                resizeMode="contain"
-                showBorder={false}
-              />
-            </View>
-
-            <View style={{ flex: 1 }}>
-              <View style={{ marginLeft: 15 }}>
-                <AppText
-                  text={User?.name}
-                  size={20}
-                  family={FontNames.Inter_Bold}
-                />
-                <AppText text={User?.email} size={15} />
-
-                <AppText
-                  text="Edit Profile"
-                  textProps={{
-                    style: styles.editProfileText,
-                  }}
-                  onPress={() =>
-                    navigation.navigate(ScreenNames.EditProfileScreen)
-                  }
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+        {User ? (
+          <>
+            <View style={styles.profileContainer}>
+              <View style={styles.imageContainer}>
+                <AppImage
+                  uri={User?.profile_picture}
+                  style={{ width: "100%", height: "100%" }}
+                  resizeMode="contain"
+                  showBorder={false}
                 />
               </View>
+
+              <View style={{ flex: 1 }}>
+                <View style={{ marginLeft: 15 }}>
+                  <AppText
+                    text={User?.name}
+                    size={20}
+                    family={FontNames.Inter_Bold}
+                  />
+                  <AppText text={User?.email} size={15} />
+
+                  <AppText
+                    text="Edit Profile"
+                    textProps={{
+                      style: styles.editProfileText,
+                    }}
+                    onPress={() =>
+                      navigation.navigate(ScreenNames.EditProfileScreen)
+                    }
+                  />
+                </View>
+              </View>
             </View>
-          </Pressable>
 
-          <MenuCard
-            name="My Buy/Sell Items"
-            prefixIconProps={{
-              family: IconNames.Entypo,
-              name: "shop",
-            }}
-            onPress={() =>
-              navigation.navigate(ScreenNames.MyBuySellItemsScreen)
-            }
-          />
+            <MenuCard
+              name="My Buy/Sell Items"
+              prefixIconProps={{
+                family: IconNames.Entypo,
+                name: "shop",
+              }}
+              onPress={() =>
+                navigation.navigate(ScreenNames.MyBuySellItemsScreen)
+              }
+            />
 
-          <MenuCard
-            name="My Lost Items"
-            prefixIconProps={{
-              family: IconNames.MaterialCommunityIcons,
-              name: "briefcase-search",
-            }}
-            onPress={() =>
-              navigation.navigate(ScreenNames.MyLostFoundItemsScreen)
-            }
-          />
+            <MenuCard
+              name="My Lost Items"
+              prefixIconProps={{
+                family: IconNames.MaterialCommunityIcons,
+                name: "briefcase-search",
+              }}
+              onPress={() =>
+                navigation.navigate(ScreenNames.MyLostFoundItemsScreen)
+              }
+            />
 
-          <MenuCard
-            name="My Requirements"
-            prefixIconProps={{
-              family: IconNames.FontAwesome,
-              name: "list",
-            }}
-            onPress={() =>
-              navigation.navigate(ScreenNames.MyRequirementsScreen)
-            }
-          />
+            <MenuCard
+              name="My Requirements"
+              prefixIconProps={{
+                family: IconNames.FontAwesome,
+                name: "list",
+              }}
+              onPress={() =>
+                navigation.navigate(ScreenNames.MyRequirementsScreen)
+              }
+            />
 
-          <MenuCard
-            name="Raised by You"
-            prefixIconProps={{
-              family: IconNames.FontAwesome5,
-              name: "fist-raised",
-            }}
-            onPress={() => navigation.navigate(ScreenNames.MyRaisedHandsScreen)}
-          />
+            <MenuCard
+              name="Raised by You"
+              prefixIconProps={{
+                family: IconNames.FontAwesome5,
+                name: "fist-raised",
+              }}
+              onPress={() =>
+                navigation.navigate(ScreenNames.MyRaisedHandsScreen)
+              }
+            />
 
-          <MenuCard
-            name="Logout"
-            prefixIconProps={{
-              family: IconNames.AntDesign,
-              name: "logout",
-            }}
-            onPress={Logout_API}
-            color={ColorPallete.red}
-          />
-        </>
-      ) : null}
-      <View style={styles.versionContainer}>
-        <AppText
-          text={`v${version}`}
-          size={20}
-          family={FontNames.Inter_Regular}
-        />
-      </View>
+            <MenuCard
+              name={IsUpdateAvailable ? "Download Update" : "Check For Updates"}
+              prefixIconProps={{
+                family: IsUpdateAvailable
+                  ? IconNames.Feather
+                  : IconNames.MaterialIcons,
+                name: IsUpdateAvailable ? "download" : "system-update",
+                color: IsUpdateAvailable ? ColorPallete.green : undefined,
+              }}
+              onPress={IsUpdateAvailable ? downloadUpdate : checkForUpdates}
+              loading={UpdateDownloading}
+            />
+
+            <MenuCard
+              name="Logout"
+              prefixIconProps={{
+                family: IconNames.AntDesign,
+                name: "logout",
+              }}
+              onPress={Logout_API}
+              color={ColorPallete.red}
+            />
+
+            <View style={styles.versionContainer}>
+              <AppText
+                text={`v${version}`}
+                size={20}
+                family={FontNames.Inter_Regular}
+              />
+            </View>
+          </>
+        ) : null}
+      </ScrollView>
     </View>
   );
 }
@@ -204,7 +230,6 @@ const styles = StyleSheet.create({
   },
   versionContainer: {
     flex: 1,
-    justifyContent: "flex-end",
     alignItems: "center",
     marginBottom: 20,
   },

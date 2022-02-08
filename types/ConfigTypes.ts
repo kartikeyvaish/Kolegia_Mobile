@@ -8,7 +8,7 @@ export interface ConfigProps {
     default_channel_id?: string;
 
     // Network Variables
-    __DEV__?: boolean;
+    mode?: string;
     baseUrl?: string;
     DEV_BASE_URL?: string;
     PROD_BASE_URL?: string;

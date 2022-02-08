@@ -273,18 +273,33 @@ export interface DeveloperCardProps {
     email_address?: string;
 }
 
+export interface OverlayProps {
+    IsLoading?: boolean;
+    SetIsLoading?: any;
+    OverlayText?: string;
+    SetOverlayText?: any;
+}
+
+export interface useExpoUpdatesProps {
+    // Expo updates
+    IsUpdateAvailable?: any;
+    downloadUpdate?: any;
+    checkForUpdates?: any;
+    UpdateDownloading?: any;
+}
+
 // GlobalContextProps interface
-export interface GlobalContextProps {
+export interface GlobalContextProps extends OverlayProps, useExpoUpdatesProps {
     User?: any;
     SetUser?: any;
-    visible?: boolean;
-    setVisible?: any;
-    text?: string;
-    setText?: any;
-    ToggleMode?: any;
     children?: any;
-    GlobalState?: any;
-    modal_props?: any;
+
+    FoundItemsCount?: any;
+    UnreadMessagesCount?: any;
+    LostItemsCount?: any;
+    RaisedHandsCount?: any;
+    UsersCount?: any;
+
     [key: string]: any;
 }
 
@@ -326,6 +341,7 @@ export interface MenuCardProps {
     textContainerStyle?: StyleProp<ViewStyle>;
     borderBottomColor?: ColorValue;
     borderBottomWidth?: number;
+    loading?: boolean;
 
     // Prefix Icon
     prefixIconProps?: AppIconTypes;

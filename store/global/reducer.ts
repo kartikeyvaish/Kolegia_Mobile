@@ -9,6 +9,7 @@ const InitialState = {
   UsersCount: 0,
   RaisedHandsCount: 0,
   UnreadMessagesCount: 0,
+  IsUpdateAvailable: false,
 };
 
 // Reducers
@@ -34,6 +35,12 @@ const globalReducer = (state = InitialState, action: StoreActionType) => {
       return {
         ...state,
         UnreadMessagesCount: action.payload,
+      };
+
+    case actionTypes.UPDATE_CHECK_FOR_UPDATES:
+      return {
+        ...state,
+        IsUpdateAvailable: action.payload,
       };
 
     // Reset

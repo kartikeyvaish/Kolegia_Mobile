@@ -32,6 +32,7 @@
     "expo-navigation-bar": "~1.1.1",
     "expo-splash-screen": "~0.14.1",
     "expo-status-bar": "~1.2.0",
+    "expo-updates": "^0.11.6",
     "formik": "^2.2.9",
     "jwt-decode": "^3.1.2",
     "react": "17.0.1",
