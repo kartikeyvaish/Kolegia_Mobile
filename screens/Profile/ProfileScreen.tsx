@@ -21,15 +21,8 @@ import { version } from "../../package.json";
 // Functional Component for ProfileScreen
 function ProfileScreen({ navigation }: any) {
   // Contexts
-  const {
-    User,
-    SetIsLoading,
-    SetOverlayText,
-    IsUpdateAvailable,
-    UpdateDownloading,
-    checkForUpdates,
-    downloadUpdate,
-  } = useContext(GlobalContext);
+  const { User, SetIsLoading, SetOverlayText, checkForUpdates } =
+    useContext(GlobalContext);
 
   // Dispatcher
   const dispatch = useDispatch();
@@ -154,16 +147,12 @@ function ProfileScreen({ navigation }: any) {
             />
 
             <MenuCard
-              name={IsUpdateAvailable ? "Download Update" : "Check For Updates"}
+              name={"Check For Updates"}
               prefixIconProps={{
-                family: IsUpdateAvailable
-                  ? IconNames.Feather
-                  : IconNames.MaterialIcons,
-                name: IsUpdateAvailable ? "download" : "system-update",
-                color: IsUpdateAvailable ? ColorPallete.green : undefined,
+                family: IconNames.MaterialIcons,
+                name: "system-update",
               }}
-              onPress={IsUpdateAvailable ? downloadUpdate : checkForUpdates}
-              loading={UpdateDownloading}
+              onPress={checkForUpdates}
             />
 
             <MenuCard

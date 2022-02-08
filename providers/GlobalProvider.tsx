@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 
 // Components/Screens imports
 import AuthActionCreators from "../store/auth/actions";
-import GlobalActionCreators from "../store/global/actions";
 import GlobalContext from "../contexts/GlobalContext";
 import { GlobalContextProps } from "../types/ComponentTypes";
 import LoadingOverlay from "./../components/LoadingOverlay";
@@ -28,15 +27,13 @@ function GlobalProvider(props: GlobalContextProps) {
   useNotifications(PushToken, SetPushToken);
 
   // use CheckForUpdates custom hook
-  const expoUpdates = useExpoUpdates({
-    SetUpdateCheck: SetUpdates,
-  });
+  const { checkForUpdates } = useExpoUpdates();
 
   // Global Provider Value
   const provider_value = {
     User,
     PushToken,
-    ...expoUpdates,
+    checkForUpdates,
     ...loadingProps,
     ...otherProps,
   };
@@ -78,8 +75,6 @@ const mapDispatchToProps = (dispatch) => {
     SetUser: (user: any) => dispatch(AuthActionCreators.Login(user)),
     SetPushToken: (pushToken: any) =>
       dispatch(AuthActionCreators.UpdatePushToken(pushToken)),
-    SetUpdates: (isUpdateAvailable: boolean) =>
-      dispatch(GlobalActionCreators.UpdateCheckForUpdates(isUpdateAvailable)),
   };
 };
 
