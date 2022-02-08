@@ -19,12 +19,6 @@ const UpdateUnreadMessagesCount = (count: any) => ({
   payload: count,
 });
 
-// UpdateCheckForUpdates Action Creator
-const UpdateCheckForUpdates = (isUpdateAvailable: any) => ({
-  type: actionTypes.UPDATE_CHECK_FOR_UPDATES,
-  payload: isUpdateAvailable,
-});
-
 // RESET Action Creator
 const Reset = () => ({
   type: actionTypes.RESET,
@@ -35,7 +29,6 @@ const GlobalActionCreators = {
   UpdateUnreadMessagesCount,
   Reset,
   UpdateCounts,
-  UpdateCheckForUpdates
 }
 
 

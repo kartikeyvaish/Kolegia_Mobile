@@ -282,10 +282,7 @@ export interface OverlayProps {
 
 export interface useExpoUpdatesProps {
     // Expo updates
-    IsUpdateAvailable?: any;
-    downloadUpdate?: any;
     checkForUpdates?: any;
-    UpdateDownloading?: any;
 }
 
 // GlobalContextProps interface
