@@ -26,24 +26,24 @@ function LostFoundProductDetailsScreen({ navigation, route }) {
   const { files, _id, posted_by } = ProductDetails;
 
   // Context vars
-  const { User, setVisible, setText } = useContext(GlobalContext);
+  const { User, SetIsLoading, SetOverlayText } = useContext(GlobalContext);
 
   // Delete Product function
   const DeleteProduct = async (_id: any) => {
     try {
-      setText("Deleting Product");
-      setVisible(true);
+      SetOverlayText("Deleting Product...");
+      SetIsLoading(true);
 
       const apiResponse = await LostFoundAPI.DeleteLostFoundItem(
         { product_id: _id },
         User?.auth_token
       );
 
-      setVisible(false);
+      SetIsLoading(false);
       Helper.ShowToast(apiResponse.data.message);
       navigation.popToTop();
     } catch (error) {
-      setVisible(false);
+      SetIsLoading(false);
     }
   };
 

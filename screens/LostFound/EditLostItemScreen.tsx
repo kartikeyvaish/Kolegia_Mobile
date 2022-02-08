@@ -99,7 +99,6 @@ function EditLostItemScreen({ navigation, User, route }: any) {
         Helper.ShowToast(apiResponse.data.message);
       }
     } catch (error) {
-      console.log(error);
       Helper.ShowToast(ToastMessages.SERVER_ERROR_MESSAGE);
       SetLoading(false);
     }

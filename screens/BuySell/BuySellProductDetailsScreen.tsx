@@ -29,7 +29,7 @@ function BuySellProductDetailsScreen({ navigation, route }) {
     ProductDetails;
 
   // Context vars
-  const { User, setVisible, setText } = useContext(GlobalContext);
+  const { User, SetIsLoading, SetOverlayText } = useContext(GlobalContext);
 
   // converting to indian format
   let formattedPrice = Helper.convert_to_rupees(price);
@@ -37,17 +37,19 @@ function BuySellProductDetailsScreen({ navigation, route }) {
   // Delete Product function
   const DeleteProduct = async (_id: any) => {
     try {
-      setText("Deleting Product");
-      setVisible(true);
+      SetOverlayText("Deleting Product...");
+      SetIsLoading(true);
+
       const apiResponse = await BuySellAPI.DeleteBuySellItem(
         { product_id: _id },
         User?.auth_token
       );
-      setVisible(false);
+
+      SetIsLoading(false);
       Helper.ShowToast(apiResponse.data.message);
       navigation.popToTop();
     } catch (error) {
-      setVisible(false);
+      SetIsLoading(false);
     }
   };
 

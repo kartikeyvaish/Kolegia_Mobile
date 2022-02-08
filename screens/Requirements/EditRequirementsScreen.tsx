@@ -19,7 +19,7 @@ import ToastMessages from "./../../constants/Messages";
 // function component for the post new requirement screen
 function EditRequirementsScreen({ navigation, route }) {
   // Global context
-  const { User, SetText, setVisible } = useContext(GlobalContext);
+  const { User, SetOverlayText, SetIsLoading } = useContext(GlobalContext);
 
   // Initially these will be the fields
   const initial_fields: RequirementProps = route.params;
@@ -29,8 +29,8 @@ function EditRequirementsScreen({ navigation, route }) {
     try {
       Keyboard.dismiss();
 
-      SetText("Editing Requirement...");
-      setVisible(true);
+      SetOverlayText("Editing Requirement...");
+      SetIsLoading(true);
 
       let payload = {
         title: values.title,
@@ -43,20 +43,20 @@ function EditRequirementsScreen({ navigation, route }) {
         User.auth_token
       );
 
-      setVisible(false);
+      SetIsLoading(false);
       Helper.ShowToast(apiResponse.data.message);
       if (apiResponse.ok) navigation.popToTop();
     } catch (error) {
       Helper.ShowToast(ToastMessages.SERVER_ERROR_MESSAGE);
-      setVisible(false);
+      SetIsLoading(false);
     }
   };
 
   // API call to delete requirement
   const DeleteRequirement = async () => {
     try {
-      SetText("Deleting Requirement...");
-      setVisible(true);
+      SetOverlayText("Deleting Requirement...");
+      SetIsLoading(true);
 
       const apiResponse = await RequirementsAPI.DeleteRequirement(
         {
@@ -64,12 +64,12 @@ function EditRequirementsScreen({ navigation, route }) {
         },
         User.auth_token
       );
-      setVisible(false);
+      SetIsLoading(false);
       Helper.ShowToast(apiResponse.data.message);
 
       if (apiResponse.ok) navigation.popToTop();
     } catch (error) {
-      setVisible(false);
+      SetIsLoading(false);
       Helper.ShowToast(ToastMessages.SERVER_ERROR_MESSAGE);
     }
   };
