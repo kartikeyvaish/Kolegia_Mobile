@@ -1,0 +1,16 @@
+{
+    "cli": {
+        "version": ">= 0.46.0"
+    },
+    "build": {
+        "Kolegia": {
+            "android": {
+                "buildType": "apk",
+                "gradleCommand": ":app:assembleRelease"
+            }
+        }
+    },
+    "submit": {
+        "production": {}
+    }
+}

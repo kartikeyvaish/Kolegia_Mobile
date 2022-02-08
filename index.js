@@ -1,4 +1,5 @@
 // Packages Imports
+import "expo-asset";
 import "react-native-gesture-handler";
 import { AppRegistry } from "react-native";
 import messaging from "@react-native-firebase/messaging";
