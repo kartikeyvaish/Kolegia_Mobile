@@ -1,5 +1,11 @@
 // Packages Imports
-import { View, StyleSheet, StyleProp, ViewStyle } from "react-native";
+import {
+  View,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+  ActivityIndicator,
+} from "react-native";
 import { TouchableRipple } from "react-native-paper";
 
 // components types imports
@@ -9,6 +15,7 @@ import FontNames from "../constants/FontNames";
 import IconNames from "../constants/IconNames";
 import { MenuCardProps } from "../types/ComponentTypes";
 import { useTheme } from "@react-navigation/native";
+import ColorPallete from "../utils/ColorPallete";
 
 // functional component for MenuCard
 function MenuCard(props: MenuCardProps) {
@@ -33,6 +40,7 @@ function MenuCard(props: MenuCardProps) {
     textStyle,
     borderBottomColor = colors.text,
     borderBottomWidth = 0,
+    loading,
   } = props;
 
   // Final container style
@@ -79,18 +87,22 @@ function MenuCard(props: MenuCardProps) {
         </View>
 
         {showSuffixIcon ? (
-          <View style={{ marginRight: 10 }}>
-            {customSuffixIcon ? (
-              customSuffixIcon
-            ) : (
-              <AppIcon
-                family={IconNames.AntDesign}
-                name="right"
-                size={20}
-                {...suffixIconProps}
-              />
-            )}
-          </View>
+          !loading ? (
+            <View style={{ marginRight: 10 }}>
+              {customSuffixIcon ? (
+                customSuffixIcon
+              ) : (
+                <AppIcon
+                  family={IconNames.AntDesign}
+                  name="right"
+                  size={20}
+                  {...suffixIconProps}
+                />
+              )}
+            </View>
+          ) : (
+            <ActivityIndicator size={"large"} color={ColorPallete.primary} />
+          )
         ) : null}
       </View>
     </TouchableRipple>
