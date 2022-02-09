@@ -19,6 +19,8 @@ function AppText(props: AppTextProps) {
     size,
     family,
     onPress,
+    numberOfLines,
+    adjustsFontSizeToFit,
     ...otherProps
   } = props;
 
@@ -35,7 +37,13 @@ function AppText(props: AppTextProps) {
 
   // Rendering the AppText component
   return (
-    <Text style={textStyles} onPress={onPress} {...textProps}>
+    <Text
+      style={textStyles}
+      onPress={onPress}
+      numberOfLines={numberOfLines}
+      adjustsFontSizeToFit={adjustsFontSizeToFit}
+      {...textProps}
+    >
       {text}
     </Text>
   );

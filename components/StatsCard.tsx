@@ -43,6 +43,8 @@ function StatsCard({ count, title, color }) {
         text={title}
         color={color ? color : undefined}
         family={FontNames.Sofia_Pro_Medium}
+        adjustsFontSizeToFit={true}
+        numberOfLines={1}
       />
     </AnimatedView>
   );

@@ -1,65 +1,48 @@
 // Packages Imports
-import { useEffect } from "react";
-import { StyleSheet } from "react-native";
-import { useNetInfo } from "@react-native-community/netinfo";
+import { useEffect, useState } from "react";
+import { StyleSheet, Text } from "react-native";
 import Animated, {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
+  Layout,
+  SlideInUp,
+  SlideOutUp,
 } from "react-native-reanimated";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 // Components/Types imports
 import ColorPallete from "../utils/ColorPallete";
+import FontNames from "../constants/FontNames";
 
 // Functional component for the offline notice
 function OfflineNotice() {
   // NetInfo Hook
   const netInfo = useNetInfo();
-  // Animated Values
-  const containerHeight = useSharedValue(0);
-  const labelOpacity = useSharedValue(0);
+
+  // Local States
+  const [showNotice, SetshowNotice] = useState(false);
 
   // useEffect to detect changes in network connection
   useEffect(() => {
     if (netInfo) {
       if (netInfo.type !== "unknown" && netInfo.isInternetReachable == false) {
-        containerHeight.value = 50;
-        labelOpacity.value = 1;
+        // Internet gone show notice now
+        SetshowNotice(true);
       } else {
-        containerHeight.value = 0;
-        labelOpacity.value = 0;
+        // Internet is back hide notice now
+        SetshowNotice(false);
       }
     }
   }, [netInfo]);
 
-  // Container Animated Style
-  const ContainerStyle = useAnimatedStyle(() => {
-    return {
-      height: withTiming(containerHeight.value, {
-        duration: 500,
-        easing: Easing.bezier(0.25, 0.1, 0.25, 1),
-      }),
-    };
-  });
-
-  // Label Animated Style
-  const LabelStyle = useAnimatedStyle(() => {
-    return {
-      opacity: withTiming(labelOpacity.value, {
-        duration: 500,
-        easing: Easing.bezier(0.25, 0.1, 0.25, 1),
-      }),
-    };
-  });
-
-  return (
-    <Animated.View style={[styles.container, ContainerStyle]}>
-      <Animated.Text style={[styles.label, LabelStyle]}>
-        No Internet Connection
-      </Animated.Text>
+  return showNotice ? (
+    <Animated.View
+      style={styles.container}
+      entering={SlideInUp.duration(1000)}
+      exiting={SlideOutUp.duration(1000)}
+      layout={Layout}
+    >
+      <Text style={styles.label}>No Internet Connection</Text>
     </Animated.View>
-  );
+  ) : null;
 }
 
 // Exports
@@ -74,10 +57,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     width: "100%",
-    zIndex: 100,
+    zIndex: 200,
+    padding: 10,
   },
   label: {
     color: ColorPallete.white,
+    fontFamily: FontNames.Inter_Bold,
     fontSize: 20,
   },
 });
