@@ -4,7 +4,7 @@ export const ExploreCards = [
     {
         _id: "1",
         uri: "asset:/images/BuySellItem.png",
-        heading: "Buy & Sell",
+        heading: "Sell Items",
         description:
             "Users posts some stuff for other users to buy them. Have a look.",
         navigate: ScreenNames.BuySellFeedScreen
@@ -12,7 +12,7 @@ export const ExploreCards = [
     {
         _id: "2",
         uri: "asset:/images/LostFoundItem.png",
-        heading: "Lost & Found",
+        heading: "Lost Items",
         description: "Users posts lost items for other users to find them.",
         navigate: ScreenNames.LostItemsFeedScreen
     },

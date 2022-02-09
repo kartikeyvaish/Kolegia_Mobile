@@ -35,7 +35,7 @@ function RaiseHandOnItemScreen({ route, navigation, User }: any) {
       Helper.ShowToast(apiResponse.data.message);
 
       if (apiResponse.ok) {
-        // navigation.goBack();
+        navigation.goBack();
       }
     } catch (error) {
       SetLoading(false);

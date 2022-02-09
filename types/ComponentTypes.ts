@@ -129,6 +129,8 @@ export interface AppTextProps {
     marginRight?: number;
     marginTop?: number;
     marginBottom?: number;
+    numberOfLines?: number;
+    adjustsFontSizeToFit?: boolean;
     onPress?: (event: GestureResponderEvent) => void;
 }
 
