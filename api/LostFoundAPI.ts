@@ -31,6 +31,19 @@ function GetLostFoundFeed(after: string, Token: string): Promise<ApiResponse<any
     );
 }
 
+// SearchLostFoundItems Endpoint function
+function SearchLostFoundItems(search: string, Token: string): Promise<ApiResponse<any, any>> {
+    return apiClient.get(
+        search_lost_found,
+        { search: search },
+        {
+            headers: {
+                Authorization: `Bearer ${Token}`,
+            },
+        }
+    );
+}
+
 // PostLostFoundItem Endpoint function
 function PostLostFoundItem(DATA: any, Token: string): Promise<ApiResponse<any, any>> {
     return apiClient.post(create_buy_sell, DATA, {
@@ -106,7 +119,8 @@ const LostFoundAPI = {
     GetOwnLostFoundItems,
     DeleteLostFoundItem,
     GetLostFoundFeed,
-    MarkAsFound
+    MarkAsFound,
+    SearchLostFoundItems
 }
 
 // Exports

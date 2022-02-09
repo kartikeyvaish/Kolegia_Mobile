@@ -24,6 +24,8 @@ function LostItemsFeedScreen({ navigation, User }) {
   // Local states
   const [IsDataLeft, SetIsDataLeft] = useState(true);
   const [Loading, SetLoading] = useState(false);
+  const [SearchProducts, SetSearchProducts] = useState([]);
+  const [SearchLoading, SetSearchLoading] = useState(false);
   const [Products, SetProducts] = useState([]);
   const [Refreshing, SetRefreshing] = useState(false);
   const [SearchQuery, SetSearchQuery] = useState("");
@@ -88,7 +90,20 @@ function LostItemsFeedScreen({ navigation, User }) {
   // perform a Search call and update the state accordingly
   const SearchAPICall = async () => {
     try {
-    } catch (error) {}
+      SetSearchLoading(true);
+      const apiResponse = await LostFoundAPI.SearchLostFoundItems(
+        SearchQuery,
+        User?.auth_token
+      );
+
+      if (apiResponse.ok) {
+        SetSearchProducts(apiResponse.data.products);
+      }
+
+      SetSearchLoading(false);
+    } catch (error) {
+      SetSearchLoading(false);
+    }
   };
 
   // render Item for Flatlist
@@ -120,6 +135,24 @@ function LostItemsFeedScreen({ navigation, User }) {
 
       {Loading ? (
         <AppLoading loadingText="Fetching Products.." />
+      ) : SearchQuery.length ? (
+        SearchLoading ? (
+          <AppLoading loadingText="Searching for Results" loading={true} />
+        ) : (
+          <FlatList
+            data={SearchProducts}
+            keyExtractor={(item) => item._id}
+            renderItem={renderItem}
+            contentContainerStyle={{ flexGrow: 1 }}
+            ListEmptyComponent={
+              <AppLoading
+                loadingText="No Search Results found"
+                loading={false}
+              />
+            }
+            showsVerticalScrollIndicator={false}
+          />
+        )
       ) : (
         <FlatList
           data={Products}
@@ -138,7 +171,7 @@ function LostItemsFeedScreen({ navigation, User }) {
             ) : null
           }
           onEndReached={Products.length > 3 ? GetLostFoundList : null}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={0.3}
         />
       )}
     </AppContainer>

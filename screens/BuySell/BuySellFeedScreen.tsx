@@ -24,6 +24,8 @@ function BuySellFeedScreen({ navigation, User }) {
   // Local states
   const [Loading, SetLoading] = useState(false);
   const [Products, SetProducts] = useState([]);
+  const [SearchProducts, SetSearchProducts] = useState([]);
+  const [SearchLoading, SetSearchLoading] = useState(false);
   const [Refreshing, SetRefreshing] = useState(false);
   const [SearchQuery, SetSearchQuery] = useState("");
   const [IsDataLeft, SetIsDataLeft] = useState(true);
@@ -88,7 +90,20 @@ function BuySellFeedScreen({ navigation, User }) {
   // perform a Search call and update the state accordingly
   const SearchAPICall = async () => {
     try {
-    } catch (error) {}
+      SetSearchLoading(true);
+      const apiResponse = await BuySellAPI.SearchBuySellItems(
+        SearchQuery,
+        User?.auth_token
+      );
+
+      if (apiResponse.ok) {
+        SetSearchProducts(apiResponse.data.products);
+      }
+
+      SetSearchLoading(false);
+    } catch (error) {
+      SetSearchLoading(false);
+    }
   };
 
   // render Item for Flatlist
@@ -120,6 +135,24 @@ function BuySellFeedScreen({ navigation, User }) {
 
       {Loading ? (
         <AppLoading loadingText="Fetching Products.." />
+      ) : SearchQuery.length ? (
+        SearchLoading ? (
+          <AppLoading loadingText="Searching for Results" loading={true} />
+        ) : (
+          <FlatList
+            data={SearchProducts}
+            keyExtractor={(item) => item._id}
+            renderItem={renderItem}
+            contentContainerStyle={{ flexGrow: 1 }}
+            ListEmptyComponent={
+              <AppLoading
+                loadingText="No Search Results found"
+                loading={false}
+              />
+            }
+            showsVerticalScrollIndicator={false}
+          />
+        )
       ) : (
         <FlatList
           data={Products}

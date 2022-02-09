@@ -30,6 +30,19 @@ function GetBuySellFeed(after: string, Token: string): Promise<ApiResponse<any, 
     );
 }
 
+// SearchBuySellItems Endpoint function
+function SearchBuySellItems(search: string, Token: string): Promise<ApiResponse<any, any>> {
+    return apiClient.get(
+        search_buy_sell,
+        { search: search },
+        {
+            headers: {
+                Authorization: `Bearer ${Token}`,
+            },
+        }
+    );
+}
+
 // PostNewBuySellItem Endpoint function
 function PostNewBuySellItem(DATA: any, Token: string): Promise<ApiResponse<any, any>> {
     return apiClient.post(create_buy_sell, DATA, {
@@ -95,7 +108,8 @@ const BuySellAPI = {
     GetBuySellProductDetails,
     GetOwnBuySellList,
     DeleteBuySellItem,
-    GetBuySellFeed
+    GetBuySellFeed,
+    SearchBuySellItems
 }
 
 // Exporting Auth Endpoints
