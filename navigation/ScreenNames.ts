@@ -38,4 +38,5 @@ export default {
     PostNewRequirementScreen: "PostNewRequirementScreen",
     RaiseHandOnItemScreen: "RaiseHandOnItemScreen",
     ResetPasswordScreen: "ResetPasswordScreen",
+    VideoPlayerScreen: "VideoPlayerScreen",
 }

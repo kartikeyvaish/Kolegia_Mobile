@@ -37,6 +37,7 @@ import TabNavigator from "./TabNavigator";
 import ResetPasswordScreen from "../screens/Auth/ResetPassword";
 import ChatRoomScreen from "./../screens/Chats/ChatRoomScreen";
 import MyRaisedHandsScreen from "../screens/RaiseHands/MyRaisedHandsScreen";
+import VideoPlayerScreen from "../screens/Misc/VideoPlayerScreen";
 
 // Stack Navigator
 const Stack = createStackNavigator();
@@ -224,6 +225,10 @@ function AppNavigator() {
             headerShown: true,
             headerTitle: "Reset Password",
           }}
+        />
+        <Stack.Screen
+          name={ScreenNames.VideoPlayerScreen}
+          component={VideoPlayerScreen}
         />
 
         {/* Auth Screens */}
