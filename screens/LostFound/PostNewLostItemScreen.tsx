@@ -21,6 +21,7 @@ import LostFoundAPI from "../../api/LostFoundAPI";
 import LostFoundSchema, {
   LOST_FOUND_CATEGORY,
 } from "../../schema/LostFoundItemSchema";
+import ScreenNames from "../../navigation/ScreenNames";
 import TimePicker from "../../components/TimePicker";
 import ToastMessages from "../../constants/Messages";
 import useLoading from "../../hooks/useLoading";
@@ -165,6 +166,9 @@ function PostNewLostItemScreen({ navigation, User }: any) {
           {...item}
           key={item._id.toString()}
           onPress={() => RemoveDocument(item._id)}
+          onViewPress={() =>
+            navigation.navigate(ScreenNames.VideoPlayerScreen, item)
+          }
         />
       ))}
     </ScrollView>

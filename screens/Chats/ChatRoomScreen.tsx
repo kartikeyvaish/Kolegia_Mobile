@@ -10,6 +10,7 @@ import ChatHeader from "../../components/ChatHeader";
 import ChatKeyboard from "../../components/ChatKeyboard";
 import Helper from "../../utils/Helper";
 import MessageCard from "../../components/MessageCard";
+import ScreenNames from "../../navigation/ScreenNames";
 import SelectFileModal from "../../components/SelectFileModal";
 import ToastMessages from "../../constants/Messages";
 import ViewFileModal from "../../components/ViewFileModal";
@@ -263,11 +264,17 @@ function ChatRoomScreen({ navigation, route, User }) {
       )}
       onMessagePress={() =>
         item.message_type === "file"
-          ? view_file({
-              ...item.message_file,
-              sender_id: item.sender_id,
-              message: item.message,
-            })
+          ? item.message_file.mimeType.slice(0, 5) === "video"
+            ? navigation.navigate(ScreenNames.VideoPlayerScreen, {
+                ...item.message_file,
+                headerTitle:
+                  item?.sender_id === owner_id ? "You" : receiver_name,
+              })
+            : view_file({
+                ...item.message_file,
+                sender_id: item.sender_id,
+                message: item.message,
+              })
           : null
       }
     />

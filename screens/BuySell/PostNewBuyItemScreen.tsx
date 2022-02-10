@@ -16,6 +16,7 @@ import FontNames from "../../constants/FontNames";
 import FilePreviewCard from "../../components/FilePreviewCard";
 import Helper from "../../utils/Helper";
 import IconNames from "../../constants/IconNames";
+import ScreenNames from "../../navigation/ScreenNames";
 import ToastMessages from "./../../constants/Messages";
 import useLoading from "../../hooks/useLoading";
 import useImagePicker from "../../hooks/useImagePicker";
@@ -151,6 +152,9 @@ function PostNewBuyItemScreen({ navigation, User }: any) {
           {...item}
           key={item._id.toString()}
           onPress={() => RemoveDocument(item._id)}
+          onViewPress={() =>
+            navigation.navigate(ScreenNames.VideoPlayerScreen, item)
+          }
         />
       ))}
     </ScrollView>

@@ -137,7 +137,12 @@ function BuySellProductDetailsScreen({ navigation, route }) {
         }
       >
         <View style={styles.imageContainer}>
-          <Caraousel files={files} />
+          <Caraousel
+            files={files}
+            onVideoPress={(item) =>
+              navigation.navigate(ScreenNames.VideoPlayerScreen, item)
+            }
+          />
         </View>
 
         <View style={{ paddingLeft: 10, paddingRight: 10 }}>

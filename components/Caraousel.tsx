@@ -11,16 +11,22 @@ import CaraouselItem from "./CaraouselItem";
 // types/interface imports
 interface CaraouselProps {
   files: any;
+  onVideoPress: any;
 }
 
 // function component for Caraousel
-function Caraousel({ files = [] }: CaraouselProps) {
+function Caraousel({ files = [], onVideoPress }: CaraouselProps) {
   const [ActiveSlide, SetActiveSlide] = useState(0);
 
   // OnPress handler for each item
   const onItemPress = useCallback(
     (item) => () => {
       // handle item press
+      if (item.mimeType.slice(0, 5) === "video") {
+        if (typeof onVideoPress === "function") {
+          onVideoPress(item);
+        }
+      }
     },
     []
   );

@@ -15,11 +15,12 @@ import Helper from "../utils/Helper";
 interface FilePreviewCardProps {
   uri?: string;
   onPress?: () => void;
+  onViewPress?: () => void;
   _id?: string;
 }
 
 // function component for FilePreviewCard
-function FilePreviewCard({ uri, onPress }: FilePreviewCardProps) {
+function FilePreviewCard({ uri, onPress, onViewPress }: FilePreviewCardProps) {
   let isImage = Helper.get_file_type(uri) === "image";
 
   // Render
@@ -35,7 +36,12 @@ function FilePreviewCard({ uri, onPress }: FilePreviewCardProps) {
           <AppImage uri={uri} style={styles.image} />
         ) : (
           <View style={styles.videoContainer}>
-            <AppIcon family={IconNames.AntDesign} name="play" size={50} />
+            <AppIcon
+              family={IconNames.AntDesign}
+              name="play"
+              size={50}
+              onPress={onViewPress}
+            />
           </View>
         )}
       </View>
