@@ -59,6 +59,19 @@ function convert_to_rupees(price: number) {
     return `₹ ${price.toString().split('.')[0].length > 3 ? price.toString().substring(0, price.toString().split('.')[0].length - 3).replace(/\B(?=(\d{2})+(?!\d))/g, ",") + "," + price.toString().substring(price.toString().split('.')[0].length - 3) : price.toString()}`;
 }
 
+// get seconds in h:mm:ss format
+const get_seconds_format = (duration: number) => {
+    let sec_num = Math.round(duration);
+    let hours = Math.floor(sec_num / 3600);
+    let minutes = Math.floor(sec_num / 60) % 60;
+    let seconds = sec_num % 60;
+
+    return [hours, minutes, seconds]
+        .map((v) => (v < 10 ? "0" + v : v))
+        .filter((v, i) => v !== "00" || i > 0)
+        .join(":");
+};
+
 // Get timestamp converted to a string with appropriate format
 // For Ex - "1 day ago", "1 hour ago", "1 minute ago", "Yesterday"
 // and after that it will return the date in the format "dd/mm/yyyy"
@@ -154,7 +167,8 @@ const Helper = {
     abbreviate_number,
     OpenWhatsApp,
     get_formatted_time,
-    get_top_date
+    get_top_date,
+    get_seconds_format
 }
 
 export default Helper;
