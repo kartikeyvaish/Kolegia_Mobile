@@ -7,38 +7,25 @@ import { Layout, SlideOutLeft, SlideInLeft } from "react-native-reanimated";
 import AppImage from "./AppImage";
 import AppText from "./AppText";
 import AnimatedView from "./AnimatedView";
+import { ChatsCardProps } from "../types/ComponentTypes";
 import FontNames from "../constants/FontNames";
 import Helper from "../utils/Helper";
-
-interface ChatsCardProps {
-  chatting_with?: {
-    name?: string;
-    profile_picture?: string;
-  };
-  last_message?: {
-    sender_id?: string;
-    read?: boolean;
-    message?: string;
-    message_type?: string;
-    message_datetime?: string;
-  };
-  onPress?: any;
-  onLongPress?: any;
-  current_user?: {
-    _id?: string;
-  };
-}
 
 // function comoponent for ChatsCard
 function ChatsCard(props: ChatsCardProps) {
   // Destructuring props
-  const { chatting_with, last_message, onPress, current_user } = props;
+  const {
+    chatting_with = {},
+    last_message = {},
+    onPress,
+    current_user,
+  } = props;
 
   // Font Family to use to display text
   const family =
-    last_message.sender_id === current_user._id
+    last_message?.sender_id === current_user?._id
       ? FontNames.Inter_Regular
-      : last_message.read === true
+      : last_message?.read === true
       ? FontNames.Inter_Regular
       : FontNames.Inter_Bold;
 
@@ -52,22 +39,22 @@ function ChatsCard(props: ChatsCardProps) {
       <TouchableRipple onPress={onPress} style={styles.container}>
         <>
           <AppImage
-            uri={chatting_with.profile_picture}
+            uri={chatting_with?.profile_picture}
             style={{ width: 50, height: 50, borderRadius: 50 }}
             showBorder={false}
           />
 
           <View style={styles.NameUsername}>
             <AppText
-              text={chatting_with.name ? chatting_with.name : null}
+              text={chatting_with?.name ? chatting_with?.name : null}
               size={16}
               family={family}
             />
             <AppText
               text={
-                last_message.message
-                  ? last_message.message
-                  : last_message.message_type === "file"
+                last_message?.message
+                  ? last_message?.message
+                  : last_message?.message_type === "file"
                   ? "Sent you a file"
                   : "Tap to send a message"
               }
@@ -76,12 +63,12 @@ function ChatsCard(props: ChatsCardProps) {
             />
           </View>
 
-          {last_message.message_datetime ? (
+          {last_message?.message_datetime ? (
             <View style={{ alignItems: "center", justifyContent: "center" }}>
               <AppText
                 text={
-                  last_message.message_datetime
-                    ? Helper.get_time_ago(last_message.message_datetime)
+                  last_message?.message_datetime
+                    ? Helper.get_time_ago(last_message?.message_datetime)
                     : ""
                 }
                 family={family}
@@ -92,15 +79,6 @@ function ChatsCard(props: ChatsCardProps) {
         </>
       </TouchableRipple>
     </AnimatedView>
-    // <AnimatedView entering={FadeInLeft} style={{ marginBottom: 10 }}>
-    //   <TouchableRipple
-    //     onPress={onPress}
-    //     onLongPress={onLongPress}
-    //     style={styles.container}
-    //   >
-
-    //   </TouchableRipple>
-    // </AnimatedView>
   );
 }
 

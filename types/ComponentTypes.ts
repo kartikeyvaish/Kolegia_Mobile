@@ -1,6 +1,6 @@
 // Packages Imports
 import Animated from "react-native-reanimated"
-import { ColorValue, GestureResponderEvent, ImageStyle, KeyboardTypeOptions, OpaqueColorValue, ScrollViewProps, StatusBarStyle, StyleProp, TextProps, TextStyle, ViewStyle } from "react-native";
+import { ColorValue, GestureResponderEvent, ImageStyle, KeyboardTypeOptions, OpaqueColorValue, ScrollViewProps, StatusBarStyle, StyleProp, TextInputProps, TextProps, TextStyle, ViewStyle } from "react-native";
 import { AVPlaybackSource, AVPlaybackStatusToSet } from "expo-av/build/AV.types";
 
 // AnimatedView Props interface
@@ -240,6 +240,59 @@ export interface CaraouselItemProps {
     onPress?: () => void;
 }
 
+// interface for ChatsCardProps
+export interface ChatsCardProps {
+    chatting_with?: {
+        name?: string;
+        profile_picture?: string;
+    };
+    last_message?: {
+        sender_id?: string;
+        read?: boolean;
+        message?: string;
+        message_type?: string;
+        message_datetime?: string;
+    };
+    onPress?: any;
+    onLongPress?: any;
+    current_user?: {
+        _id?: string;
+    };
+}
+
+// RoomKeyboardProps interface
+export interface RoomKeyboardProps {
+    inputProps?: TextInputProps;
+    inputContainerStyle?: StyleProp<ViewStyle>;
+    isRecording?: boolean;
+
+    onPickPress?: () => void;
+    onCameraPress?: () => void;
+    onAudioStartPress?: () => void;
+    onAudioStopPress?: () => void;
+    onSendPress?: () => void;
+
+    showCameraIcon?: boolean;
+    showFileIcon?: boolean;
+
+    loading?: boolean;
+    containerStyle?: StyleProp<ViewStyle>;
+    backgroundColor?: ColorValue;
+    color?: ColorValue;
+
+    recordingTime?: string;
+}
+
+// interface for SendButtonProps
+export interface SendButtonProps {
+    showSendButton?: boolean;
+    onSendPress?: () => void;
+    onAudioStartPress?: () => void;
+    onAudioStopPress?: () => void;
+    loading?: boolean;
+    isRecording?: boolean;
+}
+
 // ColorBox props
 export interface ColorBoxProps {
     style?: StyleProp<ViewStyle>;
@@ -300,6 +353,15 @@ export interface GlobalContextProps extends OverlayProps, useExpoUpdatesProps {
     UsersCount?: any;
 
     [key: string]: any;
+}
+
+// FormDataPayloadProps props
+export interface FormDataPayloadProps {
+    file?: {
+        uri?: string;
+        mimeType?: string;
+        name?: string;
+    };
 }
 
 // FileModalProps interface
@@ -405,6 +467,28 @@ export interface PickerItemProps {
     iconProps?: AppIconTypes;
 }
 
+// interface for PlaybackStatus
+export interface PlaybackStatus {
+    androidImplementation?: string;
+    isLoaded?: boolean;
+    uri?: string;
+    progressUpdateIntervalMillis?: number;
+    durationMillis?: number;
+    positionMillis?: number;
+    playableDurationMillis?: number;
+    seekMillisToleranceBefore?: number;
+    seekMillisToleranceAfter?: number;
+    shouldPlay?: boolean;
+    isPlaying?: boolean;
+    isBuffering?: boolean;
+    rate?: number;
+    shouldCorrectPitch?: boolean;
+    volume?: number;
+    isMuted?: boolean;
+    isLooping?: boolean;
+    didJustFinish?: boolean;
+}
+
 export interface PickerProps {
     items: Array<PickerItemProps>;
     onItemPress?: (item: PickerItemProps) => void;
@@ -432,6 +516,8 @@ export interface RippleIconButtonProps extends AppIconTypes {
     style?: StyleProp<ViewStyle>;
     onPress?: () => void;
     rippleStyle?: StyleProp<ViewStyle>;
+    showButton?: boolean;
+    addAnimatedProps?: boolean;
 }
 
 // audio player hook
@@ -447,3 +533,14 @@ export interface VideoPlayerHookProps {
     isLooping?: boolean,
     otherLoadProps?: AVPlaybackStatusToSet
 };
+
+// interface for useRecording
+export interface useRecordingProps {
+    onComplete?: (file: string) => void;
+}
+
+// interface for useAudioPlayerProps
+export interface useAudioPlayerProps {
+    uri?: string;
+    duration?: number;
+}

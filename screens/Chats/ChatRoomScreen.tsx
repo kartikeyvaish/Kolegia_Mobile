@@ -7,9 +7,9 @@ import { connect } from "react-redux";
 import AppLoading from "../../components/AppLoading";
 import ChatsAPI from "../../api/ChatsAPI";
 import ChatHeader from "../../components/ChatHeader";
-import ChatKeyboard from "../../components/ChatKeyboard";
 import Helper from "../../utils/Helper";
 import MessageCard from "../../components/MessageCard";
+import RoomKeyboard from "../../components/RoomKeyboard";
 import ScreenNames from "../../navigation/ScreenNames";
 import SelectFileModal from "../../components/SelectFileModal";
 import ToastMessages from "../../constants/Messages";
@@ -20,6 +20,7 @@ import useCamera from "../../hooks/useCamera";
 import useDocumentPicker from "./../../hooks/useDocumentPicker";
 import useFileViewer from "./../../hooks/useFileViewer";
 import useLoading from "./../../hooks/useLoading";
+import useRecording from "../../hooks/useRecorder";
 import useSocket from "../../hooks/useSocket";
 
 // useReducers imports
@@ -54,6 +55,11 @@ function ChatRoomScreen({ navigation, route, User }) {
     useDocumentPicker({});
   const { viewing_file, view_file, stop_viewing } = useFileViewer();
   const { Capture } = useCamera({ onCapture: setSelectedFile });
+  const { IsRecording, StartRecording, StopRecording, Progress } = useRecording(
+    {
+      onComplete: (uri) => console.log(uri),
+    }
+  );
 
   // Initial useEffect call
   useEffect(() => {
@@ -218,7 +224,7 @@ function ChatRoomScreen({ navigation, route, User }) {
   };
 
   // Send File
-  const SendFileMessage = async () => {
+  const SendFileMessage = async ({ file = null }: any) => {
     try {
       Keyboard.dismiss();
       let newDateTime = new Date().toString();
@@ -226,11 +232,13 @@ function ChatRoomScreen({ navigation, route, User }) {
       const api_payload: any = new FormData();
       api_payload.append("room_id", room_id);
       api_payload.append("message", state.message);
+
       let file_payload: any = {
-        uri: selectedFile.uri,
-        type: selectedFile.mimeType,
-        name: selectedFile.name,
+        uri: file ? file.uri : selectedFile.uri,
+        type: file ? file.mimeType : selectedFile.mimeType,
+        name: file ? file.name : selectedFile.name,
       };
+
       api_payload.append("file", file_payload);
       api_payload.append("read", state.online_users > 1 ? true : false);
       api_payload.append("message_datetime", newDateTime);
@@ -250,6 +258,21 @@ function ChatRoomScreen({ navigation, route, User }) {
       Helper.ShowToast(ToastMessages.SERVER_ERROR_MESSAGE);
       dispatch(ChatRoomActionCreators.SetSendLoading(false));
     }
+  };
+
+  // Send Audio File
+  const SendAudioFile = async (uri: any) => {
+    try {
+      let extension = uri.split(".").pop();
+
+      const payload = {
+        uri: uri,
+        mimeType: `audio/${extension}`,
+        name: "AudioFile" + Helper.GenerateUniqueID() + `.${extension}`,
+      };
+
+      SendFileMessage({ file: payload });
+    } catch (error) {}
   };
 
   // Render Item Function
@@ -299,15 +322,21 @@ function ChatRoomScreen({ navigation, route, User }) {
         <AppLoading loadingText="Getting Messages..." />
       )}
 
-      <ChatKeyboard
-        value={state.message}
+      <RoomKeyboard
+        inputProps={{
+          placeholder: "Type a message...",
+          value: state.message,
+          onChangeText: (text) =>
+            dispatch(ChatRoomActionCreators.SetMessage(text)),
+        }}
         loading={state.send_loading}
-        onChangeText={(text) =>
-          dispatch(ChatRoomActionCreators.SetMessage(text))
-        }
-        onSubmit={() => SendMessage()}
+        onSendPress={SendMessage}
         onPickPress={PickDocument}
         onCameraPress={Capture}
+        isRecording={IsRecording}
+        onAudioStartPress={StartRecording}
+        onAudioStopPress={StopRecording}
+        recordingTime={Helper.get_seconds_format(Progress / 1000)}
       />
 
       <ViewFileModal
@@ -330,7 +359,7 @@ function ChatRoomScreen({ navigation, route, User }) {
         onChangeText={(text) =>
           dispatch(ChatRoomActionCreators.SetMessage(text))
         }
-        onSubmit={() => SendFileMessage()}
+        onSubmit={() => SendFileMessage({})}
         loading={state.send_loading}
         onDismiss={unselectFile}
         value={state.message}

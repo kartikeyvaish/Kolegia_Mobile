@@ -4,6 +4,7 @@ import { View, StyleSheet } from "react-native";
 // component imports
 import AppIcon from "./AppIcon";
 import AppImage from "./AppImage";
+import AudioMessageCard from "./AudioMessageCard";
 import ColorPallete from "../utils/ColorPallete";
 import Helper from "../utils/Helper";
 import IconNames from "../constants/IconNames";
@@ -29,38 +30,47 @@ function FileMessageCard(props: MessageProps) {
 
   // render
   return message_type === "file" ? (
-    <View style={styles.FileBox}>
-      {message_file.mimeType.slice(0, 5) === "image" ? (
-        <AppImage
-          uri={message_file.uri}
-          resizeMode="cover"
-          style={styles.Image}
-          onPress={onMessagePress}
-          borderWidth={0}
-        />
-      ) : null}
-
-      <TimeStamp
-        style={styles.TimeStamp}
-        time={Helper.get_formatted_time(message_datetime)}
+    message_file.mimeType.slice(0, 5) === "audio" ? (
+      <AudioMessageCard
+        message_datetime={message_datetime}
         read={read}
         delivered={delivered}
-        message_type="file"
-        mimeType={message_file.mimeType}
-        showTickMark={showTickMark}
+        {...message_file}
       />
+    ) : (
+      <View style={styles.FileBox}>
+        {message_file.mimeType.slice(0, 5) === "image" ? (
+          <AppImage
+            uri={message_file.uri}
+            resizeMode="cover"
+            style={styles.Image}
+            onPress={onMessagePress}
+            borderWidth={0}
+          />
+        ) : null}
 
-      {message_file.mimeType.slice(0, 5) === "video" ? (
-        <AppIcon
-          family={IconNames.AntDesign}
-          name="play"
-          style={styles.PlayIcon}
-          color={ColorPallete.primary}
-          size={30}
-          onPress={onMessagePress}
+        <TimeStamp
+          style={styles.TimeStamp}
+          time={Helper.get_formatted_time(message_datetime)}
+          read={read}
+          delivered={delivered}
+          message_type="file"
+          mimeType={message_file.mimeType}
+          showTickMark={showTickMark}
         />
-      ) : null}
-    </View>
+
+        {message_file.mimeType.slice(0, 5) === "video" ? (
+          <AppIcon
+            family={IconNames.AntDesign}
+            name="play"
+            style={styles.PlayIcon}
+            color={ColorPallete.primary}
+            size={30}
+            onPress={onMessagePress}
+          />
+        ) : null}
+      </View>
+    )
   ) : null;
 }
 

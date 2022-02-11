@@ -31,11 +31,13 @@ const GenerateUniqueID = () => {
 function get_file_type(url: string) {
     let imageExtensions = ["jpg", "jpeg", "png"];
     let videoExtensions = ["mp4", "mkv"];
+    let audioExtensions = ["mp3", "wav", "mpeg", "m4a", "aac"];
 
     let extension = url.split(".").pop();
 
     if (imageExtensions.includes(extension)) return "image";
     else if (videoExtensions.includes(extension)) return "video";
+    else if (audioExtensions.includes(extension)) return "audio";
     else return null;
 }
 
