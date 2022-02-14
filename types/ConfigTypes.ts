@@ -22,6 +22,7 @@ export interface ConfigProps {
     otp_route?: string;
     buysell_route?: string;
     lostfound_route?: string;
+    feedback_route?: string;
 
     // Auth Endpoints
     editProfile?: string;
