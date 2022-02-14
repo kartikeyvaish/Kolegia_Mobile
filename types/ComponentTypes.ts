@@ -283,6 +283,20 @@ export interface RoomKeyboardProps {
     recordingTime?: string;
 }
 
+// interface for FeedbackCard component
+export interface FeedbackCardProps {
+    _id?: string;
+    feedback?: string;
+    feedback_datetime?: string;
+    owner_details?: {
+        _id?: string;
+        name?: string;
+        email?: string;
+        phone?: string;
+        profile_picture?: string;
+    };
+}
+
 // interface for SendButtonProps
 export interface SendButtonProps {
     showSendButton?: boolean;

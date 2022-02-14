@@ -21,6 +21,8 @@ export default {
     EditRequirementsScreen: "EditRequirementsScreen",
     EmailSignUpScreen: "EmailSignUpScreen",
     EmailOTPScreen: "EmailOTPScreen",
+    FeedbackScreen: "FeedbackScreen",
+    NewFeedbackScreen: "NewFeedbackScreen",
     LostItemsFeedScreen: "LostItemsFeedScreen",
     LostFoundProductDetailsScreen: "LostFoundProductDetailsScreen",
     MyBuySellItemsScreen: "MyBuySellItemsScreen",

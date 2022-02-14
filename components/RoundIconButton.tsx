@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
   roundButtonContainer: {
     borderRadius: 100,
     overflow: "hidden",
-    width: 70,
-    height: 70,
+    width: 60,
+    height: 60,
     backgroundColor: ColorPallete.primary,
     justifyContent: "center",
     alignItems: "center",

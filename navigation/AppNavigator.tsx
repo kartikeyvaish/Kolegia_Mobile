@@ -6,14 +6,15 @@ import AboutScreen from "./../screens/Misc/AboutScreen";
 import BuySellEditScreen from "./../screens/BuySell/BuySellEditScreen";
 import BuySellFeedScreen from "./../screens/BuySell/BuySellFeedScreen";
 import BuySellProductDetailsScreen from "./../screens/BuySell/BuySellProductDetailsScreen";
-import EditLostItemScreen from "./../screens/LostFound/EditLostItemScreen";
-import EditProfileScreen from "./../screens/Profile/EditProfileScreen";
-import EditRequirementsScreen from "./../screens/Requirements/EditRequirementsScreen";
 import ChangePasswordScreen from "../screens/Misc/ChangePasswordScreen";
 import ChangeThemeScreen from "./../screens/Misc/ChangeThemeScreen";
 import ChatsScreen from "./../screens/Chats/ChatsScreen";
+import EditLostItemScreen from "./../screens/LostFound/EditLostItemScreen";
+import EditProfileScreen from "./../screens/Profile/EditProfileScreen";
+import EditRequirementsScreen from "./../screens/Requirements/EditRequirementsScreen";
 import EmailSignUpScreen from "../screens/Auth/EmailSignUp";
 import EmailOTPScreen from "../screens/Auth/EmailOTPScreen";
+import FeedbackScreen from "../screens/Feedback/FeedbackScreen";
 import IntroductionScreen from "./../screens/Auth/IntroductionScreen";
 import LoginScreen from "./../screens/Auth/LoginScreen";
 import LostItemsFeedScreen from "./../screens/LostFound/LostItemsFeedScreen";
@@ -22,6 +23,7 @@ import MyBuySellItemsScreen from "./../screens/BuySell/MyBuySellItemsScreen";
 import MyLostFoundItemsScreen from "./../screens/LostFound/MyLostFoundItemsScreen";
 import MyRequirementsScreen from "./../screens/Requirements/MyRequirementsScreen";
 import NotificationsPreferenceScreen from "./../screens/Misc/NotificationsPreferenceScreen";
+import NewFeedbackScreen from "./../screens/Feedback/NewFeedbackScreen";
 import PostNewBuyItemScreen from "../screens/BuySell/PostNewBuyItemScreen";
 import PostNewLostItemScreen from "./../screens/LostFound/PostNewLostItemScreen";
 import PostNewRequirementScreen from "./../screens/Requirements/PostNewRequirementScreen";
@@ -63,10 +65,7 @@ function AppNavigator() {
             headerTitle: "About",
           }}
         />
-        <Stack.Screen
-          name={ScreenNames.BuySellEditScreen}
-          component={BuySellEditScreen}
-        />
+        <Stack.Screen name={ScreenNames.BuySellEditScreen} component={BuySellEditScreen} />
         <Stack.Screen
           name={ScreenNames.BuySellFeedScreen}
           component={BuySellFeedScreen}
@@ -105,22 +104,23 @@ function AppNavigator() {
           component={ChangeThemeScreen}
           options={{ headerShown: true, title: "Change Theme" }}
         />
-        <Stack.Screen
-          name={ScreenNames.EditLostItemScreen}
-          component={EditLostItemScreen}
-        />
+        <Stack.Screen name={ScreenNames.EditLostItemScreen} component={EditLostItemScreen} />
         <Stack.Screen
           name={ScreenNames.EditProfileScreen}
           component={EditProfileScreen}
           options={{ headerShown: true, title: "Edit Profile" }}
         />
+        <Stack.Screen name={ScreenNames.EmailSignUpScreen} component={EmailSignUpScreen} />
+        <Stack.Screen name={ScreenNames.EmailOTPScreen} component={EmailOTPScreen} />
         <Stack.Screen
-          name={ScreenNames.EmailSignUpScreen}
-          component={EmailSignUpScreen}
+          name={ScreenNames.FeedbackScreen}
+          component={FeedbackScreen}
+          options={{ headerShown: true, headerTitle: "Feedback" }}
         />
         <Stack.Screen
-          name={ScreenNames.EmailOTPScreen}
-          component={EmailOTPScreen}
+          name={ScreenNames.NewFeedbackScreen}
+          component={NewFeedbackScreen}
+          options={{ headerShown: true, headerTitle: "Post Feedback" }}
         />
         <Stack.Screen
           name={ScreenNames.LostItemsFeedScreen}
@@ -182,14 +182,8 @@ function AppNavigator() {
           name={ScreenNames.LostFoundProductDetailsScreen}
           component={LostFoundProductDetailsScreen}
         />
-        <Stack.Screen
-          name={ScreenNames.PostNewBuyItemScreen}
-          component={PostNewBuyItemScreen}
-        />
-        <Stack.Screen
-          name={ScreenNames.PostNewLostItemScreen}
-          component={PostNewLostItemScreen}
-        />
+        <Stack.Screen name={ScreenNames.PostNewBuyItemScreen} component={PostNewBuyItemScreen} />
+        <Stack.Screen name={ScreenNames.PostNewLostItemScreen} component={PostNewLostItemScreen} />
         <Stack.Screen
           name={ScreenNames.PostNewRequirementScreen}
           component={PostNewRequirementScreen}
@@ -206,10 +200,7 @@ function AppNavigator() {
             headerTitle: "Requirments Feed",
           }}
         />
-        <Stack.Screen
-          name={ScreenNames.RaiseHandOnItemScreen}
-          component={RaiseHandOnItemScreen}
-        />
+        <Stack.Screen name={ScreenNames.RaiseHandOnItemScreen} component={RaiseHandOnItemScreen} />
         <Stack.Screen
           name={ScreenNames.SettingsScreen}
           component={SettingsScreen}
@@ -226,22 +217,13 @@ function AppNavigator() {
             headerTitle: "Reset Password",
           }}
         />
-        <Stack.Screen
-          name={ScreenNames.VideoPlayerScreen}
-          component={VideoPlayerScreen}
-        />
+        <Stack.Screen name={ScreenNames.VideoPlayerScreen} component={VideoPlayerScreen} />
 
         {/* Auth Screens */}
 
-        <Stack.Screen
-          name={ScreenNames.IntroductionScreen}
-          component={IntroductionScreen}
-        />
+        <Stack.Screen name={ScreenNames.IntroductionScreen} component={IntroductionScreen} />
         <Stack.Screen name={ScreenNames.LoginScreen} component={LoginScreen} />
-        <Stack.Screen
-          name={ScreenNames.SignUpScreen}
-          component={SignUpScreen}
-        />
+        <Stack.Screen name={ScreenNames.SignUpScreen} component={SignUpScreen} />
       </Stack.Navigator>
     </AppContainer>
   );

@@ -45,9 +45,17 @@ function SettingsScreen({ navigation }) {
         }}
         showMenu={User ? true : false}
         borderBottomWidth={1}
-        onPress={() =>
-          navigation.navigate(ScreenNames.NotificationsPreferenceScreen)
-        }
+        onPress={() => navigation.navigate(ScreenNames.NotificationsPreferenceScreen)}
+      />
+
+      <MenuCard
+        name="Feedback"
+        prefixIconProps={{
+          family: IconNames.MaterialIcons,
+          name: "feedback",
+        }}
+        borderBottomWidth={1}
+        onPress={() => navigation.navigate(ScreenNames.FeedbackScreen)}
       />
 
       <MenuCard
