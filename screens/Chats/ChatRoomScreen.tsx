@@ -24,9 +24,7 @@ import useRecording from "../../hooks/useRecorder";
 import useSocket from "../../hooks/useSocket";
 
 // useReducers imports
-import chatRoomReducer, {
-  chatRoomInitialState,
-} from "../../store/chatRoom/reducer";
+import chatRoomReducer, { chatRoomInitialState } from "../../store/chatRoom/reducer";
 import ChatRoomActionCreators from "../../store/chatRoom/actions";
 
 // function component for ChatRoomScreen
@@ -51,15 +49,12 @@ function ChatRoomScreen({ navigation, route, User }) {
   const [state, dispatch] = useReducer(chatRoomReducer, chatRoomInitialState);
 
   // Custom Hooks
-  const { PickDocument, selectedFile, unselectFile, setSelectedFile } =
-    useDocumentPicker({});
+  const { PickDocument, selectedFile, unselectFile, setSelectedFile } = useDocumentPicker({});
   const { viewing_file, view_file, stop_viewing } = useFileViewer();
   const { Capture } = useCamera({ onCapture: setSelectedFile });
-  const { IsRecording, StartRecording, StopRecording, Progress } = useRecording(
-    {
-      onComplete: (uri) => console.log(uri),
-    }
-  );
+  const { IsRecording, StartRecording, StopRecording, Progress } = useRecording({
+    onComplete: uri => SendAudioFile(uri),
+  });
 
   // Initial useEffect call
   useEffect(() => {
@@ -69,10 +64,10 @@ function ChatRoomScreen({ navigation, route, User }) {
   // Initialize Socket
   const { SendToSocket } = useSocket({
     message: state.message,
-    onMessageArrive: (data) => AddToChatThread(data),
+    onMessageArrive: data => AddToChatThread(data),
     onTypeEnd: () => dispatch(ChatRoomActionCreators.SetTyping(false)),
     onTypeStart: () => dispatch(ChatRoomActionCreators.SetTyping(true)),
-    onUsersCountUpdate: (count) => OtherUserEntered(count),
+    onUsersCountUpdate: count => OtherUserEntered(count),
     owner_id,
     room_id,
   });
@@ -87,13 +82,7 @@ function ChatRoomScreen({ navigation, route, User }) {
     navigation.setOptions({
       header: ({ navigation }) => (
         <ChatHeader
-          subtitle={
-            state.online_users > 1
-              ? state.is_user_typing
-                ? "Typing..."
-                : "Online"
-              : null
-          }
+          subtitle={state.online_users > 1 ? (state.is_user_typing ? "Typing..." : "Online") : null}
           online={state.online_users > 1}
           imageUri={reciever_profile_picture}
           name={receiver_name}
@@ -145,17 +134,16 @@ function ChatRoomScreen({ navigation, route, User }) {
   };
 
   // Add an item to the CHatThread array
-  const AddToChatThread = (data) => {
+  const AddToChatThread = data => {
     dispatch(ChatRoomActionCreators.SetMessage(""));
     dispatch(ChatRoomActionCreators.UpdateChatThread(data));
   };
 
   // When other user enters, mark all your send messages as true
-  const OtherUserEntered = (count) => {
+  const OtherUserEntered = count => {
     try {
       dispatch(ChatRoomActionCreators.SetUsersCount(count));
-      if (count > 1)
-        dispatch(ChatRoomActionCreators.MarkMessageAsRead(owner_id));
+      if (count > 1) dispatch(ChatRoomActionCreators.MarkMessageAsRead(owner_id));
     } catch (error) {}
   };
 
@@ -290,8 +278,7 @@ function ChatRoomScreen({ navigation, route, User }) {
           ? item.message_file.mimeType.slice(0, 5) === "video"
             ? navigation.navigate(ScreenNames.VideoPlayerScreen, {
                 ...item.message_file,
-                headerTitle:
-                  item?.sender_id === owner_id ? "You" : receiver_name,
+                headerTitle: item?.sender_id === owner_id ? "You" : receiver_name,
               })
             : view_file({
                 ...item.message_file,
@@ -315,7 +302,7 @@ function ChatRoomScreen({ navigation, route, User }) {
           inverted
           keyboardShouldPersistTaps="always"
           showsVerticalScrollIndicator={false}
-          keyExtractor={(item) => item._id.toString()}
+          keyExtractor={item => item._id.toString()}
           renderItem={renderItem}
         />
       ) : (
@@ -326,8 +313,7 @@ function ChatRoomScreen({ navigation, route, User }) {
         inputProps={{
           placeholder: "Type a message...",
           value: state.message,
-          onChangeText: (text) =>
-            dispatch(ChatRoomActionCreators.SetMessage(text)),
+          onChangeText: text => dispatch(ChatRoomActionCreators.SetMessage(text)),
         }}
         loading={state.send_loading}
         onSendPress={SendMessage}
@@ -346,9 +332,7 @@ function ChatRoomScreen({ navigation, route, User }) {
         onDismiss={stop_viewing}
         uri={viewing_file?.uri}
         message={viewing_file?.message}
-        headerTitle={
-          viewing_file?.sender_id === owner_id ? "You" : receiver_name
-        }
+        headerTitle={viewing_file?.sender_id === owner_id ? "You" : receiver_name}
       />
 
       <SelectFileModal
@@ -356,9 +340,7 @@ function ChatRoomScreen({ navigation, route, User }) {
         isVisible={selectedFile !== null}
         mimeType={selectedFile?.mimeType}
         onBackButtonPress={unselectFile}
-        onChangeText={(text) =>
-          dispatch(ChatRoomActionCreators.SetMessage(text))
-        }
+        onChangeText={text => dispatch(ChatRoomActionCreators.SetMessage(text))}
         onSubmit={() => SendFileMessage({})}
         loading={state.send_loading}
         onDismiss={unselectFile}
