@@ -1,6 +1,6 @@
 // Packages Imports
 import { useContext } from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, Keyboard } from "react-native";
 
 // Local Components/Types imports
 import AppForm from "../../components/AppForm";
@@ -38,22 +38,16 @@ function EditProfileScreen({ navigation }) {
     try {
       SetLoading(true);
 
+      Keyboard.dismiss();
+
       // Create a formData object
       const formData: any = new FormData();
 
       // Append the values to the formData
-
-      // Append only if value is not same as initial value
-      if (values.name !== initial_fields.name) formData.append("name", values.name);
-
-      if (values.email !== initial_fields.email) formData.append("email", values.email);
-
-      if (values.hostel !== initial_fields.hostel) formData.append("hostel", values.hostel);
-
-      if (values.phone !== initial_fields.phone) formData.append("phone", values.phone);
-
-      if (values.room_number !== initial_fields.room_number)
-        formData.append("room_number", values.room_number);
+      formData.append("name", values.name);
+      formData.append("hostel", values.hostel);
+      formData.append("room_number", values.room_number);
+      formData.append("phone", values.phone);
 
       // If user has chosen a Profile selectedFile then append it to the formData
       if (selectedFile.uri !== initial_fields.profile_picture) {
@@ -66,13 +60,7 @@ function EditProfileScreen({ navigation }) {
         formData.append("profile_picture", profile_picture);
       }
 
-      if (formData._parts.length === 0) {
-        SetLoading(false);
-        Helper.ShowToast("Profile Saved Successfully.");
-        navigation.goBack();
-        return;
-      }
-
+      // Call the edit profile API
       const apiResponse = await AuthAPI.EditProfile(formData, User.auth_token);
       SetLoading(false);
 
