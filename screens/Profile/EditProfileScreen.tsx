@@ -13,6 +13,7 @@ import ChoosePicture from "../../components/ChoosePicture";
 import EditProfileSchema from "../../schema/EditProfileSchema";
 import GlobalContext from "../../contexts/GlobalContext";
 import Helper from "../../utils/Helper";
+import JWT from "../../auth/JWT";
 import RowDetailsCard from "../../components/RowDetailsCard";
 import ToastMessages from "../../constants/Messages";
 import useLoading from "../../hooks/useLoading";
@@ -28,10 +29,9 @@ function EditProfileScreen({ navigation }) {
 
   // Custom Hooks
   const { Loading, SetLoading } = useLoading({ initialValue: false });
-  const { PickDocument, selectedFile, unselectFile, SameAsInitial } =
-    useDocumentPicker({
-      initial_file: { uri: initial_fields.profile_picture },
-    });
+  const { PickDocument, selectedFile, unselectFile, SameAsInitial } = useDocumentPicker({
+    initial_file: { uri: initial_fields.profile_picture },
+  });
 
   // API call for Editing Profile
   const EditProfile_API = async (values: any) => {
@@ -44,17 +44,13 @@ function EditProfileScreen({ navigation }) {
       // Append the values to the formData
 
       // Append only if value is not same as initial value
-      if (values.name !== initial_fields.name)
-        formData.append("name", values.name);
+      if (values.name !== initial_fields.name) formData.append("name", values.name);
 
-      if (values.email !== initial_fields.email)
-        formData.append("email", values.email);
+      if (values.email !== initial_fields.email) formData.append("email", values.email);
 
-      if (values.hostel !== initial_fields.hostel)
-        formData.append("hostel", values.hostel);
+      if (values.hostel !== initial_fields.hostel) formData.append("hostel", values.hostel);
 
-      if (values.phone !== initial_fields.phone)
-        formData.append("phone", values.phone);
+      if (values.phone !== initial_fields.phone) formData.append("phone", values.phone);
 
       if (values.room_number !== initial_fields.room_number)
         formData.append("room_number", values.room_number);
@@ -81,8 +77,13 @@ function EditProfileScreen({ navigation }) {
       SetLoading(false);
 
       if (apiResponse.ok) {
-        SetUser(apiResponse.data.User);
-        navigation.goBack();
+        const decodedData = JWT.decodeToken(apiResponse.data.user_token);
+        if (decodedData) {
+          SetUser(decodedData);
+          navigation.goBack();
+        } else {
+          Helper.ShowToast(ToastMessages.SERVER_ERROR_MESSAGE);
+        }
       }
 
       Helper.ShowToast(apiResponse.data.message);
@@ -118,18 +119,11 @@ function EditProfileScreen({ navigation }) {
         }}
       />
 
-      <RowDetailsCard
-        title="Roll Number"
-        description={initial_fields.roll_number}
-      />
+      <RowDetailsCard title="Roll Number" description={initial_fields.roll_number} />
 
       <RowDetailsCard title="Batch" description={initial_fields.batch} />
 
-      <RowDetailsCard
-        title="Year"
-        description={initial_fields.year}
-        style={{ marginBottom: 5 }}
-      />
+      <RowDetailsCard title="Year" description={initial_fields.year} style={{ marginBottom: 5 }} />
 
       <AppForm
         initialValues={initial_fields}
@@ -165,11 +159,7 @@ function EditProfileScreen({ navigation }) {
           />
         </AppRow>
 
-        <AppSubmitButton
-          title="Save Profile"
-          marginBottom={20}
-          loading={Loading}
-        />
+        <AppSubmitButton title="Save Profile" marginBottom={20} loading={Loading} />
       </AppForm>
     </ScrollView>
   );
