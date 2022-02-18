@@ -329,6 +329,7 @@ export interface AppPickerProps {
     onItemSelect?: (item: AppPickerItemProps) => void;
     selectedItem?: AppPickerItemProps;
     formTitle?: string;
+    other_title?: string;
     initialValue?: string;
 }
 
