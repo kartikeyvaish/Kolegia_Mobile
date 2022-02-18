@@ -73,10 +73,7 @@ function LostFoundProductDetailsScreen({ navigation, route }) {
   // function to get product details
   const GetProductDetails = async () => {
     try {
-      const response = await LostFoundAPI.GetLostFoundItemDetails(
-        _id,
-        User?.auth_token
-      );
+      const response = await LostFoundAPI.GetLostFoundItemDetails(_id, User?.auth_token);
       if (response.ok) SetProductDetails(response.data.Product);
     } catch (error) {}
   };
@@ -100,54 +97,43 @@ function LostFoundProductDetailsScreen({ navigation, route }) {
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
-        refreshControl={
-          <RefreshControl refreshing={Refreshing} onRefresh={Refresh} />
-        }
+        refreshControl={<RefreshControl refreshing={Refreshing} onRefresh={Refresh} />}
       >
         {files?.length > 0 ? (
           <View style={styles.imageContainer}>
-            <Caraousel files={ProductDetails.files} />
+            <Caraousel
+              files={ProductDetails.files}
+              onVideoPress={item => navigation.navigate(ScreenNames.VideoPlayerScreen, item)}
+            />
           </View>
         ) : null}
 
         <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-          <AppText
-            text={ProductDetails.name}
-            size={22}
-            family={FontNames.Sofia_Pro_Bold}
-          />
+          <AppText text={ProductDetails.name} size={22} family={FontNames.Sofia_Pro_Bold} />
 
           {ProductDetails.category ? (
             <AppText
-              text={`in ${ProductDetails.category}`}
+              text={`in ${ProductDetails.category} ${
+                ProductDetails.other_category_name ? `- ${ProductDetails.other_category_name}` : ""
+              }`}
               size={15}
               family={FontNames.Sofia_Pro_Light}
               marginBottom={5}
             />
           ) : null}
 
-          <AppText
-            text={"Description"}
-            size={20}
-            family={FontNames.Sofia_Pro_Medium}
-          />
+          <AppText text={"Description"} size={20} family={FontNames.Sofia_Pro_Medium} />
 
           <AppText text={ProductDetails.description} size={16} />
         </View>
 
         <View style={styles.productDetails}>
           {ProductDetails.brand ? (
-            <KeyDescriptionCard
-              title={"Brand : "}
-              description={ProductDetails.brand}
-            />
+            <KeyDescriptionCard title={"Brand : "} description={ProductDetails.brand} />
           ) : null}
 
           {ProductDetails.color ? (
-            <KeyDescriptionCard
-              title={"Color : "}
-              description={ProductDetails.color}
-            />
+            <KeyDescriptionCard title={"Color : "} description={ProductDetails.color} />
           ) : null}
 
           {ProductDetails.lost_location ? (
@@ -191,12 +177,7 @@ function LostFoundProductDetailsScreen({ navigation, route }) {
                 title="EDIT"
                 borderRadius={2}
                 backgroundColor={ColorPallete.dodgerblue}
-                onPress={() =>
-                  navigation.navigate(
-                    ScreenNames.EditLostItemScreen,
-                    ProductDetails
-                  )
-                }
+                onPress={() => navigation.navigate(ScreenNames.EditLostItemScreen, ProductDetails)}
               />
             </View>
           </View>

@@ -38,11 +38,9 @@ function EditLostItemScreen({ navigation, User, route }: any) {
 
   // Local States
   const { Loading, SetLoading } = useLoading({ initialValue: false });
-  const { Files, PickDocument, RemoveDocument, deleted_files } = useImagePicker(
-    {
-      initial_files,
-    }
-  );
+  const { Files, PickDocument, RemoveDocument, deleted_files } = useImagePicker({
+    initial_files,
+  });
 
   // API call for Register
   const PostProduct = async (values: any) => {
@@ -59,21 +57,20 @@ function EditLostItemScreen({ navigation, User, route }: any) {
       formData.append("name", values.name);
       formData.append("description", values.description);
       formData.append("category", values.category);
+      formData.append("other_category_name", values.other_category_name);
       formData.append("brand", values.brand);
       formData.append("color", values.color);
       formData.append("lost_location", values.lost_location);
-      if (values.lost_date)
-        formData.append("lost_date", values.lost_date.toString());
-      if (values.lost_time)
-        formData.append("lost_time", values.lost_time.toString());
+      if (values.lost_date) formData.append("lost_date", values.lost_date);
+      if (values.lost_time) formData.append("lost_time", values.lost_time);
 
       // Append deleted_files array to formData
-      deleted_files.forEach((file) => {
+      deleted_files.forEach(file => {
         formData.append("to_be_deleted[]", file);
       });
 
       // Now append the files to the formData in the `files` property
-      Files.forEach((file) => {
+      Files.forEach(file => {
         if (!file.public_id) {
           let eachFile: any = {
             name: file.name,
@@ -85,10 +82,7 @@ function EditLostItemScreen({ navigation, User, route }: any) {
         }
       });
 
-      const apiResponse = await LostFoundAPI.EditLostFoundItem(
-        formData,
-        auth_token
-      );
+      const apiResponse = await LostFoundAPI.EditLostFoundItem(formData, auth_token);
 
       SetLoading(false);
 
@@ -117,18 +111,10 @@ function EditLostItemScreen({ navigation, User, route }: any) {
         onSubmit={PostProduct}
         validationSchema={LostFoundSchema.LostFoundValidationSchema}
       >
-        <AppRow
-          justifyContent="space-between"
-          alignItems="center"
-          marginBottom={10}
-        >
-          <AppText
-            text="Edit Lost/Found item"
-            family={FontNames.Mulish_Bold}
-            size={23}
-          />
+        <AppRow justifyContent="space-between" alignItems="center" marginBottom={10}>
+          <AppText text="Edit Lost/Found item" family={FontNames.Mulish_Bold} size={23} />
           <AppSubmitButton
-            CustomButton={(props) => (
+            CustomButton={props => (
               <AppIcon
                 family={IconNames.MaterialIcons}
                 name="done"
@@ -140,12 +126,7 @@ function EditLostItemScreen({ navigation, User, route }: any) {
           />
         </AppRow>
 
-        <AppFormField
-          label="Name"
-          controlled={true}
-          title="name"
-          mandatory={true}
-        />
+        <AppFormField label="Name" controlled={true} title="name" mandatory={true} />
 
         <AppFormField
           label="Description"
@@ -161,9 +142,10 @@ function EditLostItemScreen({ navigation, User, route }: any) {
           items={LOST_FOUND_CATEGORY}
           formTitle="category"
           initialValue={route.params?.category ?? null}
+          other_title="other_category_name"
         />
 
-        <AppFormField placeholder="Brand" title="brand" controlled />
+        <AppFormField placeholder="Brand" title="brand" controlled={true} />
 
         <ColorPicker title="color" placeholder="Color" controlled={true} />
 
@@ -171,13 +153,7 @@ function EditLostItemScreen({ navigation, User, route }: any) {
           placeholder="Location"
           title="lost_location"
           controlled
-          leftIcon={() => (
-            <AppIcon
-              family={IconNames.Entypo}
-              name={"location-pin"}
-              size={20}
-            />
-          )}
+          leftIcon={() => <AppIcon family={IconNames.Entypo} name={"location-pin"} size={20} />}
         />
 
         <DatePicker formTitle="lost_date" />
@@ -201,7 +177,7 @@ function EditLostItemScreen({ navigation, User, route }: any) {
         />
       </View>
 
-      {Files.map((item) => (
+      {Files.map(item => (
         <FilePreviewCard
           {...item}
           key={item._id.toString()}
@@ -213,7 +189,7 @@ function EditLostItemScreen({ navigation, User, route }: any) {
 }
 
 // Redux store that holds the states
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     User: state.AuthState.User,
   };

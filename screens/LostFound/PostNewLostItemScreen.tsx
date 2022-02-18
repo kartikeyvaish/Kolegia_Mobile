@@ -18,9 +18,7 @@ import FilePreviewCard from "../../components/FilePreviewCard";
 import Helper from "../../utils/Helper";
 import IconNames from "../../constants/IconNames";
 import LostFoundAPI from "../../api/LostFoundAPI";
-import LostFoundSchema, {
-  LOST_FOUND_CATEGORY,
-} from "../../schema/LostFoundItemSchema";
+import LostFoundSchema, { LOST_FOUND_CATEGORY } from "../../schema/LostFoundItemSchema";
 import ScreenNames from "../../navigation/ScreenNames";
 import TimePicker from "../../components/TimePicker";
 import ToastMessages from "../../constants/Messages";
@@ -37,6 +35,11 @@ function PostNewLostItemScreen({ navigation, User }: any) {
   // API call for Register
   const PostProduct = async (values: any) => {
     try {
+      if (values.category === "Other" && !values.other_category_name) {
+        Helper.ShowToast("Please enter other category name");
+        return;
+      }
+
       SetLoading(true);
       // close the Keyboard
       Keyboard.dismiss();
@@ -45,12 +48,12 @@ function PostNewLostItemScreen({ navigation, User }: any) {
       const formData = new FormData();
 
       // now append all the properties of the values object into the formData
-      Object.keys(values).forEach((key) => {
-        if (values[key]) formData.append(key, values[key].toString());
+      Object.keys(values).forEach(key => {
+        formData.append(key, values[key]);
       });
 
       // Now append the files to the formData in the `files` property
-      Files.forEach((file) => {
+      Files.forEach(file => {
         let eachFile: any = {
           name: file.name,
           type: file.mimeType,
@@ -60,15 +63,12 @@ function PostNewLostItemScreen({ navigation, User }: any) {
         formData.append("files", eachFile);
       });
 
-      const apiResponse = await LostFoundAPI.PostLostFoundItem(
-        formData,
-        auth_token
-      );
+      const apiResponse = await LostFoundAPI.PostLostFoundItem(formData, auth_token);
 
       SetLoading(false);
       if (apiResponse.ok) Helper.ShowToast("Product Posted Successfully");
 
-      navigation.popToTop();
+      // navigation.popToTop();
     } catch (error) {
       Helper.ShowToast(ToastMessages.SERVER_ERROR_MESSAGE);
       SetLoading(false);
@@ -88,18 +88,10 @@ function PostNewLostItemScreen({ navigation, User }: any) {
         onSubmit={PostProduct}
         validationSchema={LostFoundSchema.LostFoundValidationSchema}
       >
-        <AppRow
-          justifyContent="space-between"
-          alignItems="center"
-          marginBottom={10}
-        >
-          <AppText
-            text="New Lost/Found item"
-            family={FontNames.Mulish_Bold}
-            size={23}
-          />
+        <AppRow justifyContent="space-between" alignItems="center" marginBottom={10}>
+          <AppText text="New Lost/Found item" family={FontNames.Mulish_Bold} size={23} />
           <AppSubmitButton
-            CustomButton={(props) => (
+            CustomButton={props => (
               <AppIcon
                 family={IconNames.MaterialIcons}
                 name="done"
@@ -122,7 +114,11 @@ function PostNewLostItemScreen({ navigation, User }: any) {
           mandatory={true}
         />
 
-        <AppPicker items={LOST_FOUND_CATEGORY} formTitle="category" />
+        <AppPicker
+          items={LOST_FOUND_CATEGORY}
+          other_title="other_category_name"
+          formTitle="category"
+        />
 
         <AppFormField placeholder="Brand" title="brand" />
 
@@ -131,18 +127,12 @@ function PostNewLostItemScreen({ navigation, User }: any) {
         <AppFormField
           placeholder="Location"
           title="lost_location"
-          leftIcon={() => (
-            <AppIcon
-              family={IconNames.Entypo}
-              name={"location-pin"}
-              size={20}
-            />
-          )}
+          leftIcon={() => <AppIcon family={IconNames.Entypo} name={"location-pin"} size={20} />}
         />
 
         <DatePicker formTitle="lost_date" />
 
-        <TimePicker formTitle="lost_time" />
+        <TimePicker formTitle="lost_time" date_title="lost_date" />
       </AppForm>
 
       <View style={styles.titleContainer}>
@@ -161,14 +151,12 @@ function PostNewLostItemScreen({ navigation, User }: any) {
         />
       </View>
 
-      {Files.map((item) => (
+      {Files.map(item => (
         <FilePreviewCard
           {...item}
           key={item._id.toString()}
           onPress={() => RemoveDocument(item._id)}
-          onViewPress={() =>
-            navigation.navigate(ScreenNames.VideoPlayerScreen, item)
-          }
+          onViewPress={() => navigation.navigate(ScreenNames.VideoPlayerScreen, item)}
         />
       ))}
     </ScrollView>
@@ -176,7 +164,7 @@ function PostNewLostItemScreen({ navigation, User }: any) {
 }
 
 // Redux store that holds the states
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     User: state.AuthState.User,
   };
