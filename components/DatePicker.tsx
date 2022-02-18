@@ -12,14 +12,23 @@ import ColorPallete from "../utils/ColorPallete";
 import FontNames from "../constants/FontNames";
 import Helper from "../utils/Helper";
 import IconNames from "../constants/IconNames";
+import AppHelperText from "./AppHelperText";
 
 // functional components for DatePicker
-function DatePicker({ date, onDateSelect, formTitle, onRemove }: any) {
+function DatePicker({
+  date,
+  onDateSelect,
+  formTitle,
+  onRemove,
+  label = " + Add Lost Date",
+  placeholder,
+  noMaxLimit = false,
+}: any) {
   // Local States
   const [visible, setVisible] = useState(false);
 
   // Formik Context
-  const { setFieldValue, values } = useFormikContext();
+  const { setFieldValue, values, touched, errors, setFieldTouched } = useFormikContext();
 
   // decide which date to show
   const showDate = date
@@ -31,14 +40,15 @@ function DatePicker({ date, onDateSelect, formTitle, onRemove }: any) {
     : null;
 
   // on Date Select function
-  const onChange = (event: any, selectedDate: any) => {
+  const onChange = (event: any, selectedDate: Date) => {
     try {
       setVisible(Platform.OS === "ios");
       if (event.type === "set") {
-        if (formTitle) setFieldValue(formTitle, selectedDate);
+        if (formTitle) setFieldValue(formTitle, selectedDate.toISOString());
 
-        if (typeof onDateSelect === "function") onDateSelect(selectedDate);
+        if (typeof onDateSelect === "function") onDateSelect(selectedDate.toISOString());
       }
+      setFieldTouched(formTitle);
     } catch (error) {}
   };
 
@@ -47,7 +57,7 @@ function DatePicker({ date, onDateSelect, formTitle, onRemove }: any) {
     try {
       if (typeof onRemove === "function") onRemove();
 
-      if (formTitle) setFieldValue(formTitle, null);
+      if (formTitle) setFieldValue(formTitle, "");
     } catch (error) {}
   };
 
@@ -65,18 +75,21 @@ function DatePicker({ date, onDateSelect, formTitle, onRemove }: any) {
   return (
     <View style={styles.container}>
       {!showDate ? (
-        <AppText
-          text=" + Add Lost Date"
-          size={20}
-          color={ColorPallete.dodgerblue}
-          family={FontNames.Sofia_Pro_Regular}
-          onPress={OpenPicker}
-        />
+        <>
+          <AppText
+            text={label}
+            size={20}
+            color={ColorPallete.dodgerblue}
+            family={FontNames.Sofia_Pro_Regular}
+            onPress={OpenPicker}
+          />
+          <AppHelperText text={touched[formTitle] ? errors[formTitle] : null} />
+        </>
       ) : (
         <RectButton onPress={OpenPicker} style={{ borderRadius: 12 }}>
           <View style={styles.dateDisplayContainer}>
             <AppText
-              text="Lost Date : "
+              text={placeholder ? placeholder : "Lost Date : "}
               family={FontNames.Sofia_Pro_Bold}
               size={20}
             />
@@ -103,7 +116,7 @@ function DatePicker({ date, onDateSelect, formTitle, onRemove }: any) {
           is24Hour={true}
           display="default"
           onChange={onChange}
-          maximumDate={new Date()}
+          maximumDate={noMaxLimit ? null : new Date()}
         />
       )}
     </View>

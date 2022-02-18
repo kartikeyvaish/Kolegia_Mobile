@@ -5,43 +5,44 @@ import { useFormikContext } from "formik";
 
 //  local imports
 import AppDialog from "./AppDialog";
+import AppFormField from "./AppFormField";
+import AppHelperText from "./AppHelperText";
 import { AppPickerProps } from "../types/ComponentTypes";
 import AppPickerItem from "./AppPickerItem";
-import AppTextInput from "./AppTextInput";
 import ColorPallete from "../utils/ColorPallete";
 import Layout from "../constants/Layout";
-import AppFormField from "./AppFormField";
 
 // constans
 const HEIGHT = Layout.ScreenHeight / 2;
 
 // keyExtractor
-const keyExtractor = (item) => item._id.toString();
+const keyExtractor = item => item._id.toString();
 
 // function component for AppPicker
 function AppPicker(props: AppPickerProps) {
   // Destructuring props
-  const { items, pickerTitle, formTitle, initialValue = null } = props;
+  const { items, pickerTitle, formTitle, other_title, initialValue = null } = props;
 
   // get last item
   const lastItemIndex = items.length - 1;
 
   // Formik Context
-  const { setFieldValue } = useFormikContext();
-
-  useEffect(() => {
-    if (initialValue !== null) {
-      // find the index of item whose value is equal to initialValue
-      const index = items.findIndex((item) => item.value === initialValue);
-      if (index !== -1) {
-        SetCategoryIndex(index);
-      }
-    }
-  }, []);
+  const { setFieldValue, errors, touched, setFieldTouched } = useFormikContext();
 
   // Local State
   const [Visible, SetVisible] = useState(false);
   const [CategoryIndex, SetCategoryIndex] = useState(0);
+
+  useEffect(() => {
+    if (initialValue !== null) {
+      // find the index of item whose value is equal to initialValue
+      const index = items.findIndex(item => item.value === initialValue);
+      if (index !== -1) {
+        setFieldTouched(formTitle);
+        SetCategoryIndex(index);
+      }
+    }
+  }, []);
 
   // render item
   const renderItem = ({ item, index }) => (
@@ -51,19 +52,32 @@ function AppPicker(props: AppPickerProps) {
   // on item select
   const onSelect = async (item: any, index: any) => {
     try {
+      if (!touched[formTitle]) setFieldTouched(formTitle);
+      if (!touched[other_title]) setFieldTouched(other_title);
+
       SetCategoryIndex(index);
 
-      if (index === 0) UpdateField("");
-      else UpdateField(item.value);
+      if (index === 0) {
+        update_fields("", formTitle);
+        update_fields("", other_title);
+      } else {
+        if (index === items.length - 1) {
+          update_fields("Other", formTitle);
+          update_fields("", other_title);
+        } else {
+          update_fields(items[index].value, formTitle);
+          update_fields("", other_title);
+        }
+      }
 
       SetVisible(false);
     } catch (error) {}
   };
 
-  // update field
-  const UpdateField = (text: any) => {
+  // fucntion to update fields
+  const update_fields = async (text: any, fieldName: any) => {
     try {
-      if (formTitle) setFieldValue(formTitle, text);
+      if (fieldName) setFieldValue(fieldName, text);
     } catch (error) {}
   };
 
@@ -87,18 +101,16 @@ function AppPicker(props: AppPickerProps) {
       {lastItemIndex !== -1 && lastItemIndex === CategoryIndex ? (
         <AppFormField
           placeholder="Other Category"
-          onChangeText={UpdateField}
-          title={formTitle}
+          onChangeText={text => setFieldValue(other_title, text)}
+          title={other_title}
           controlled
           containerStyle={{ marginTop: 10 }}
         />
-      ) : null}
+      ) : (
+        <AppHelperText text={touched[formTitle] ? errors[formTitle] : ""} />
+      )}
 
-      <AppDialog
-        visible={Visible}
-        hideDialog={() => SetVisible(false)}
-        title={pickerTitle}
-      >
+      <AppDialog visible={Visible} hideDialog={() => SetVisible(false)} title={pickerTitle}>
         <View style={{ height: HEIGHT, width: "100%" }}>
           <FlatList
             data={items}

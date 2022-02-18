@@ -31,13 +31,13 @@ function TimePicker({ time, onTimeSelect, formTitle, onRemove }: any) {
     : null;
 
   // on Date Select function
-  const onChange = (event: any, selectedDate: any) => {
+  const onChange = (event: any, selectedDate: Date) => {
     try {
       setVisible(Platform.OS === "ios");
       if (event.type === "set") {
-        if (formTitle) setFieldValue(formTitle, selectedDate);
+        if (formTitle) setFieldValue(formTitle, selectedDate.toISOString());
 
-        if (typeof onTimeSelect === "function") onTimeSelect(selectedDate);
+        if (typeof onTimeSelect === "function") onTimeSelect(selectedDate.toISOString());
       }
     } catch (error) {}
   };
@@ -47,7 +47,7 @@ function TimePicker({ time, onTimeSelect, formTitle, onRemove }: any) {
     try {
       if (typeof onRemove === "function") onRemove();
 
-      if (formTitle) setFieldValue(formTitle, null);
+      if (formTitle) setFieldValue(formTitle, "");
     } catch (error) {}
   };
 
@@ -75,11 +75,7 @@ function TimePicker({ time, onTimeSelect, formTitle, onRemove }: any) {
       ) : (
         <RectButton onPress={OpenPicker}>
           <View style={styles.dateDisplayContainer}>
-            <AppText
-              text="Lost Time : "
-              family={FontNames.Sofia_Pro_Bold}
-              size={20}
-            />
+            <AppText text="Lost Time : " family={FontNames.Sofia_Pro_Bold} size={20} />
             <View style={styles.dateContainer}>
               <AppText text={Helper.get_formatted_time(showTime)} size={20} />
               <AppIcon
