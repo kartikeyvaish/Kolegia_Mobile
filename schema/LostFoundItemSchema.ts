@@ -10,8 +10,9 @@ export interface LostFoundInitialValuesProps {
     name?: string;
     description?: string;
     brand?: string;
-    category?: string;
     color?: string;
+    category?: string;
+    other_category_name?: string;
     lost_date?: string;
     lost_time?: string;
     lost_location?: string;
@@ -34,8 +35,8 @@ export const LOST_FOUND_CATEGORY: Array<AppPickerItemProps> = [
     },
     {
         _id: "1",
-        label: "Electronics",
-        value: "Electronics",
+        label: "Electronics and Mobiles",
+        value: "Electronics and Mobiles",
         iconProps: {
             family: IconNames.MaterialIcons,
             name: "devices-other",
@@ -143,6 +144,7 @@ const LostFoundInitialValues: LostFoundInitialValuesProps = {
     lost_date: "",
     lost_time: "",
     lost_location: "",
+    other_category_name: "",
 };
 
 // validation schema
@@ -151,6 +153,7 @@ const LostFoundValidationSchema = () => Yup.object().shape({
     description: Yup.string().required("Description is required"),
     brand: Yup.string(),
     category: Yup.string(),
+    other_category_name: Yup.string(),
     color: Yup.string(),
     lost_date: Yup.string().nullable().optional(),
     lost_time: Yup.string().nullable().optional(),
