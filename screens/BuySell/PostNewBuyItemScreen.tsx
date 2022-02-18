@@ -20,6 +20,11 @@ import ScreenNames from "../../navigation/ScreenNames";
 import ToastMessages from "./../../constants/Messages";
 import useLoading from "../../hooks/useLoading";
 import useImagePicker from "../../hooks/useImagePicker";
+import AppPicker from "../../components/AppPicker";
+import { LOST_FOUND_CATEGORY } from "../../schema/LostFoundItemSchema";
+import ColorPicker from "../../components/ColorPicker";
+import DatePicker from "../../components/DatePicker";
+import TimePicker from "../../components/TimePicker";
 
 // functional components for PostNewBuyItemScreen
 function PostNewBuyItemScreen({ navigation, User }: any) {
@@ -37,10 +42,7 @@ function PostNewBuyItemScreen({ navigation, User }: any) {
       Keyboard.dismiss();
 
       // Check if there's atleast one image in the Files array
-      let checkImageIndex = Files.findIndex(
-        (file) => file.mimeType.slice(0, 5) === "image"
-      );
-
+      let checkImageIndex = Files.findIndex(file => file.mimeType.slice(0, 5) === "image");
       if (checkImageIndex === -1) {
         Helper.ShowToast("Please select atleast one image");
         SetLoading(false);
@@ -51,12 +53,12 @@ function PostNewBuyItemScreen({ navigation, User }: any) {
       const formData = new FormData();
 
       // now append all the properties of the values object into the formData
-      Object.keys(values).forEach((key) => {
-        formData.append(key, values[key]);
+      Object.keys(values).forEach(key => {
+        formData.append(key, values[key].toString());
       });
 
       // Now append the files to the formData in the `files` property
-      Files.forEach((file) => {
+      Files.forEach(file => {
         let eachFile: any = {
           name: file.name,
           type: file.mimeType,
@@ -66,11 +68,7 @@ function PostNewBuyItemScreen({ navigation, User }: any) {
         formData.append("files", eachFile);
       });
 
-      const apiResponse = await BuySellAPI.PostNewBuySellItem(
-        formData,
-        auth_token
-      );
-
+      const apiResponse = await BuySellAPI.PostNewBuySellItem(formData, auth_token);
       if (apiResponse.ok) Helper.ShowToast("Product Posted Successfully");
       SetLoading(false);
 
@@ -94,18 +92,10 @@ function PostNewBuyItemScreen({ navigation, User }: any) {
         onSubmit={PostProduct}
         validationSchema={BuySellSchema.BuyProductValidationSchema}
       >
-        <AppRow
-          justifyContent="space-between"
-          alignItems="center"
-          marginBottom={10}
-        >
-          <AppText
-            text="New Buy/Sell item"
-            family={FontNames.Mulish_Bold}
-            size={23}
-          />
+        <AppRow justifyContent="space-between" alignItems="center" marginBottom={10}>
+          <AppText text="New Buy/Sell item" family={FontNames.Mulish_Bold} size={23} />
           <AppSubmitButton
-            CustomButton={(props) => (
+            CustomButton={props => (
               <AppIcon
                 family={IconNames.MaterialIcons}
                 name="done"
@@ -117,18 +107,33 @@ function PostNewBuyItemScreen({ navigation, User }: any) {
           />
         </AppRow>
 
-        <AppFormField placeholder="Name" label="Name" title="name" />
+        <AppFormField placeholder="Name" label="Name" title="name" mandatory={true} />
 
-        <AppFormField placeholder="Price" label="Price" title="price" />
+        <AppFormField placeholder="Price" label="Price" title="price" mandatory={true} />
 
         <AppFormField
           placeholder="Description"
           label="Description"
           title="description"
           multiline={true}
+          mandatory={true}
           containerStyle={{ maxHeight: 150 }}
           mode="outlined"
         />
+
+        <AppPicker
+          items={LOST_FOUND_CATEGORY}
+          formTitle="category"
+          other_title="other_category_name"
+        />
+
+        <AppFormField placeholder="Brand" title="brand" mandatory={true} />
+
+        <ColorPicker title="color" placeholder="Color" controlled={false} />
+
+        <DatePicker label="+ Add Bought Date" formTitle="bought_datetime" noMaxLimit={true} />
+
+        <DatePicker label="+ Add Warranty Limit" formTitle="warranty_till" noMaxLimit={true} />
       </AppForm>
 
       <View style={styles.titleContainer}>
@@ -152,9 +157,7 @@ function PostNewBuyItemScreen({ navigation, User }: any) {
           {...item}
           key={item._id.toString()}
           onPress={() => RemoveDocument(item._id)}
-          onViewPress={() =>
-            navigation.navigate(ScreenNames.VideoPlayerScreen, item)
-          }
+          onViewPress={() => navigation.navigate(ScreenNames.VideoPlayerScreen, item)}
         />
       ))}
     </ScrollView>
@@ -162,7 +165,7 @@ function PostNewBuyItemScreen({ navigation, User }: any) {
 }
 
 // Redux store that holds the states
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     User: state.AuthState.User,
   };

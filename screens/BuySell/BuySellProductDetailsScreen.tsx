@@ -11,6 +11,7 @@ import ColorPallete from "../../utils/ColorPallete";
 import FontNames from "../../constants/FontNames";
 import GlobalContext from "../../contexts/GlobalContext";
 import Helper from "../../utils/Helper";
+import KeyDescriptionCard from "../../components/KeyDescriptionCard";
 import LayoutConstants from "../../constants/Layout";
 import ScreenNames from "../../navigation/ScreenNames";
 import OwnerDetailsCard from "../../components/OwnerDetailsCard";
@@ -25,8 +26,7 @@ function BuySellProductDetailsScreen({ navigation, route }) {
   const { Loading, SetLoading } = useLoading({});
 
   // Destructuring State
-  const { files, description, name, price, _id, posted_by, owner_details } =
-    ProductDetails;
+  const { files, description, name, price, _id, posted_by, owner_details } = ProductDetails;
 
   // Context vars
   const { User, SetIsLoading, SetOverlayText } = useContext(GlobalContext);
@@ -40,10 +40,7 @@ function BuySellProductDetailsScreen({ navigation, route }) {
       SetOverlayText("Deleting Product...");
       SetIsLoading(true);
 
-      const apiResponse = await BuySellAPI.DeleteBuySellItem(
-        { product_id: _id },
-        User?.auth_token
-      );
+      const apiResponse = await BuySellAPI.DeleteBuySellItem({ product_id: _id }, User?.auth_token);
 
       SetIsLoading(false);
       Helper.ShowToast(apiResponse.data.message);
@@ -81,10 +78,7 @@ function BuySellProductDetailsScreen({ navigation, route }) {
     try {
       SetLoading(true);
 
-      const apiResponse = await ChatsAPI.ContactSeller(
-        { reciever_id: posted_by },
-        User.auth_token
-      );
+      const apiResponse = await ChatsAPI.ContactSeller({ reciever_id: posted_by }, User.auth_token);
 
       SetLoading(false);
 
@@ -105,10 +99,7 @@ function BuySellProductDetailsScreen({ navigation, route }) {
   // function to get product details
   const GetProductDetails = async () => {
     try {
-      const response = await BuySellAPI.GetBuySellProductDetails(
-        _id,
-        User?.auth_token
-      );
+      const response = await BuySellAPI.GetBuySellProductDetails(_id, User?.auth_token);
       if (response.ok) SetProductDetails(response.data.Product);
     } catch (error) {}
   };
@@ -132,26 +123,26 @@ function BuySellProductDetailsScreen({ navigation, route }) {
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
-        refreshControl={
-          <RefreshControl refreshing={Refreshing} onRefresh={Refresh} />
-        }
+        refreshControl={<RefreshControl refreshing={Refreshing} onRefresh={Refresh} />}
       >
         <View style={styles.imageContainer}>
           <Caraousel
             files={files}
-            onVideoPress={(item) =>
-              navigation.navigate(ScreenNames.VideoPlayerScreen, item)
-            }
+            onVideoPress={item => navigation.navigate(ScreenNames.VideoPlayerScreen, item)}
           />
         </View>
 
         <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-          <AppText
-            text={name}
-            size={22}
-            family={FontNames.Sofia_Pro_Bold}
-            marginBottom={5}
-          />
+          <AppText text={name} size={22} family={FontNames.Sofia_Pro_Bold} marginBottom={5} />
+
+          {ProductDetails.category ? (
+            <AppText
+              text={`in ${ProductDetails.category}`}
+              size={15}
+              family={FontNames.Sofia_Pro_Light}
+              marginBottom={5}
+            />
+          ) : null}
 
           <AppText
             text={formattedPrice}
@@ -162,6 +153,30 @@ function BuySellProductDetailsScreen({ navigation, route }) {
           />
 
           <AppText text={description} size={18} />
+        </View>
+
+        <View style={styles.productDetails}>
+          {ProductDetails.brand ? (
+            <KeyDescriptionCard title={"Brand : "} description={ProductDetails.brand} />
+          ) : null}
+
+          {ProductDetails.color ? (
+            <KeyDescriptionCard title={"Color : "} description={ProductDetails.color} />
+          ) : null}
+
+          {ProductDetails.bought_datetime ? (
+            <KeyDescriptionCard
+              title={"Bought on : "}
+              description={Helper.get_top_date(ProductDetails.bought_datetime, null)}
+            />
+          ) : null}
+
+          {ProductDetails.warranty_till ? (
+            <KeyDescriptionCard
+              title={"Warranty Till : "}
+              description={Helper.get_top_date(ProductDetails.warranty_till, null)}
+            />
+          ) : null}
         </View>
 
         <OwnerDetailsCard owner_details={owner_details} />
@@ -183,12 +198,7 @@ function BuySellProductDetailsScreen({ navigation, route }) {
                 title="EDIT"
                 borderRadius={2}
                 backgroundColor={ColorPallete.dodgerblue}
-                onPress={() =>
-                  navigation.navigate(
-                    ScreenNames.BuySellEditScreen,
-                    route.params
-                  )
-                }
+                onPress={() => navigation.navigate(ScreenNames.BuySellEditScreen, route.params)}
               />
             </View>
           </>
@@ -199,11 +209,7 @@ function BuySellProductDetailsScreen({ navigation, route }) {
               borderRadius={2}
               backgroundColor={ColorPallete.dodgerblue}
               loading={Loading}
-              onPress={
-                User
-                  ? ContactSeller
-                  : () => navigation.navigate(ScreenNames.LoginScreen)
-              }
+              onPress={User ? ContactSeller : () => navigation.navigate(ScreenNames.LoginScreen)}
             />
           </View>
         )}
@@ -221,5 +227,9 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: LayoutConstants.ScreenWidth,
     height: LayoutConstants.ScreenWidth,
+  },
+  productDetails: {
+    marginLeft: 15,
+    marginTop: 10,
   },
 });

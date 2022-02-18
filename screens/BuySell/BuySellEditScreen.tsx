@@ -10,9 +10,7 @@ import AppRow from "../../components/AppRow";
 import AppSubmitButton from "../../components/AppSubmitButton";
 import AppText from "../../components/AppText";
 import BuySellAPI from "./../../api/BuySellAPI";
-import BuySellSchema, {
-  BuyProductInitialValuesProps,
-} from "../../schema/BuySellItemSchema";
+import BuySellSchema, { BuyProductInitialValuesProps } from "../../schema/BuySellItemSchema";
 import ColorPallete from "../../utils/ColorPallete";
 import FilePreviewCard from "../../components/FilePreviewCard";
 import FontNames from "../../constants/FontNames";
@@ -21,6 +19,10 @@ import IconNames from "../../constants/IconNames";
 import ToastMessages from "./../../constants/Messages";
 import useLoading from "../../hooks/useLoading";
 import useImagePicker from "../../hooks/useImagePicker";
+import AppPicker from "../../components/AppPicker";
+import { LOST_FOUND_CATEGORY } from "../../schema/LostFoundItemSchema";
+import ColorPicker from "../../components/ColorPicker";
+import DatePicker from "../../components/DatePicker";
 
 // functional components for PostNewBuyItemScreen
 function PostNewBuyItemScreen({ navigation, User, route }: any) {
@@ -31,11 +33,9 @@ function PostNewBuyItemScreen({ navigation, User, route }: any) {
 
   // Custom Hooks
   const { Loading, SetLoading } = useLoading({ initialValue: false });
-  const { Files, PickDocument, RemoveDocument, deleted_files } = useImagePicker(
-    {
-      initial_files,
-    }
-  );
+  const { Files, PickDocument, RemoveDocument, deleted_files } = useImagePicker({
+    initial_files,
+  });
 
   // API call for Editing Product
   const EditProduct = async (values: any) => {
@@ -45,9 +45,7 @@ function PostNewBuyItemScreen({ navigation, User, route }: any) {
       Keyboard.dismiss();
 
       // Check if there's atleast one image in the Files array
-      let checkImageIndex = Files.findIndex(
-        (file) => file.mimeType.slice(0, 5) === "image"
-      );
+      let checkImageIndex = Files.findIndex(file => file.mimeType.slice(0, 5) === "image");
 
       if (checkImageIndex === -1) {
         Helper.ShowToast("Please select atleast one image");
@@ -62,14 +60,19 @@ function PostNewBuyItemScreen({ navigation, User, route }: any) {
       formData.append("name", values.name);
       formData.append("description", values.description);
       formData.append("price", values.price);
+      formData.append("brand", values.brand);
+      formData.append("category", values.category);
+      formData.append("color", values.color);
+      formData.append("bought_datetime", values.bought_datetime ?? null);
+      formData.append("warranty_till", values.warranty_till ?? null);
 
       // Append to_be_deleted array to formData
-      deleted_files.forEach((file) => {
+      deleted_files.forEach(file => {
         formData.append("to_be_deleted[]", file);
       });
 
       // Now append the files to the formData in the `files` property
-      Files.forEach((file) => {
+      Files.forEach(file => {
         if (!file.public_id) {
           let eachFile: any = {
             name: file.name,
@@ -81,10 +84,7 @@ function PostNewBuyItemScreen({ navigation, User, route }: any) {
         }
       });
 
-      const apiResponse = await BuySellAPI.EditBuySellItem(
-        formData,
-        auth_token
-      );
+      const apiResponse = await BuySellAPI.EditBuySellItem(formData, auth_token);
 
       if (apiResponse.ok) Helper.ShowToast("Product Edited Successfully");
 
@@ -107,17 +107,13 @@ function PostNewBuyItemScreen({ navigation, User, route }: any) {
     >
       <AppForm
         initialValues={initial_fields}
-        onSubmit={(values) => EditProduct(values)}
+        onSubmit={values => EditProduct(values)}
         validationSchema={BuySellSchema.BuyProductValidationSchema}
       >
-        <AppRow
-          justifyContent="space-between"
-          alignItems="center"
-          marginBottom={10}
-        >
+        <AppRow justifyContent="space-between" alignItems="center" marginBottom={10}>
           <AppText text="Edit item" family={FontNames.Mulish_Bold} size={23} />
           <AppSubmitButton
-            CustomButton={(props) => (
+            CustomButton={props => (
               <AppIcon
                 family={IconNames.MaterialIcons}
                 name="done"
@@ -129,7 +125,7 @@ function PostNewBuyItemScreen({ navigation, User, route }: any) {
           />
         </AppRow>
 
-        <AppFormField placeholder="Name" label="Name" title="name" controlled />
+        <AppFormField placeholder="Name" label="Name" title="name" controlled mandatory={true} />
 
         <AppFormField
           placeholder="Price"
@@ -137,6 +133,7 @@ function PostNewBuyItemScreen({ navigation, User, route }: any) {
           title="price"
           controlled
           keyboardType="numeric"
+          mandatory={true}
         />
 
         <AppFormField
@@ -146,7 +143,33 @@ function PostNewBuyItemScreen({ navigation, User, route }: any) {
           containerStyle={{ maxHeight: 150 }}
           mode="outlined"
           title="description"
+          mandatory={true}
           controlled
+        />
+
+        <AppPicker
+          items={LOST_FOUND_CATEGORY}
+          formTitle="category"
+          other_title="other_category_name"
+          initialValue={route.params?.category ?? null}
+        />
+
+        <AppFormField placeholder="Brand" title="brand" controlled={true} mandatory={true} />
+
+        <ColorPicker title="color" placeholder="Color" controlled={true} />
+
+        <DatePicker
+          placeholder="Bought Date"
+          label="+ Add Bought Date"
+          formTitle="bought_datetime"
+          noMaxLimit={true}
+        />
+
+        <DatePicker
+          placeholder="Warranty Date"
+          label="+ Add Warranty Limit"
+          formTitle="warranty_till"
+          noMaxLimit={true}
         />
       </AppForm>
 
@@ -178,7 +201,7 @@ function PostNewBuyItemScreen({ navigation, User, route }: any) {
 }
 
 // Redux store that holds the states
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     User: state.AuthState.User,
   };
