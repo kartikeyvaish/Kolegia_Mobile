@@ -15,6 +15,17 @@ Kolegia is a platform where users can post their lost items and find them. Users
 - If someone wants to raise a hand on a lost item, they can easily do that.
 - Light/Dark Mode support.
 
+## Android APK Download link
+
+The link to the .apk file for the application can be found [here](https://expo.dev/artifacts/eas/3HfyrcvBwDg2SVatsp8v4B.apk)
+
+## Tech Stack
+
+- React Native
+- Node.js
+- MongoDB
+- Firebase
+
 ## ✨ App Preview
 
 <p align="center">
@@ -26,6 +37,12 @@ Kolegia is a platform where users can post their lost items and find them. Users
 <p align="center">
   <img src="https://i.imgur.com/wIBS9gU.png" width="100%" />
 </p>
+
+## Team Members
+
+- Kartikey Vaish 2019-BCS-078
+- Kislay Singh 2019-BCS-030
+- Vivek Sherkhane 2019-BCS-049
 
 ## Development Setup
 
