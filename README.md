@@ -50,14 +50,6 @@ The link to the .apk file for the application can be found [here](https://expo.d
   <img src="https://i.imgur.com/wIBS9gU.png" width="100%" />
 </p>
 
-## ✨ Website Preview
-
-<p>
-  <img src="https://github.com/AdityaPandey03/Kolegia_FrontEnd/blob/480368f83f3e171f47bbcb9eb88f0a22ce92d74b/client/src/assests/1.jpeg" width="800" height="600" />
-  <img src="https://github.com/AdityaPandey03/Kolegia_FrontEnd/blob/480368f83f3e171f47bbcb9eb88f0a22ce92d74b/client/src/assests/3.jpeg" width="800" height="600" />
-   <img src="https://github.com/AdityaPandey03/Kolegia_FrontEnd/blob/480368f83f3e171f47bbcb9eb88f0a22ce92d74b/client/src/assests/4.jpeg" width="800" height="600" />
-</p> 
-
 ## Team Members
 
 - Kartikey Vaish 2019-BCS-078
@@ -66,6 +58,11 @@ The link to the .apk file for the application can be found [here](https://expo.d
 - Aditya Pandey 2020-IMT-005
 - Adarsh Aryan 2020-IMT-003
 - Aman Vaishya 2020-IMT-008
+
+## Link to other Repos related to Kolegia
+
+1. [Frontend Web application](https://github.com/adarsharyan002/Kolegia_FrontEnd) 
+2. [Backend Server](https://github.com/kartikeyvaish/Kolegia_Backend)
 
 ## Development Setup
 
